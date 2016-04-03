@@ -16,7 +16,7 @@
     <h1>Scrolling.js</h1>
     <p>The internet is full of solutions for fixing headers on html tables. Most of them are very complicated or required special html rigid constructs or needed frameworks such as jQuery et al.</p>
     <p>That is why I decided to reinvent the wheel. I liked a plain vanilla javascript solution in the spirit of the DOM that respected the css layouts and the semantics of html. The solution proposed here covers two use cases: a full displayed table that maintain the header on top of the window when scrolled and other one that scrolls in a fixed space.</p>
-    <p>In order to have a scrollable table, there is only need to include a script tag at the end of the <code>&lt;body&gt;</code> and add a class for the <code>&lt;table&gt;</code> that is going to be made scrollable. All css is preserved.</p>
+    <p>In order to have a scrollable table, there is only need to include a script tag at the end of the <code>&lt;body&gt;</code> and add a class for the <code>&lt;table&gt;</code> that is going to be made scrollable. All css is preserved and there is no specific markup required.</p>
     <h2>Use case 1:</h2>
     <pre>
     &lt;table&gt;
@@ -154,7 +154,7 @@
       </tbody>
     </table>
 
-		<p>This use case defines the fixed space where the table is confined.</p>
+		<p>This use case defines the fixed space where the table is confined. This could be done assigning width and height to the table. A range with minimum and maximum is also possible both for width and height.</p>
 		<p>Please note that the table could be ill formed (there is a deliberate error on the last row) or with a complex layout (there is a cell that spans two columns). The only condition is that there must be a <code>&lt;thead&gt;</code> and a <code>&lt;tbody&gt;</code>.</p>
 		
 		<h2>Bugfixes</h2>
