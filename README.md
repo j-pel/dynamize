@@ -7,10 +7,10 @@ In other words, just grab the file you want, drop it in your existing website pr
 
 Currently, the collection is composed by:
 
-* [scrolling.js](http://j-pel.github.com/scrolling.html)
-* [moving.js](http://j-pel.github.com/moving.html)
-* [rotating.js](http://j-pel.github.com/rotating.html)
-* [sizing.js](http://j-pel.github.com/sizing.html)
+* [scrolling.js](http://j-pel.github.io/scrolling.html)
+* [moving.js](http://j-pel.github.io/moving.html)
+* [rotating.js](http://j-pel.github.io/rotating.html)
+* [sizing.js](http://j-pel.github.io/sizing.html)
 
 The names are self explanatory, however, there are example files for each one.
 
