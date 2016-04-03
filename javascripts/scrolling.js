@@ -2,7 +2,7 @@
  * scrolling.js
  *
  * Copyright © 2016 Jorge M. Peláez | MIT license
- * https://github.com/j_pel/adjustjs
+ * http://j-pel.github.io/adjustjs
  * 
  */
 
