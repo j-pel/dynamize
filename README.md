@@ -8,10 +8,10 @@ In other words, just grab the file you want and it will work well on your existi
 
 Currently, the collection is composed by:
 
-* [scrolling.js](scrolling.html)
-* [moving.js](moving.html)
-* [rotating.js](rotating.html)
-* [sizing.js](sizing.html)
+* [scrolling.js](https://github.com/j-pel/tree/master/scrolling.html)
+* [moving.js](https://github.com/j-pel/tree/master/moving.html)
+* [rotating.js](https://github.com/j-pel/tree/master/rotating.html)
+* [sizing.js](https://github.com/j-pel/tree/master/sizing.html)
 
 The names are self explanatory, however, there are example files for each one.
 
