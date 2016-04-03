@@ -1,22 +1,45 @@
+<!DOCTYPE html>
 <html>
-  <style>
-  table {
-		border-collapse: collapse;
-	}
-  thead {
-    margin:0px;
-    padding: 0px;
-    background-color: #ccc;
-  }
-  td, th {
-    border: 1px solid black;
-  }
-  </style>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+		<style>
+		thead {
+			background-color: #ccc;
+		}
+		</style>
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>adjust.js by j-pel</title>
+  </head>
+
   <body>
-    <h1>Scrolling.js</h1>
-    <p>The internet is full of solutions for fixing headers on html tables. Most of them are very complicated or required special html rigid constructs or needed frameworks such as jQuery et al.</p>
+    <header>
+      <div class="inner">
+        <h1>adjust.js</h1>
+        <h2>Small plain vanilla javascript goodies for enhancing user interaction</h2>
+        <a href="https://github.com/j-pel/adjustjs" class="button"><small>View project on</small> GitHub</a>
+      </div>
+<!--h1><a id="adjustjs" class="anchor" href="#adjustjs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>adjust.js</h1-->
+
+    </header>
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+
+    <h1>scrolling.js</h1>
+    <p>The internet is full of solutions for fixing headers on html tables. Most of them are more complicated than really needed, requiring special html rigid constructs or required external frameworks such as jQuery et al. Kind of overkill for such a simple task.</p>
     <p>That is why I decided to reinvent the wheel. I liked a plain vanilla javascript solution in the spirit of the DOM that respected the css layouts and the semantics of html. The solution proposed here covers two use cases: a full displayed table that maintain the header on top of the window when scrolled and other one that scrolls in a fixed space.</p>
-    <p>In order to have a scrollable table, there is only need to include a script tag at the end of the <code>&lt;body&gt;</code> and add a class for the <code>&lt;table&gt;</code> that is going to be made scrollable. All css is preserved and there is no specific markup required.</p>
+    <p>In order to have a scrollable table, there is only need to include a script tag at the end of the <code>&lt;body&gt;</code> and add a class for the <code>&lt;table&gt;</code> that is going to be made scrollable. All css is preserved and there is no specific markup required. Actually, there is an <a href="https://github.com/j-pel/adjustjs/issues/1">open issue</a> with nested <code>&lt;divs&gt;</code> that is being addressed.</p>
+				
     <h2>Use case 1:</h2>
     <pre>
     &lt;table&gt;
@@ -33,6 +56,10 @@
       &lt;/tbody&gt;
     &lt;/table&gt;
     </pre>
+
+				</section>
+			</div>
+		</div>
 
     <h3>Some Linux syscalls</h3>
 
@@ -79,6 +106,10 @@
 <td>const char *</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
 </tbody></table>
 
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+
 		<p>This use case is the most common and it is so useful for handling tabulated contents that is a pity that is not considered on current HTML5 standards.</p>
 
     <h2>Use case 2:</h2>
@@ -98,6 +129,12 @@
       &lt;/tbody&gt;
     &lt;/table&gt;
     </pre>
+
+				</section>
+			</div>
+		</div>
+
+
     <h3>Debian releases</h3>
     <table class="scrollable" style="max-width: 420px; min-width: 300px; max-height: 200px;">
       <thead>
@@ -154,6 +191,10 @@
       </tbody>
     </table>
 
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+
 		<p>This use case defines the fixed space where the table is confined. This could be done assigning width and height to the table. A range with minimum and maximum is also possible both for width and height.</p>
 		<p>Please note that the table could be ill formed (there is a deliberate error on the last row) or with a complex layout (there is a cell that spans two columns). The only condition is that there must be a <code>&lt;thead&gt;</code> and a <code>&lt;tbody&gt;</code>.</p>
 		
@@ -201,7 +242,10 @@
 		<br />
 		<br />
 		<br />
-		
+				</section>
+			</div>
+		</div>
+
     <script type="text/javascript" src="javascripts/scrolling.js"></script>
   </body>
 </html>
