@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+		<style>
+		div.small-box {
+			position: absolute;
+			border: 1pt dotted #999;
+			text-align: center;
+			vertical-align: middle;
+			width: 48px;
+			height: 48px;
+			padding: 4px;
+			margin: 2px;
+			font-size: 10pt;
+			text-decoration: none;
+		}
+		</style>
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>adjust.js by j-pel</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>adjust.js</h1>
+        <h2>Small plain vanilla javascript goodies for enhancing user interaction</h2>
+        <a href="https://github.com/j-pel/adjustjs" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+
+    <h1>sizing.js</h1>
+    <p>Sizing things around in a website is helpful for windowing activities, simulating a desktop working environment. But there are many use cases for a web application. The DOM had already everything needed in order to provide that interaction. No need to load a framework for that. Just provide a function to store the object's new size in case persistance is required.</p>
+    <p>In order to have a sizable object, there is only need to include a script tag at the end of the <code>&lt;body&gt;</code> and add a class for the object that is going to be sized. All css is preserved and there is a small specific markup required: the objects have to be absolutely positioned.</p>
+				
+    <h2>Use case:</h2>
+    <pre>
+&lt;body&gt;
+	&lt;div id="f1" class="small-box" style="top: 0px; left: 175px;"&gt;I'm fixed&lt;/div&gt;
+	&lt;div id="m1" class="small-box sizable" style="top: 0px; left: 260px;"&gt;Size me&lt;/div&gt;
+	&lt;div id="m2" class="small-box sizable" style="top: 0px; left: 345px; background-color:#cce;"&gt;Size me too!&lt;/div&gt;
+
+			(...)
+
+	&lt;script type="text/javascript" src="javascripts/sizing.js"&gt;&lt;/script&gt;
+	&lt;script&gt;
+		var store_changes = function(changes) {
+			console.log("storing",changes);
+			return 0;
+		}
+		sizing.init(store_changes);
+	&lt;/script&gt;
+&lt;/body&gt;
+    </pre>
+
+	<div id="f1" class="small-box" style="top: 0px; left: 175px;">I'm fixed</div>
+	<div id="m1" class="small-box sizable" style="top: 0px; left: 260px;">Size me</div>
+	<div id="m2" class="small-box sizable" style="top: 0px; left: 345px; background-color:#cce;">Size me too!</div>
+
+				</section>
+			</div>	
+		</div>
+
+    <script type="text/javascript" src="javascripts/sizing.js"></script>
+    <script>
+			var store_changes = function(changes) {
+				console.log("storing",changes);
+				return 0;
+			}
+			sizing.init(store_changes);
+    </script>
+  </body>
+</html>
