@@ -1,17 +1,16 @@
 # adjust.js
-Small vanilla javascript goodies for enhancing user interaction
+Small plain vanilla javascript goodies for enhancing user interaction
 
-When enhancing a website for eye-candy and user interaction, nothing better than a pure CSS + HTML solution.
-In those cases where such a solution is not available, the developer needs to resort to javascript. This is the origin of adjust.js. It's a collection of small vanilla javascript files with no external dependencies that are not going to mess with the existing site layout.
+When enhancing a website for eye-candy and user interaction, there is nothing better than a pure CSS + HTML solution. When such a solution is not available, the developer needs to resort to javascript. That is the origin of adjust.js: a loose collection of small, independient, plain vanilla javascript files to do one specific task and designed to avoid messing with the existing site layout.
 
-In other words, just grab the file you want and it will work well on your existing project. It is going to work well with any framework or with no framework at all. 
+In other words, just grab the file you want, drop it in your existing website project and there is a good chance that everything is going to work as expected regardless of the nature of the project, even when external frameworks are used. 
 
 Currently, the collection is composed by:
 
-* [scrolling.js](https://github.com/j-pel/tree/master/scrolling.html)
-* [moving.js](https://github.com/j-pel/tree/master/moving.html)
-* [rotating.js](https://github.com/j-pel/tree/master/rotating.html)
-* [sizing.js](https://github.com/j-pel/tree/master/sizing.html)
+* [scrolling.js](http://j-pel/github.com/scrolling.html)
+* [moving.js](http://j-pel/github.com/moving.html)
+* [rotating.js](http://j-pel/github.com/rotating.html)
+* [sizing.js](http://j-pel/github.com/sizing.html)
 
 The names are self explanatory, however, there are example files for each one.
 
