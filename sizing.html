@@ -21,6 +21,19 @@
 			font-size: 10pt;
 			text-decoration: none;
 		}
+		.sizer {
+			display: none;
+			position: absolute;
+			width: 16px;
+			height: 16px;
+			bottom: -4px;
+			right: -4px;
+			opacity: 0.8;
+			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH3wUaESwc6CzCdwAAAapJREFUOMuNkjuL6mAQht+JS+KlsAnYWG0XsYh2KQQRjo0i2GplYSHir7DQwsJWLASx9i8IluKJ9iIiNlHxiIVCAmZOtXHjbXdgmG9mmIdh3g/MjFdu27Yr9vt9vu8LeGNE5Monkwni8Th/r70F3INisRgikQhUVeWvOjHfgLZtQxBuzHa7za1WC9lsFpZlIRgMQpZl7Pd7jMdj6LpODwAiAhE5ME3TOJ1Ow+PxgIjAzJAkCY1GA7VaDR/3qzIziAiCIKDT6fByucTlcoFpmjidTgiFQpjNZsjlcqjX6/Rw+ev16orfvdlssqIoXC6XHTWcpmEYvFgsmJkxGo34mazFYpGTyaSr5zyOx+MnAK5Wq5xKpZ4ChsPhQ905uWmay0qlAgBIJBJP5czn83RfcwCiKP7x+XyQZdkl5U/20ev1WBRFWJYFSZIgCAJWqxUGgwGv12tkMhmoqkovP9lms2FN01AqlRytD4cD5vM5zuczptMpvdtACIfDpOv63263i0AgAL/fD8Mw4PV6fxwGcFNht9tNFUXhaDT6UoVn7kq22+2/QqHw62Fmxn8pB4mgcwgvogAAAABJRU5ErkJggg==);
+		}
+		.sizable:hover div.sizer {
+			display: block;
+		}	
 		</style>
 
     <!--[if lt IE 9]>
