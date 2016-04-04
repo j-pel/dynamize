@@ -1,0 +1,98 @@
+<html>
+	<head>
+		<title>Simple example for adjust.js</title>
+	</head>
+  <style>
+table {
+	border-collapse: collapse;
+}
+thead {
+background-color: #ccc;
+}
+div.small-box {
+	position: absolute;
+	border: 1pt dotted #999;
+	text-align: center;
+	vertical-align: middle;
+	width: 48px;
+	height: 48px;
+	padding: 4px;
+	margin: 2px;
+	font-size: 10pt;
+	text-decoration: none;
+}
+.rotor {
+	display: none;
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	top: 50%;
+	left:  50%;
+	transform: translate(-50%, -50%);
+	opacity: 0.8;
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH3wUaES0yLeH++QAAAlhJREFUOMtdk81KW1EQx39zcu9NIJEgKC4MLlLQXbPNwo0V3BhcFl20fQLfowsfQRDxBVy4yBMYEPyiXSiYWqtYqFclSEzMPedMF3qv0YHZzOd//jMjqkqq70VEEBHOz8+1VCoxPj4u6hVFMcYAYNJg7z3ee1SfncYYRASAi4sLdnZ2ALDeorw2C9JOaRLAycmJttttHh4eKBaLdDodbm9vaf9q64dqVYYLyDD8brfL9va2xnGcjRVFEVEUoV4J8yFfv32RnMkhL+AzBNZatra21FpLoVCgXq8zMzPD8fExBwcHiAhxfMv132udmpySNyMANJtNtdYyNjbGysqKDBGpj4+PTE9Ps9hYlJzJkbiEMBe+kpgkCVdXVzw9PdFoNADo9/ukvuXlZZaWluT+/l43tzb1z++LjAQD0Ol0vvf7fSqVCiMjI+K9J4oinHPMzs5KpVIRgJ8/fhL/i7m5id9uQVWrzjkGg8Fz1ZdtqCrWWlSVMAwpFAoEQYD3njcIyuXy5zAMqdVqAAwGA5rNpsZxrEEQEATPVJ2eniIiTExMvEUQRRGrq6siIhweHuru7i4iwsLCgqRbOjo60ru7O4IgoFqtyvsREBHW19e11+uRz+cpl8sYY4jjWFutFu2zM4wxzM/PZxeaHVIq+/v72mq1KBaLdLtdVJUkSYiiCGstc5/mqH2siUcxyGsB51x2+xsbG9rr9RgdHc1InZycpF6vUyqVxHqHc458GJEx7ZzL2L68vNS1tTUd/lJVxXuPtZbEO6yzrx88HJB+497eng7bhtXps6Z5/wG+5nt7pPk6KgAAAABJRU5ErkJggg==);
+}
+.movable {
+	position: absolute;
+}	
+.rotable:hover div.rotor {
+	display: block;
+}	
+.sizer {
+	display: none;
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	bottom: -4px;
+	right: -4px;
+	opacity: 0.8;
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH3wUaESwc6CzCdwAAAapJREFUOMuNkjuL6mAQht+JS+KlsAnYWG0XsYh2KQQRjo0i2GplYSHir7DQwsJWLASx9i8IluKJ9iIiNlHxiIVCAmZOtXHjbXdgmG9mmIdh3g/MjFdu27Yr9vt9vu8LeGNE5Monkwni8Th/r70F3INisRgikQhUVeWvOjHfgLZtQxBuzHa7za1WC9lsFpZlIRgMQpZl7Pd7jMdj6LpODwAiAhE5ME3TOJ1Ow+PxgIjAzJAkCY1GA7VaDR/3qzIziAiCIKDT6fByucTlcoFpmjidTgiFQpjNZsjlcqjX6/Rw+ev16orfvdlssqIoXC6XHTWcpmEYvFgsmJkxGo34mazFYpGTyaSr5zyOx+MnAK5Wq5xKpZ4ChsPhQ905uWmay0qlAgBIJBJP5czn83RfcwCiKP7x+XyQZdkl5U/20ev1WBRFWJYFSZIgCAJWqxUGgwGv12tkMhmoqkovP9lms2FN01AqlRytD4cD5vM5zuczptMpvdtACIfDpOv63263i0AgAL/fD8Mw4PV6fxwGcFNht9tNFUXhaDT6UoVn7kq22+2/QqHw62Fmxn8pB4mgcwgvogAAAABJRU5ErkJggg==);
+}
+.sizable:hover div.sizer {
+	display: block;
+}	
+
+	</style>
+  <body>
+    <h1>All in tandem</h1>
+    <p>The following objects show the capabilities of adjust.js. The interaction could be started or stopped any time.</p>
+		<button onclick="moving.init(store_changes)">Start moving</button>
+		<button onclick="sizing.init(store_changes)">Start sizing</button>
+		<button onclick="rotating.init(store_changes)">Start rotating</button>
+		<button onclick="moving.stop()">Stop moving</button>
+		<button onclick="sizing.stop()">Stop sizing</button>
+		<button onclick="rotating.stop()">Stop rotating</button>
+
+    <div id="b1" class="small-box movable sizable rotable" style="top: 420px; left: 30px;">Move, rotate, size</div>
+    <div id="b2" class="small-box sizable rotable" style="top: 420px; left: 130px;">Rotate, size</div>
+    <div id="b3" class="small-box rotable" style="top: 420px; left: 230px;">Rotate</div>
+    <div id="b4" class="small-box movable sizable rotable" style="top: 420px; left: 330px;">Move, rotate, size</div>
+
+		<pre class="statusbar movable" id="log">Ready</pre>
+		<div id="f1" class="small-box" style="top: 220px; left: 300px;">Fixed 1</div>
+		<div id="m2" class="movable small-box" style="top: 300px; left: 200px;">Move 2</div>
+		<div id="f2" class="small-box" style="top: 300px; left: 300px;">Fixed 2</div>
+		<div id="f3" class="sizable small-box" style="top: 150px; left: 300px;">Fixed 3</div>
+		<div id="m4" class="movable sizable small-box" style="top: 230px; left: 10px;">Move 4</div>
+		<div id="r1" class="rotable small-box" style="top: 150px; left: 230px;">Rotate 1</div>
+		<a id="link1" class="movable sizable rotable" style="top: 350px; left: 30px;" href="#">Link</a>
+		<span id="span1" class="movable sizable rotable" style="top: 180px; left: 20px;" href="#">Span</span>
+		<table border=1 id="table1" class="movable sizable rotable" style="top: 150px; left: 130px;">
+			<tr><td>Hello</td><td>World</td></tr>
+			<tr><td style="height: 56px;">Chao</td><td><div id="login1" class="movable sizable rotable" style="top: 24px; left: 24px; width: 48px; height: 48px; background-repeat: no-repeat; background-image: url('user.png');">&nbsp;</div> 
+			</td></tr>
+		</table>
+
+    <script type="text/javascript" src="../javascripts/moving.js"></script>
+    <script type="text/javascript" src="../javascripts/sizing.js"></script>
+    <script type="text/javascript" src="../javascripts/rotating.js"></script>
+    <script type="text/javascript" src="../javascripts/scrolling.js"></script>
+    <script>
+			var store_changes = function(changes) {
+				console.log("storing",changes);
+				return 0;
+			}
+    </script>
+
+  </body>
+</html>
