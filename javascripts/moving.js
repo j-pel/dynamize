@@ -10,8 +10,19 @@
 
   'use strict';
 	
-	var storeChanges = function(changes){};
+	/* properties */
+	var storeChanges = function(changes){return(0)};
+	var ongoingTouches = new Array();
+	var moving = new Object();
+	var touchMoving = false;
 	
+	/* client API */
+	
+	/*!
+	 * init(store)
+	 * Starts the handling of the proposed feature
+	 * The final position of the element is passed to given store function
+	 */
 	var init = exports.init = function(store) {
 		storeChanges = store;
 		var elementList = document.getElementsByClassName('movable');
@@ -27,6 +38,10 @@
 		return 0;
 	}
 
+	/*!
+	 * stop()
+	 * Stops the handling of the proposed feature
+	 */
 	var stop = exports.stop = function() {
 		var elementList = document.getElementsByClassName('movable');
 		for (var i = 0; i < elementList.length; i++) {
@@ -45,11 +60,6 @@
 		var p = document.getElementById('status');
 		p.innerHTML = msg + "\n" + p.innerHTML;
 	}
-
-	var storeChanges = function(){};
-	var ongoingTouches = new Array();
-	var moving = new Object();
-	var touchMoving = false;
 
 	var handleMouseDown = function (event) {
 		event = event || window.event;

@@ -63,12 +63,12 @@ div.small-box {
 		<button onclick="sizing.stop()">Stop sizing</button>
 		<button onclick="rotating.stop()">Stop rotating</button>
 
+		<pre class="statusbar movable" id="log" style="top: 480px; left: 30px;">Ready</pre>
     <div id="b1" class="small-box movable sizable rotable" style="top: 420px; left: 30px;">Move, rotate, size</div>
     <div id="b2" class="small-box sizable rotable" style="top: 420px; left: 130px;">Rotate, size</div>
     <div id="b3" class="small-box rotable" style="top: 420px; left: 230px;">Rotate</div>
     <div id="b4" class="small-box movable sizable rotable" style="top: 420px; left: 330px;">Move, rotate, size</div>
 
-		<pre class="statusbar movable" id="log">Ready</pre>
 		<div id="f1" class="small-box" style="top: 220px; left: 300px;">Fixed 1</div>
 		<div id="m2" class="movable small-box" style="top: 300px; left: 200px;">Move 2</div>
 		<div id="f2" class="small-box" style="top: 300px; left: 300px;">Fixed 2</div>
@@ -82,14 +82,79 @@ div.small-box {
 			<tr><td style="height: 56px;">Chao</td><td><div id="login1" class="movable sizable rotable" style="top: 24px; left: 24px; width: 48px; height: 48px; background-repeat: no-repeat; background-image: url('user.png');">&nbsp;</div> 
 			</td></tr>
 		</table>
+    <table class="scrollable movable sizable" style="width: 300px; height: 200px; top: 450px; left: 10px;">
+      <thead>
+        <tr>
+          <th>Release</th><th>Codename</th><th>Year</th><th>Comments</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1.1</td><td>Buzz</td><td>1996</td><td>474</td>
+        </tr>
+        <tr>
+          <td>1.2</td><td>Rex</td><td>1996</td><td>848</td>
+        </tr>
+        <tr>
+          <td>1.3</td><td>Bo</td><td>1997</td><td>974</td>
+        </tr>
+        <tr>
+          <td>2.0</td><td>Hamm</td><td>1998</td><td>1500</td>
+        </tr>
+        <tr>
+          <td>2.1</td><td>Slink</td><td>1999</td><td>2250</td>
+        </tr>
+        <tr>
+          <td>2.2</td><td>Potato</td><td>2000</td><td>3900</td>
+        </tr>
+        <tr>
+          <td>3.0</td><td>Woody</td><td>2002</td><td>8500</td>
+        </tr>
+        <tr>
+          <td>3.1</td><td>Sarge</td><td>2005</td><td>15400</td>
+        </tr>
+        <tr>
+          <td>4.0</td><td>Etch</td><td>2007</td><td>18000</td>
+        </tr>
+        <tr>
+          <td>5.0</td><td>Lenny</td><td>2009</td><td>23000</td>
+        </tr>
+        <tr>
+          <td>6.0</td><td>Squeeze</td><td>2011</td><td>29000</td>
+        </tr>
+        <tr>
+          <td>7</td><td>Wheezy</td><td>2013</td><td>36000</td>
+        </tr>
+        <tr>
+          <td>8</td><td>Jeesie</td><td>2015</td><td>43000</td>
+        </tr>
+        <tr>
+          <td>9</td><td>Stretch</td><td colspan=2>Soon</td>
+        </tr>
+        <tr>
+          <td>10</td><td>Buster</td><td>Future</td>
+        </tr>
+      </tbody>
+    </table>
 
+    <script type="text/javascript" src="../javascripts/scrolling.js"></script>
     <script type="text/javascript" src="../javascripts/moving.js"></script>
     <script type="text/javascript" src="../javascripts/sizing.js"></script>
     <script type="text/javascript" src="../javascripts/rotating.js"></script>
-    <script type="text/javascript" src="../javascripts/scrolling.js"></script>
     <script>
+
+			function log(msg) {
+				var ret = "";
+				for (var prop in msg) {
+					ret += prop + ": " + msg[prop] + ", ";
+				}
+				var p = document.getElementById('log');
+				p.innerHTML = ret + "\n" + p.innerHTML;
+			}
+
 			var store_changes = function(changes) {
-				console.log("storing",changes);
+				console.log(changes);
+				log(changes);
 				return 0;
 			}
     </script>

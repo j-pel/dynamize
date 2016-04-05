@@ -11,6 +11,7 @@
   'use strict';
 	
 	var storeChanges = function(changes){};
+	var sizing = new Object();
 	
 	var init = exports.init = function(store) {
 		storeChanges = store;
@@ -38,9 +39,6 @@
 		var p = document.getElementById('log');
 		p.innerHTML = msg + "\n" + p.innerHTML;
 	}
-
-	var storeChanges = function(){};
-	var sizing = new Object();
 
 	var handleMouseDown = function (event) {
 		event = event || window.event;
@@ -87,7 +85,7 @@
 		if (sizing.startY != parseInt(sizing.style.height)) {
 			changes += sizing.id+".style.height = '"+sizing.style.height+"';";
 		}
-		storeChanges(changes);
+		storeChanges({id:sizing.id,change:changes});
 		document.removeEventListener("mousemove", handleMouseMove, true);
 		document.removeEventListener("mouseup", handleMouseUp, true);
 	}

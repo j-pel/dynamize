@@ -10,6 +10,8 @@
 
   'use strict';
 	
+	var changes = '';
+	var rotating = new Object();
 	var storeChanges = function(changes){};
 
 	var init = exports.init = function(store) {
@@ -38,10 +40,6 @@
 		});
 		return 0;
 	}
-
-	var storeChanges = function(){};
-	var changes = '';
-	var rotating = new Object();
 
 	var handleMouseDown = function (event) {
 		event = event || window.event;
@@ -80,8 +78,7 @@
 	var handleMouseUp = function (event) {
 		rotating.started = false;
 		if (changes!='') {
-			changes = rotating.id+".style.transform = '"+changes+"';";
-			storeChanges(changes);
+			storeChanges({id:rotating.id,change:changes});
 		}
 		document.removeEventListener("mousemove", handleMouseMove, true);
 		document.removeEventListener("mouseup", handleMouseUp, true);

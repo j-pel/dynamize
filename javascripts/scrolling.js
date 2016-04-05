@@ -10,9 +10,6 @@
 
   'use strict';
 
-  var pass_prop = ["width","height","maxWidth","maxHeight",
-    "minWidth","minHeight"];
-
   var elements = document.getElementsByClassName('scrollable');
   for (var i = 0; i < elements.length; i++) {
     var table = elements[i];
@@ -23,9 +20,16 @@
     page.insertBefore(scroller,table)
     page.removeChild(table);
     scroller.style.display = "block";
-    pass_prop.forEach(function(prop){
+    ["width","height","maxWidth","maxHeight",
+    "minWidth","minHeight"].forEach(function(prop){
       scroller.style[prop] = table.style[prop];
     });
+    ["movable","rotable","sizable"].forEach(function(cls){
+			if(table.classList.contains(cls)) {
+				scroller.classList.add(cls);
+				table.classList.remove(cls);
+			}
+		});
     table.style.width = "100%";
     scroller.style.overflow = "scroll";
     scroller.appendChild(table);
