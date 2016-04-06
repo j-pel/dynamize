@@ -21,7 +21,10 @@
 	/*!
 	 * init(store)
 	 * Starts the handling of the proposed feature
-	 * The final position of the element is passed to given store function
+	 * A default id is assigned to elements with no id given.
+	 * 
+	 * @param {store} callback to receive the elements' changes.
+	 * @api public
 	 */
 	var init = exports.init = function(store) {
 		storeChanges = store;
@@ -30,6 +33,9 @@
 			var ele = elementList[i];
 			ele.addEventListener('mousedown', handleMouseDown, false);
 			ele.style.cursor = 'move';
+			if (!ele.id) {
+				ele.id = "nn_m_"+i;
+			}
 		}
 		document.addEventListener('touchstart', handleTouchStart, false);
 		document.addEventListener("touchmove", handleTouchMove, true);
@@ -40,7 +46,9 @@
 
 	/*!
 	 * stop()
-	 * Stops the handling of the proposed feature
+	 * Stops the handling of the proposed feature.
+	 * 
+	 * @api public
 	 */
 	var stop = exports.stop = function() {
 		var elementList = document.getElementsByClassName('movable');
@@ -55,6 +63,8 @@
 		document.removeEventListener("touchend", handleTouchEnd, true);
 		return 0;
 	}
+
+	/* private helpers */
 
 	function log(msg) {
 		var p = document.getElementById('status');
@@ -102,12 +112,12 @@
 	var handleMouseUp = function (event) {
 		//log ("Stop moving " + moving.innerText);
 		moving.started = false;
-		var changes = {id:moving.id,change:'move'};
-		if (moving.startX != parseInt(moving.style.left)) {
-			changes.left = moving.style.left;
+		var changes = [];
+		if (parseInt(moving.startX) != parseInt(moving.style.left)) {
+			changes.push(moving.id+".style.left="+moving.style.left);
 		}
-		if (moving.startY != parseInt(moving.style.top)) {
-			changes.top = moving.style.top;
+		if (parseInt(moving.startY) != parseInt(moving.style.top)) {
+			changes.push(moving.id+".style.top="+moving.style.top);
 		}
 		storeChanges(changes);
 		document.removeEventListener("mousemove", handleMouseMove, true);

@@ -20,8 +20,8 @@
     page.insertBefore(scroller,table)
     page.removeChild(table);
     scroller.style.display = "block";
-    ["width","height","maxWidth","maxHeight",
-    "minWidth","minHeight"].forEach(function(prop){
+    ["width","height","maxWidth","maxHeight","minWidth","minHeight",
+    "top","left","bottom","right"].forEach(function(prop){
       scroller.style[prop] = table.style[prop];
     });
     ["movable","rotable","sizable"].forEach(function(cls){
@@ -34,6 +34,7 @@
     scroller.style.overflow = "scroll";
     scroller.appendChild(table);
     scroller.addEventListener('scroll',onSingleScroll,false);
+    scroller.addEventListener('resize', onResize, false);
   }
 
   var elements = document.getElementsByClassName('fix-top');
