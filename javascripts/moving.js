@@ -107,6 +107,10 @@
 		//log("Moving x = " + x + ", y = " + y);
 		moving.style.left=(x < 0)? '0px' : x+'px';
 		moving.style.top=(y < 0)? '0px' : y+'px';
+    if (moving.firstChild.classList.contains("top-fixed")) {
+      var evt = new CustomEvent("scroll",{detail: {},bubbles: true,cancelable: true});
+      moving.dispatchEvent(evt);
+    }
 	}
 
 	var handleMouseUp = function (event) {
