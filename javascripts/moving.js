@@ -34,7 +34,7 @@
 			ele.addEventListener('mousedown', handleMouseDown, false);
 			ele.style.cursor = 'move';
 			if (!ele.id) {
-				ele.id = "nn_m_"+i;
+				ele.id = "nn_m_"+i; // for unidentified nodes: important for storing
 			}
 		}
 		document.addEventListener('touchstart', handleTouchStart, false);
@@ -80,8 +80,10 @@
 		document.addEventListener("mouseup", handleMouseUp, true);
 		event.preventDefault();
     if (!window.scrollX) {
-			moving.mouseX = event.clientX + document.documentElement.scrollLeft + document.body.scrollLeft;
-			moving.mouseY = event.clientY + document.documentElement.scrollTop + document.body.scrollTop;
+			moving.mouseX = event.clientX + document.documentElement.scrollLeft + 
+				document.body.scrollLeft;
+			moving.mouseY = event.clientY + document.documentElement.scrollTop + 
+				document.body.scrollTop;
     } else {
 			moving.mouseX = event.clientX + window.scrollX;
 			moving.mouseY = event.clientY + window.scrollY;
@@ -108,7 +110,7 @@
 		moving.style.left=(x < 0)? '0px' : x+'px';
 		moving.style.top=(y < 0)? '0px' : y+'px';
     if (moving.firstChild.classList.contains("top-fixed")) {
-      var evt = new CustomEvent("scroll",{detail: {},bubbles: true,cancelable: true});
+      var evt = new CustomEvent("scroll",{detail: {}, bubbles: true, cancelable: true});
       moving.dispatchEvent(evt);
     }
 	}
