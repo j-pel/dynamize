@@ -20,37 +20,89 @@ function Couching(database) {
 	 * @api public
 	 */
 	self.init = function(database) {
-    var idx = database.lastIndexOf('/');
+    var idx = database.lastIndexOf('/')+1;
     self.db = database.slice(idx);
     self.server = database.slice(0,idx);
     //server: database.match(/^https?\:\/\/[^\/?#]+(?:[\/?#]|$)/i)[0]
   }
   
+	/*!
+	 * head(id, callback)
+   * The lightest and fastest call to seek for a document knowing its
+   * id. It will return the current revision number if the document
+   * exists. Otherwise, it will return 404 (not found).
+	 * 
+	 * @param {id} document internal id.
+	 * @param {callback} function to receive CouchDB answer.
+	 * @api public
+	 */
   self.head = function(id, callback) {
     var req = new XMLHttpRequest();
-    req.addEventListener("load",callback)
-    req.open('HEAD', self.db + "/" + id);
-    req.send();
+    req.open('HEAD', self.server + self.db + "/" + id);
+    req.onreadystatechange=function() {
+      if (req.readyState==4) {
+        callback(req.getAllResponseHeaders())
+      }
+    }
+    req.send(null);
+    return(0);
   }
 
+	/*!
+	 * get(id, callback)
+   * To retrieve the document with given id. It will return the current
+   * document as a javascript object if the document exists. Otherwise,
+   * it will return 404 (not found).
+	 * 
+	 * @param {id} document internal id.
+	 * @param {callback} function to receive CouchDB answer.
+	 * @api public
+	 */
   self.get = function(id, callback) {
     var req = new XMLHttpRequest();
     req.addEventListener("load",callback)
-    req.open('GET', self.db + "/" + id);
+    req.open('GET', self.server + self.db + "/" + id);
     req.send();
   }
 
+	/*!
+	 * delete(id, callback)
+   * To delete the document with given id and current revision.
+   * If successful, it will return the revision id for the deletion stub.
+   * Otherwise, it will return 404 (not found).
+   * Deleted documents remain in the database forever, even after
+   * compaction, to allow eventual consistency when replicating.
+   * If you delete using this DELETE method, only the _id, _rev
+   * and a deleted flag are preserved. If you deleted a document by
+   * adding "_deleted":true then all the fields of the document are
+   * preserved. This is to allow, for example, recording the time you
+   * deleted a document, or the reason you deleted it. (Implementation
+   * of the latter is pending)
+	 * 
+	 * @param {id} document internal id.
+	 * @param {callback} function to receive CouchDB answer.
+	 * @api public
+	 */
   self.delete = function(id, callback) {
-    var req = new XMLHttpRequest();
-    req.addEventListener("load",callback)
-    req.open('DELETE', self.db + "/" + id);
-    req.send();
+    self.head(id, function(){
+      deleteDoc(this, id, callback);
+    });
   }
 
+	/*!
+	 * put(doc, callback)
+   * To store new documents into the database or to revise an existing
+   * document. If the document does not contain an id, a new id is
+   * assigned.
+	 * 
+	 * @param {doc} document as a javascript object.
+	 * @param {callback} function to receive CouchDB answer.
+	 * @api public
+	 */
   self.view = function(design, view, options, callback) {
     var req = new XMLHttpRequest();
     req.addEventListener("load",callback)
-    req.open('GET', self.db + "/_design/" + design 
+    req.open('GET', self.server + self.db + "/_design/" + design 
       + "/_view/" + view + "?" + options);
     req.send();
   }
@@ -69,9 +121,11 @@ function Couching(database) {
     if (doc._id) {
       self.get(doc._id,function(){
         storeDoc(this, doc, callback);
-      })
+      });
     } else {
-      storeDoc(this, doc, callback);
+      self.get(self.server + "_uuids",function(){
+        storeDoc(this, doc, callback);
+      });
     }
   }
 
@@ -79,7 +133,7 @@ function Couching(database) {
 	 * post(doc, callback)
    * To store new documents into the database. Unlike put call, it will
    * always create a new document with an id that is assigned during
-   * document creation.
+   * document creation. Any id passed in doc is discarded.
    * 
    * This implementation does not use the POST method. The reason comes
    * from CouchDB docs: "It is recommended that you avoid POST when
@@ -96,7 +150,9 @@ function Couching(database) {
     if (doc._id) {
       doc._id = undefined;
     }
-    storeDoc(this, doc, callback);
+    self.get(self.server + "_uuids",function(){
+      storeDoc(this, doc, callback);
+    });
   }
 
   function storeDoc(req, doc, callback) {
@@ -104,17 +160,35 @@ function Couching(database) {
       var obj = doc;
     } else {
       var obj = JSON.parse(req.responseText);
-      for (var prop in doc) {
-        obj[prop] = doc[prop];
+      if (obj.uuids) {
+        doc._id = obj.uuids[0];
+        obj = doc;
+      } else {
+        for (var prop in doc) {
+          obj[prop] = doc[prop];
+        }
       }
     }
     var req = new XMLHttpRequest();
     req.addEventListener("load", callback)
-    req.open('PUT',self.db + "/" + obj._id);
+    req.open('PUT', self.server + self.db + "/" + obj._id);
     req.setRequestHeader("Content-Type", "application/json");
     req.send(JSON.stringify(obj));
   }
 
+  function deleteDoc(req, id, callback) {
+    if (req.status==404) {
+      // what happens if the id is not found
+    } else {
+      var obj = JSON.parse(req.responseText);
+    }
+    var req = new XMLHttpRequest();
+    req.addEventListener("load", callback)
+    req.open('DELETE', self.server + self.db + "/" + obj._id + 
+      "?rev=" + rev);
+    req.send();
+  }
+
   self.init(database);
-  return(self)
+  return(self);
 }
