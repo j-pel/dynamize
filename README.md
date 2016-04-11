@@ -11,6 +11,7 @@ Currently, the collection is composed by:
 * [moving.js](http://j-pel.github.io/dynamize/moving.html)
 * [rotating.js](http://j-pel.github.io/dynamize/rotating.html)
 * [sizing.js](http://j-pel.github.io/dynamize/sizing.html)
+* [couching.js](http://j-pel.github.io/dynamize/couching.html)
 
 The names are self explanatory, however, there are example files for each one.
 
