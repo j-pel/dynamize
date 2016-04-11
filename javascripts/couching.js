@@ -169,13 +169,14 @@ function Couching(database) {
    * @param {design} name of the design document.
    * @param {view} name of the view as defined on design document.
    * @param {options} query options as a javascript object.
-   * @param {callback} function to receive CouchDB answer.
+   * @param {callback} function to receive CouchDB retrieved documents.
    * @api public
    */
   self.view = function(design, view, options, callback) {
     var req = new XMLHttpRequest();
     req.addEventListener("load",function(evt) {
-      callback(this);
+      var obj = JSON.parse(this.responseText);
+      callback(obj);
     });
     var query = "";
     for (opt in options) {
@@ -213,7 +214,8 @@ function Couching(database) {
     }
     var req = new XMLHttpRequest();
     req.addEventListener("load", function(evt) {
-      callback(this);
+      var obj = JSON.parse(this.responseText);
+      callback(obj);
     });
     req.open('PUT', self.server + self.db + "/" + obj._id);
     req.setRequestHeader("Content-Type", "application/json");
