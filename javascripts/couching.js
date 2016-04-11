@@ -60,7 +60,9 @@ function Couching(database) {
 	 */
   self.get = function(id, callback) {
     var req = new XMLHttpRequest();
-    req.addEventListener("load",callback)
+    req.addEventListener("load",function(evt) {
+			callback(this);
+		})
     req.open('GET', self.server + self.db + "/" + id);
     req.send();
   }
@@ -87,24 +89,6 @@ function Couching(database) {
     self.head(id, function(){
       deleteDoc(this, id, callback);
     });
-  }
-
-	/*!
-	 * put(doc, callback)
-   * To store new documents into the database or to revise an existing
-   * document. If the document does not contain an id, a new id is
-   * assigned.
-	 * 
-	 * @param {doc} document as a javascript object.
-	 * @param {callback} function to receive CouchDB answer.
-	 * @api public
-	 */
-  self.view = function(design, view, options, callback) {
-    var req = new XMLHttpRequest();
-    req.addEventListener("load",callback)
-    req.open('GET', self.server + self.db + "/_design/" + design 
-      + "/_view/" + view + "?" + options);
-    req.send();
   }
 
 	/*!
@@ -150,11 +134,48 @@ function Couching(database) {
     if (doc._id) {
       doc._id = undefined;
     }
-    self.get(self.server + "_uuids",function(){
+    self.get(self.server + "_uuids",function(evt){
       storeDoc(this, doc, callback);
     });
   }
 
+	/*!
+	 * view(design, view, options, callback)
+   * To query a map design/view on the database considering the
+   * options' values. The resulted documents will be passed
+   * to the callback function.
+	 * 
+	 * @param {design} name of the design document.
+	 * @param {view} name of the view as defined on design document.
+	 * @param {options} query options as a javascript object.
+	 * @param {callback} function to receive CouchDB answer.
+	 * @api public
+	 */
+  self.view = function(design, view, options, callback) {
+    var req = new XMLHttpRequest();
+    req.addEventListener("load",function(evt) {
+			callback(this);
+		});
+    var query = "";
+    for (opt in options) {
+			query += encodeURI(opt+"="+options[opt]+"&");
+		}
+    req.open('GET', self.server + self.db + "/_design/" + design 
+      + "/_view/" + view + "?" + query.slice(0,-1));
+    req.send();
+  }
+
+	/*!
+	 * storeDoc(req, doc, callback)
+   * Helper fucntion to store a document into the database.
+   * If the document does not exist, the document is created.
+   * If the document does not contain an id, one UUID is provided.
+	 * 
+	 * @param {req} request from a CouchDB query.
+	 * @param {doc} new/revised document as a javascript object.
+	 * @param {callback} function to receive CouchDB answer.
+	 * @api private
+	 */
   function storeDoc(req, doc, callback) {
     if (req.status==404) {
       var obj = doc;
@@ -176,6 +197,16 @@ function Couching(database) {
     req.send(JSON.stringify(obj));
   }
 
+	/*!
+	 * deleteDoc(req, doc, callback)
+   * Helper fucntion to delete a document from the database.
+   * If the document does not exist, nothing happens.
+	 * 
+	 * @param {req} request from a CouchDB query.
+	 * @param {id} existing document id.
+	 * @param {callback} function to receive CouchDB answer.
+	 * @api private
+	 */
   function deleteDoc(req, id, callback) {
     if (req.status==404) {
       // what happens if the id is not found
