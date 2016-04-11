@@ -11,12 +11,17 @@ Currently, the collection is composed by:
 * [moving.js](http://j-pel.github.io/dynamize/moving.html)
 * [rotating.js](http://j-pel.github.io/dynamize/rotating.html)
 * [sizing.js](http://j-pel.github.io/dynamize/sizing.html)
+* [couching.js](http://j-pel.github.io/dynamize/couching.html)
 
 The names are self explanatory, however, there are example files for each one.
 
-They were tested and are known to work well on:
-* Firefox (Windows, Linux, Android)
-* Chrome (Windows, Linux, Android)
-* Safari (iOS)
-* Opera (Android)
-* IE 9+ (Windows)
+### Browser Support
+
+Tested and known to work well on:
+
+Linux|![Firefox](https://raw.github.com/alrra/browser-logos/master/firefox/firefox_32x32.png)![Chrome](https://raw.github.com/alrra/browser-logos/master/chrome/chrome_32x32.png)![Chromium](https://raw.github.com/alrra/browser-logos/master/chromium/chromium_32x32.png)|
+---|---|
+Windows|![Firefox](https://raw.github.com/alrra/browser-logos/master/firefox/firefox_32x32.png)![Chrome](https://raw.github.com/alrra/browser-logos/master/chrome/chrome_32x32.png)![IE](https://raw.github.com/alrra/browser-logos/master/internet-explorer/internet-explorer_32x32.png)|
+Android|![Firefox](https://raw.github.com/alrra/browser-logos/master/firefox/firefox_32x32.png)![Chrome](https://raw.github.com/alrra/browser-logos/master/chrome/chrome_32x32.png)![Opera](https://raw.github.com/alrra/browser-logos/master/opera/opera_32x32.png)|
+iOS|![Safari](https://raw.github.com/alrra/browser-logos/master/safari/safari_32x32.png)|
+OSX| [Not yet]|
