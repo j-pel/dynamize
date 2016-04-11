@@ -76,7 +76,8 @@ function Couching(database) {
   self.get = function(id, callback) {
     var req = new XMLHttpRequest();
     req.addEventListener("load",function(evt) {
-      callback(this);
+      var obj = JSON.parse(this.responseText);
+      callback(obj);
     })
     req.open('GET', self.server + self.db + "/" + id);
     req.send();
