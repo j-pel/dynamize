@@ -2,7 +2,7 @@
  * moving.js
  *
  * Copyright © 2016 Jorge M. Peláez | MIT license
- * http://j-pel.github.io/adjustjs
+ * http://j-pel.github.io/dynamize
  * 
  */
 
@@ -10,8 +10,22 @@
 
   'use strict';
 	
-	var storeChanges = function(changes){};
+	/* properties */
+	var storeChanges = function(changes){return(0)};
+	var ongoingTouches = new Array();
+	var moving = new Object();
+	var touchMoving = false;
 	
+	/* client API */
+	
+	/*!
+	 * init(store)
+	 * Starts the handling of the proposed feature
+	 * A default id is assigned to elements with no id given.
+	 * 
+	 * @param {store} callback to receive the elements' changes.
+	 * @api public
+	 */
 	var init = exports.init = function(store) {
 		storeChanges = store;
 		var elementList = document.getElementsByClassName('movable');
@@ -19,6 +33,9 @@
 			var ele = elementList[i];
 			ele.addEventListener('mousedown', handleMouseDown, false);
 			ele.style.cursor = 'move';
+			if (!ele.id) {
+				ele.id = "nn_m_"+i; // for unidentified nodes: important for storing
+			}
 		}
 		document.addEventListener('touchstart', handleTouchStart, false);
 		document.addEventListener("touchmove", handleTouchMove, true);
@@ -27,6 +44,12 @@
 		return 0;
 	}
 
+	/*!
+	 * stop()
+	 * Stops the handling of the proposed feature.
+	 * 
+	 * @api public
+	 */
 	var stop = exports.stop = function() {
 		var elementList = document.getElementsByClassName('movable');
 		for (var i = 0; i < elementList.length; i++) {
@@ -41,15 +64,12 @@
 		return 0;
 	}
 
+	/* private helpers */
+
 	function log(msg) {
 		var p = document.getElementById('status');
 		p.innerHTML = msg + "\n" + p.innerHTML;
 	}
-
-	var storeChanges = function(){};
-	var ongoingTouches = new Array();
-	var moving = new Object();
-	var touchMoving = false;
 
 	var handleMouseDown = function (event) {
 		event = event || window.event;
@@ -60,8 +80,10 @@
 		document.addEventListener("mouseup", handleMouseUp, true);
 		event.preventDefault();
     if (!window.scrollX) {
-			moving.mouseX = event.clientX + document.documentElement.scrollLeft + document.body.scrollLeft;
-			moving.mouseY = event.clientY + document.documentElement.scrollTop + document.body.scrollTop;
+			moving.mouseX = event.clientX + document.documentElement.scrollLeft + 
+				document.body.scrollLeft;
+			moving.mouseY = event.clientY + document.documentElement.scrollTop + 
+				document.body.scrollTop;
     } else {
 			moving.mouseX = event.clientX + window.scrollX;
 			moving.mouseY = event.clientY + window.scrollY;
@@ -87,17 +109,21 @@
 		//log("Moving x = " + x + ", y = " + y);
 		moving.style.left=(x < 0)? '0px' : x+'px';
 		moving.style.top=(y < 0)? '0px' : y+'px';
+    if (moving.firstChild.classList.contains("top-fixed")) {
+      var evt = new CustomEvent("scroll",{detail: {}, bubbles: true, cancelable: true});
+      moving.dispatchEvent(evt);
+    }
 	}
 
 	var handleMouseUp = function (event) {
 		//log ("Stop moving " + moving.innerText);
 		moving.started = false;
-		var changes = {id:moving.id,change:'move'};
-		if (moving.startX != parseInt(moving.style.left)) {
-			changes.left = moving.style.left;
+		var changes = [];
+		if (parseInt(moving.startX) != parseInt(moving.style.left)) {
+			changes.push(moving.id+".style.left="+moving.style.left);
 		}
-		if (moving.startY != parseInt(moving.style.top)) {
-			changes.top = moving.style.top;
+		if (parseInt(moving.startY) != parseInt(moving.style.top)) {
+			changes.push(moving.id+".style.top="+moving.style.top);
 		}
 		storeChanges(changes);
 		document.removeEventListener("mousemove", handleMouseMove, true);

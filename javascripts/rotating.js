@@ -2,7 +2,7 @@
  * rotating.js
  *
  * Copyright © 2016 Jorge M. Peláez | MIT license
- * http://j-pel.github.io/adjustjs
+ * http://j-pel.github.io/dynamize
  * 
  */
 
@@ -10,8 +10,20 @@
 
   'use strict';
 	
+	var changes = '';
+	var rotating = new Object();
 	var storeChanges = function(changes){};
 
+	/* client API */
+	
+	/*!
+	 * init(store)
+	 * Starts the handling of the proposed feature
+	 * A default id is assigned to elements with no id given.
+	 * 
+	 * @param {store} callback to receive the elements' changes.
+	 * @api public
+	 */
 	var init = exports.init = function(store) {
 		storeChanges = store;
 		var elementList = document.getElementsByClassName('rotable');
@@ -19,17 +31,21 @@
 			var ele = elementList[i];
 			var box = document.createElement('div');
 			ele.appendChild(box);
+			if (!ele.id) {
+				ele.id = "nn_r_"+i;
+			}
 			box.setAttribute('class', 'rotor');
 			box.addEventListener('mousedown', handleMouseDown, false);
 		}
 		return 0;
 	}
 
-	function log(msg) {
-		var p = document.getElementById('log');
-		p.innerHTML = msg + "\n" + p.innerHTML;
-	}
-
+	/*!
+	 * stop()
+	 * Stops the handling of the proposed feature.
+	 * 
+	 * @api public
+	 */
 	var stop = exports.stop = function() {
 		var elementList = [].slice.call(document.getElementsByClassName('rotor'));
 		elementList.forEach(function(ele){
@@ -39,9 +55,10 @@
 		return 0;
 	}
 
-	var storeChanges = function(){};
-	var changes = '';
-	var rotating = new Object();
+	function log(msg) {
+		var p = document.getElementById('log');
+		p.innerHTML = msg + "\n" + p.innerHTML;
+	}
 
 	var handleMouseDown = function (event) {
 		event = event || window.event;
@@ -80,8 +97,7 @@
 	var handleMouseUp = function (event) {
 		rotating.started = false;
 		if (changes!='') {
-			changes = rotating.id+".style.transform = '"+changes+"';";
-			storeChanges(changes);
+			storeChanges([rotating.id+".style.transform="+changes]);
 		}
 		document.removeEventListener("mousemove", handleMouseMove, true);
 		document.removeEventListener("mouseup", handleMouseUp, true);
