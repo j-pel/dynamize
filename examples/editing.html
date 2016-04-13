@@ -1,0 +1,31 @@
+<html>
+	<head>
+		<title>Simple example for Dynamize.js</title>
+	</head>
+	<style>
+pre {
+	border: 1px solid black;
+}
+div.caret {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 16px;
+	width: 2px;	
+	background-color: rgba(0,0,0,0.5);
+}
+	</style>
+  <body>
+    <p>Cosas de antes Pos: <span id="pos"></span></p>
+    <pre class="editable">
+//Este es el texto con el que vamos a trabajar un poco
+var texto = editable[1];
+    </pre>
+    <script type="text/javascript" src="../javascripts/editing.js"></script>
+    <script>
+    editing.init(function(info){
+    	console.log(info);
+    });
+    </script>
+  </body>
+</html>
