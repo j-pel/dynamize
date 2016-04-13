@@ -47,7 +47,7 @@
     <p>In order to have a movable object, there is only need to include a script tag at the end of the <code>&lt;body&gt;</code> and add a class for the object that is going to move. All css is preserved and there is a small specific markup required: the objects have to be absolutely positioned.</p>
 				
     <h2>Use case:</h2>
-    <pre>
+    <pre class="codeview HTML lineNumbers" style="width:600px; height:300px;">
 &lt;body&gt;
 	&lt;div id="f1" class="small-box" style="top: 0px; left: 175px;"&gt;I'm fixed&lt;/div&gt;
 	&lt;div id="m1" class="small-box movable" style="top: 0px; left: 260px;"&gt;Move me&lt;/div&gt;
@@ -76,6 +76,7 @@
 		</div>
 
     <script type="text/javascript" src="https://cdn.rawgit.com/j-pel/dynamize/master/javascripts/editing.js"></script>
+    <script type="text/javascript" src="http://www.gerd-tentler.de/tools/codeview/codeview.js"></script>
     <script>
 			var store_changes = function(changes) {
 				console.log("storing",changes);
