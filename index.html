@@ -12,19 +12,55 @@
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+
 		<style>
-		div.seal {
+		table {
+      border: none;
+    }
+		td {
+      border: none;
+      text-align: left;
+      padding-left: 10px;
+    }
+    div.stamp {
 			position: absolute;
-			border: 1px dotted #999;
 			text-align: center;
 			vertical-align: middle;
-			width: 64px;
-			height: 64px;
-			padding: 4px;
-			margin: 2px;
+			padding: 0px;
+			margin: 0px;
 			font-size: 10pt;
 			text-decoration: none;
 		}
+    #stamp1 {
+      background: url('images/free_stamp.png');
+      background-repeat: no-repeat;
+      width: 120px;
+      height: 64px;
+      z-index: 99;
+    }
+    #stamp2 {
+      background: url('images/sealing_wax.png');
+      background-size: cover;
+      width: 100px;
+      height: 100px;
+      color: #cfa;
+      padding-top: -40px;
+      z-index: 99;
+    }
+		.rotor {
+			display: none;
+			position: absolute;
+			width: 16px;
+			height: 16px;
+			top: 50%;
+			left:  50%;
+			transform: translate(-50%, -50%);
+			opacity: 0.8;
+			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH3wUaES0yLeH++QAAAlhJREFUOMtdk81KW1EQx39zcu9NIJEgKC4MLlLQXbPNwo0V3BhcFl20fQLfowsfQRDxBVy4yBMYEPyiXSiYWqtYqFclSEzMPedMF3qv0YHZzOd//jMjqkqq70VEEBHOz8+1VCoxPj4u6hVFMcYAYNJg7z3ee1SfncYYRASAi4sLdnZ2ALDeorw2C9JOaRLAycmJttttHh4eKBaLdDodbm9vaf9q64dqVYYLyDD8brfL9va2xnGcjRVFEVEUoV4J8yFfv32RnMkhL+AzBNZatra21FpLoVCgXq8zMzPD8fExBwcHiAhxfMv132udmpySNyMANJtNtdYyNjbGysqKDBGpj4+PTE9Ps9hYlJzJkbiEMBe+kpgkCVdXVzw9PdFoNADo9/ukvuXlZZaWluT+/l43tzb1z++LjAQD0Ol0vvf7fSqVCiMjI+K9J4oinHPMzs5KpVIRgJ8/fhL/i7m5id9uQVWrzjkGg8Fz1ZdtqCrWWlSVMAwpFAoEQYD3njcIyuXy5zAMqdVqAAwGA5rNpsZxrEEQEATPVJ2eniIiTExMvEUQRRGrq6siIhweHuru7i4iwsLCgqRbOjo60ru7O4IgoFqtyvsREBHW19e11+uRz+cpl8sYY4jjWFutFu2zM4wxzM/PZxeaHVIq+/v72mq1KBaLdLtdVJUkSYiiCGstc5/mqH2siUcxyGsB51x2+xsbG9rr9RgdHc1InZycpF6vUyqVxHqHc458GJEx7ZzL2L68vNS1tTUd/lJVxXuPtZbEO6yzrx88HJB+497eng7bhtXps6Z5/wG+5nt7pPk6KgAAAABJRU5ErkJggg==);
+		}
+		.rotable:hover div.rotor {
+			display: block;
+		}	
 		</style>
 
     <title>Dynamize.js by j-pel</title>
@@ -32,7 +68,6 @@
 
   <body>
     <header>
-    	<div id="seal1" class="seal movable rotable" style="top: 40px; left: 640px;">This is not a framework</div>
       <div class="inner">
         <h1>Dynamize.js</h1>
         <h2>Small plain vanilla javascript goodies for enhancing user interaction</h2>
@@ -50,34 +85,34 @@
 
 <p>Currently, the collection is composed by:</p>
 
-<ul>
-<li><a href="scrolling.html">scrolling.js</a></li>
-<li><a href="moving.html">moving.js</a></li>
-<li><a href="rotating.html">rotating.js</a></li>
-<li><a href="sizing.html">sizing.js</a></li>
-</ul>
-
+<table id="playground">
+  <tr><td style="width:220px;"><a href="scrolling.html">scrolling.js</a></td><td rowspan=20><div id="stamp2" class="stamp movable rotable">Move<br />me</div></td></tr>
+  <tr><td><a href="moving.html">moving.js</a></td></tr>
+  <tr><td><a href="rotating.html">rotating.js</a></td></tr>
+  <tr><td><a href="sizing.html">sizing.js</a></td></tr>
+  <tr><td><a href="couching.html">couching.js</a></td></tr>
+</table>
+<br />
 <p>The names are self explanatory, however, there are example pages for each one.</p>
 
 <p>They were tested and are known to work well on:</p>
 
-<table><thead>
+<table><thead></thead><tbody>
 <tr>
-<th>Linux</th>
-<th><a href="https://camo.githubusercontent.com/77ecddd718430505bfbf440effb47dfe6e08dbae/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f66697265666f782f66697265666f785f33327833322e706e67" target="_blank"><img src="https://camo.githubusercontent.com/77ecddd718430505bfbf440effb47dfe6e08dbae/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f66697265666f782f66697265666f785f33327833322e706e67" alt="Firefox" data-canonical-src="https://raw.github.com/alrra/browser-logos/master/firefox/firefox_32x32.png" style="max-width:100%;"></a><a href="https://camo.githubusercontent.com/32fe4e3ed834fd22064875a08ed7c1db201abc95/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f6368726f6d652f6368726f6d655f33327833322e706e67" target="_blank"><img src="https://camo.githubusercontent.com/32fe4e3ed834fd22064875a08ed7c1db201abc95/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f6368726f6d652f6368726f6d655f33327833322e706e67" alt="Chrome" data-canonical-src="https://raw.github.com/alrra/browser-logos/master/chrome/chrome_32x32.png" style="max-width:100%;"></a><a href="https://camo.githubusercontent.com/c8badfab4ab90b020efe74275538e75b8e88f1bd/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f6368726f6d69756d2f6368726f6d69756d5f33327833322e706e67" target="_blank"><img src="https://camo.githubusercontent.com/c8badfab4ab90b020efe74275538e75b8e88f1bd/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f6368726f6d69756d2f6368726f6d69756d5f33327833322e706e67" alt="Chromium" data-canonical-src="https://raw.github.com/alrra/browser-logos/master/chromium/chromium_32x32.png" style="max-width:100%;"></a></th>
+<td>Linux</td>
+<td><img src="https://raw.github.com/alrra/browser-logos/master/firefox/firefox_32x32.png" style="max-width:100%;"><img src="https://raw.github.com/alrra/browser-logos/master/chrome/chrome_32x32.png" style="max-width:100%;"><img src="https://raw.github.com/alrra/browser-logos/master/chromium/chromium_32x32.png" style="max-width:100%;"></a></td>
 </tr>
-</thead><tbody>
 <tr>
 <td>Windows</td>
-<td><a href="https://camo.githubusercontent.com/77ecddd718430505bfbf440effb47dfe6e08dbae/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f66697265666f782f66697265666f785f33327833322e706e67" target="_blank"><img src="https://camo.githubusercontent.com/77ecddd718430505bfbf440effb47dfe6e08dbae/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f66697265666f782f66697265666f785f33327833322e706e67" alt="Firefox" data-canonical-src="https://raw.github.com/alrra/browser-logos/master/firefox/firefox_32x32.png" style="max-width:100%;"></a><a href="https://camo.githubusercontent.com/32fe4e3ed834fd22064875a08ed7c1db201abc95/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f6368726f6d652f6368726f6d655f33327833322e706e67" target="_blank"><img src="https://camo.githubusercontent.com/32fe4e3ed834fd22064875a08ed7c1db201abc95/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f6368726f6d652f6368726f6d655f33327833322e706e67" alt="Chrome" data-canonical-src="https://raw.github.com/alrra/browser-logos/master/chrome/chrome_32x32.png" style="max-width:100%;"></a><a href="https://camo.githubusercontent.com/7943f142beebab6dd8b9a9ac94d22a631d7f8182/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f696e7465726e65742d6578706c6f7265722f696e7465726e65742d6578706c6f7265725f33327833322e706e67" target="_blank"><img src="https://camo.githubusercontent.com/7943f142beebab6dd8b9a9ac94d22a631d7f8182/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f696e7465726e65742d6578706c6f7265722f696e7465726e65742d6578706c6f7265725f33327833322e706e67" alt="IE" data-canonical-src="https://raw.github.com/alrra/browser-logos/master/internet-explorer/internet-explorer_32x32.png" style="max-width:100%;"></a></td>
+<td><img src="https://raw.github.com/alrra/browser-logos/master/firefox/firefox_32x32.png" style="max-width:100%;"><img src="https://raw.github.com/alrra/browser-logos/master/chrome/chrome_32x32.png" style="max-width:100%;"><img src="https://raw.github.com/alrra/browser-logos/master/internet-explorer/internet-explorer_32x32.png" style="max-width:100%;"></td>
 </tr>
 <tr>
 <td>Android</td>
-<td><a href="https://camo.githubusercontent.com/77ecddd718430505bfbf440effb47dfe6e08dbae/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f66697265666f782f66697265666f785f33327833322e706e67" target="_blank"><img src="https://camo.githubusercontent.com/77ecddd718430505bfbf440effb47dfe6e08dbae/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f66697265666f782f66697265666f785f33327833322e706e67" alt="Firefox" data-canonical-src="https://raw.github.com/alrra/browser-logos/master/firefox/firefox_32x32.png" style="max-width:100%;"></a><a href="https://camo.githubusercontent.com/32fe4e3ed834fd22064875a08ed7c1db201abc95/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f6368726f6d652f6368726f6d655f33327833322e706e67" target="_blank"><img src="https://camo.githubusercontent.com/32fe4e3ed834fd22064875a08ed7c1db201abc95/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f6368726f6d652f6368726f6d655f33327833322e706e67" alt="Chrome" data-canonical-src="https://raw.github.com/alrra/browser-logos/master/chrome/chrome_32x32.png" style="max-width:100%;"></a><a href="https://camo.githubusercontent.com/c4998250d3d89ddf8d3d8ea0c8d7e9df38ab6380/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f6f706572612f6f706572615f33327833322e706e67" target="_blank"><img src="https://camo.githubusercontent.com/c4998250d3d89ddf8d3d8ea0c8d7e9df38ab6380/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f6f706572612f6f706572615f33327833322e706e67" alt="Opera" data-canonical-src="https://raw.github.com/alrra/browser-logos/master/opera/opera_32x32.png" style="max-width:100%;"></a></td>
+<td><img src="https://raw.github.com/alrra/browser-logos/master/firefox/firefox_32x32.png" style="max-width:100%;"><img src="https://raw.github.com/alrra/browser-logos/master/chrome/chrome_32x32.png" style="max-width:100%;"><img src="https://raw.github.com/alrra/browser-logos/master/opera/opera_32x32.png" style="max-width:100%;"></td>
 </tr>
 <tr>
 <td>iOS</td>
-<td><a href="https://camo.githubusercontent.com/7a02484614fd0e677fbf5129181455c7dd6979ba/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f7361666172692f7361666172695f33327833322e706e67" target="_blank"><img src="https://camo.githubusercontent.com/7a02484614fd0e677fbf5129181455c7dd6979ba/68747470733a2f2f7261772e6769746875622e636f6d2f616c7272612f62726f777365722d6c6f676f732f6d61737465722f7361666172692f7361666172695f33327833322e706e67" alt="Safari" data-canonical-src="https://raw.github.com/alrra/browser-logos/master/safari/safari_32x32.png" style="max-width:100%;"></a></td>
+<td><img src="https://raw.github.com/alrra/browser-logos/master/safari/safari_32x32.png" style="max-width:100%;"></td>
 </tr>
 <tr>
 <td>OSX</td>
@@ -88,6 +123,9 @@
         </section>
 
         <aside id="sidebar">
+          <div style="width: 200px; height: 80px; display: block;">
+            <div id="stamp1" class="stamp movable rotable">&nbsp;<br></div>
+          </div>
           <a href="https://github.com/j-pel/dynamize/zipball/master" class="button">
             <small>Download</small>
             .zip file
@@ -107,9 +145,14 @@
     <script type="text/javascript" src="https://rawgit.com/j-pel/dynamize/master/javascripts/moving.js"></script>
     <script type="text/javascript" src="https://rawgit.com/j-pel/dynamize/master/javascripts/rotating.js"></script>
     <script>
-	moving.init(function(){});
-	rotating.init(function(){});
-	seal1.style.transform = 'rotate(30deg)';
+	moving.init(function(info){console.log(info)});
+	rotating.init(function(info){console.log(info)});
+	stamp2.style.transform = 'rotate(30deg)';
+  window.addEventListener('resize', adjust, false);
+  function adjust() {
+    stamp2.style.top = playground.offsetTop + "px";
+  }
+  adjust();
     </script>
   </body>
 </html>
