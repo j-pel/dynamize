@@ -107,9 +107,9 @@
     <script type="text/javascript" src="https://rawgit.com/j-pel/dynamize/master/javascripts/moving.js"></script>
     <script type="text/javascript" src="https://rawgit.com/j-pel/dynamize/master/javascripts/rotating.js"></script>
     <script>
-	moving.init();
-	rotating.init();
-	seal1.style.transform = rotate('30deg');
+	moving.init(function(){});
+	rotating.init(function(){});
+	seal1.style.transform = 'rotate(30deg)';
     </script>
   </body>
 </html>
