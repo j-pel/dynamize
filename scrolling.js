@@ -20,7 +20,7 @@
     page.insertBefore(scroller,table)
     page.removeChild(table);
     scroller.style.display = "block";
-    ["width","height","maxWidth","maxHeight","minWidth","minHeight",
+    ["position","width","height","maxWidth","maxHeight","minWidth","minHeight",
     "top","left","bottom","right"].forEach(function(prop){
       scroller.style[prop] = table.style[prop];
     });
