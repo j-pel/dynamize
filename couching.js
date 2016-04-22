@@ -20,17 +20,83 @@ function Couching(database) {
   /*!
    * init(server)
    * Starts or changes the database handler to a specific server.
+   * It verifies that the server is a proper CouchDB instance and
+   * opens or create the database of given name.
    * 
-   * @param {srv} full HTTP address of a CouchDB compatible database.
+   * @param {database} full HTTP address of a CouchDB compatible database.
    * @api public
    */
   self.init = function(database) {
     var idx = database.lastIndexOf('/')+1;
     self.db = database.slice(idx);
     self.server = database.slice(0,idx);
-    //server: database.match(/^https?\:\/\/[^\/?#]+(?:[\/?#]|$)/i)[0]
+    //server: database.match(/^https?\:\/\/[^\/?#]+(?:[\/?#]|$)/i)[0];
+    var req = new XMLHttpRequest();
+    req.open('GET', self.server + self.db);
+    req.onreadystatechange=function() {
+      if (req.readyState==4) {
+        switch (req.status) {
+				case 0:
+					self.status = "no server";
+					//console.log("no server", req.responseText);
+					break;
+				case 200:
+					self.status = "database ok";
+					//console.log("open", JSON.parse(this.responseText));
+					break;
+				case 404:
+					self.status = "no database";
+					createDatabase();
+					break;
+				default:
+					self.status = "error";
+					console.log("error", req.responseText);
+				}
+        //callback(obj);
+      }
+    }
+    req.send(null);
+    return(0);
   }
-  
+
+	self.login = function(user, callback) {
+    var req = new XMLHttpRequest();
+    req.open('POST', self.server + "_session");
+    req.withCredentials = true;
+    req.onreadystatechange=function() {
+      console.log("Headers",req.getAllResponseHeaders());
+      if (req.readyState==4) {
+				obj = JSON.parse(this.responseText)
+				if (req.status == 200) {
+					self.name = user.name;
+					self.password = user.password;
+					self.roles = obj.roles
+				}
+				callback(obj);
+      }
+    }
+    req.setRequestHeader("Content-Type", "application/json");
+    req.send(JSON.stringify(user));
+    return(0);
+	}
+
+	self.session = function(callback) {
+    var req = new XMLHttpRequest();
+    req.open('GET', self.server + "_session");
+    //req.setRequestHeader('Cookie',cookie);
+    req.onreadystatechange=function() {
+      if (req.readyState==4) {
+				obj = JSON.parse(this.responseText)
+				if (req.status == 200) {
+				}
+				callback(obj);
+      }
+    }
+    req.setRequestHeader("Content-Type", "application/json");
+    req.send(null);
+    return(0);
+	}
+
   /*!
    * head(id, callback)
    * The lightest and fastest call to seek for a document knowing its
@@ -246,6 +312,37 @@ function Couching(database) {
     }
   }
 
+	function createDatabase() {
+    var req = new XMLHttpRequest();
+    req.open('PUT', self.server + self.db);
+    req.onreadystatechange=function() {
+      if (req.readyState==4) {
+        switch (req.status) {
+				case 0:
+					self.status = "no server";
+					//console.log("no server", req.responseText);
+					break;
+				case 201:
+					self.status = "database ok";
+					//console.log("open", JSON.parse(this.responseText));
+					break;
+				case 400: //400 Bad Request – Invalid database name
+				case 401: //401 Unauthorized – CouchDB Server Administrator privileges required
+				case 412: //412 Precondition Failed – Database already exists
+					self.status = "no database";
+					//console.log("creating fails for",req.status, req.responseText);
+					break;
+				default:
+					self.status = "error";
+					console.log("error", req.responseText);
+				}
+        //callback(obj);
+      }
+    }
+    req.send(null);
+    return(0);
+	}		
+	
   self.init(database);
   return(self);
 }
