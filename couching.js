@@ -63,19 +63,24 @@ function Couching(database) {
     var req = new XMLHttpRequest();
     req.open('POST', self.server + "_session");
     req.withCredentials = true;
+    req.setRequestHeader('Accept', 'application/json');
     req.onreadystatechange=function() {
-      console.log("Headers",req.getAllResponseHeaders());
+      //console.log("Headers",req.getAllResponseHeaders());
       if (req.readyState==4) {
 				obj = JSON.parse(this.responseText)
 				if (req.status == 200) {
-					self.name = user.name;
+					self.username = user.username;
 					self.password = user.password;
 					self.roles = obj.roles
 				}
 				callback(obj);
       }
     }
-    req.setRequestHeader("Content-Type", "application/json");
+    req.setRequestHeader('Accept', 'application/json');
+    req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    req.setRequestHeader('Access-Control-Allow-Origin', 'http://mt22-fis');
+    req.setRequestHeader('X-CouchDB-WWW-Authenticate', 'Cookie');
+    console.log("Credentials",JSON.stringify(user)); 
     req.send(JSON.stringify(user));
     return(0);
 	}
