@@ -35,7 +35,7 @@
   }
 
   var elements = document.getElementsByClassName('fix-top');
-  for (var i = 0; i < elements.length; i++) {
+  for (var i = elements.length-1; elements.length > 0;i = elements.length-1) {
     var table = elements[i].parentNode;
     var head = elements[i].cloneNode(true);
     head.classList.remove('fix-top');

@@ -3,6 +3,9 @@
 		<title>Simple example for fixed header tables</title>
 	</head>
   <style>
+  body {
+    height: 2000px;
+  }
   table {
 		border-collapse: collapse;
 	}
@@ -34,48 +37,50 @@
 
     <h3>Some Linux syscalls</h3>
 
-<table>
-<thead class="fix-top">
-    <tr><th>%eax</th><th>Name</th><th>Source</th>
-    <th>%ebx</th><th>%ecx</th><th>%edx</th><th>%esx</th><th>%edi</th></tr>
-</thead>
-<tbody>
-<tr><td>1</td><td>sys_exit</td><td><a href="file:///usr/src/linux/kernel/exit.c">kernel/exit.c</a></td>
-<td>int</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+<div style="padding: 20px;">
+  <table>
+  <thead class="fix-top">
+      <tr><th>%eax</th><th>Name</th><th>Source</th>
+      <th>%ebx</th><th>%ecx</th><th>%edx</th><th>%esx</th><th>%edi</th></tr>
+  </thead>
+  <tbody>
+  <tr><td>1</td><td>sys_exit</td><td><a href="file:///usr/src/linux/kernel/exit.c">kernel/exit.c</a></td>
+  <td>int</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
 
-<tr><td>2</td><td>sys_fork</td><td><a href="file:///usr/src/linux/arch/i386/kernel/process.c">arch/i386/kernel/process.c</a></td>
-<td><a href="syscalls.html#pt_regs">struct pt_regs</a></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+  <tr><td>2</td><td>sys_fork</td><td><a href="file:///usr/src/linux/arch/i386/kernel/process.c">arch/i386/kernel/process.c</a></td>
+  <td><a href="syscalls.html#pt_regs">struct pt_regs</a></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
 
-<tr><td>3</td><td>sys_read</td><td><a href="file:///usr/src/linux/fs/read_write.c">fs/read_write.c</a></td>
-<td>unsigned int</td><td>char *</td><td><a href="syscalls.html#size_t">size_t</a></td><td>-</td><td>-</td></tr>
+  <tr><td>3</td><td>sys_read</td><td><a href="file:///usr/src/linux/fs/read_write.c">fs/read_write.c</a></td>
+  <td>unsigned int</td><td>char *</td><td><a href="syscalls.html#size_t">size_t</a></td><td>-</td><td>-</td></tr>
 
-<tr><td>4</td><td>sys_write</td><td><a href="file:///usr/src/linux/fs/read_write.c">fs/read_write.c</a></td>
-<td>unsigned int</td><td>const char *</td><td><a href="syscalls.html#size_t">size_t</a></td><td>-</td><td>-</td></tr>
+  <tr><td>4</td><td>sys_write</td><td><a href="file:///usr/src/linux/fs/read_write.c">fs/read_write.c</a></td>
+  <td>unsigned int</td><td>const char *</td><td><a href="syscalls.html#size_t">size_t</a></td><td>-</td><td>-</td></tr>
 
-<tr><td>5</td><td>sys_open</td><td><a href="file:///usr/src/linux/fs/open.c">fs/open.c</a></td>
-<td>const char *</td><td>int</td><td>int</td><td>-</td><td>-</td></tr>
+  <tr><td>5</td><td>sys_open</td><td><a href="file:///usr/src/linux/fs/open.c">fs/open.c</a></td>
+  <td>const char *</td><td>int</td><td>int</td><td>-</td><td>-</td></tr>
 
-<tr><td>6</td><td>sys_close</td><td><a href="file:///usr/src/linux/fs/open.c">fs/open.c</a></td>
-<td>unsigned int</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+  <tr><td>6</td><td>sys_close</td><td><a href="file:///usr/src/linux/fs/open.c">fs/open.c</a></td>
+  <td>unsigned int</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
 
-<tr><td>7</td><td>sys_waitpid</td><td><a href="file:///usr/src/linux/kernel/exit.c">kernel/exit.c</a></td>
-<td>pid_t</td><td>unsigned int *</td><td>int</td><td>-</td><td>-</td></tr>
+  <tr><td>7</td><td>sys_waitpid</td><td><a href="file:///usr/src/linux/kernel/exit.c">kernel/exit.c</a></td>
+  <td>pid_t</td><td>unsigned int *</td><td>int</td><td>-</td><td>-</td></tr>
 
-<tr><td>8</td><td>sys_creat</td><td><a href="file:///usr/src/linux/fs/open.c">fs/open.c</a></td>
-<td>const char *</td><td>int</td><td>-</td><td>-</td><td>-</td></tr>
+  <tr><td>8</td><td>sys_creat</td><td><a href="file:///usr/src/linux/fs/open.c">fs/open.c</a></td>
+  <td>const char *</td><td>int</td><td>-</td><td>-</td><td>-</td></tr>
 
-<tr><td>9</td><td>sys_link</td><td><a href="file:///usr/src/linux/fs/namei.c">fs/namei.c</a></td>
-<td>const char *</td><td>const char *</td><td>-</td><td>-</td><td>-</td></tr>
+  <tr><td>9</td><td>sys_link</td><td><a href="file:///usr/src/linux/fs/namei.c">fs/namei.c</a></td>
+  <td>const char *</td><td>const char *</td><td>-</td><td>-</td><td>-</td></tr>
 
-<tr><td>10</td><td>sys_unlink</td><td><a href="file:///usr/src/linux/fs/namei.c">fs/namei.c</a></td>
-<td>const char *</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+  <tr><td>10</td><td>sys_unlink</td><td><a href="file:///usr/src/linux/fs/namei.c">fs/namei.c</a></td>
+  <td>const char *</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
 
-<tr><td>11</td><td>sys_execve</td><td><a href="file:///usr/src/linux/arch/i386/kernel/process.c">arch/i386/kernel/process.c</a></td>
-<td><a href="syscalls.html#pt_regs">struct pt_regs</a></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+  <tr><td>11</td><td>sys_execve</td><td><a href="file:///usr/src/linux/arch/i386/kernel/process.c">arch/i386/kernel/process.c</a></td>
+  <td><a href="syscalls.html#pt_regs">struct pt_regs</a></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
 
-<tr><td>12</td><td>sys_chdir</td><td><a href="file:///usr/src/linux/fs/open.c">fs/open.c</a></td>
-<td>const char *</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</tbody></table>
+  <tr><td>12</td><td>sys_chdir</td><td><a href="file:///usr/src/linux/fs/open.c">fs/open.c</a></td>
+  <td>const char *</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+  </tbody></table>
+</div>
 
 		<p>This use case is the most common and it is so useful for handling tabulated contents that is a pity that is not considered on current HTML5 standards.</p>
 
@@ -97,6 +102,8 @@
     &lt;/table&gt;
     </pre>
     <h3>Debian releases</h3>
+
+  <div style="padding: 20px;">
     <table class="scrollable" style="max-width: 420px; min-width: 300px; max-height: 200px;">
       <thead>
         <tr>
@@ -151,7 +158,7 @@
         </tr>
       </tbody>
     </table>
-
+  </div>
 		<p>This use case defines the fixed space where the table is confined. This could be done assigning width and height to the table. A range with minimum and maximum is also possible both for width and height.</p>
 		<p>Please note that the table could be ill formed (there is a deliberate error on the last row) or with a complex layout (there is a cell that spans two columns). The only condition is that there must be a <code>&lt;thead&gt;</code> and a <code>&lt;tbody&gt;</code>.</p>
 		
@@ -160,45 +167,6 @@
 		<p>Please feel free to create an issue to report any bug, feature requests, and more at <a href="https://github.com/j-pel/dynamize/issues">github.com/j-pel/dynamize</a>.</p>
 		
 		<p>There will be some empty space in order to provide enough scroll space to see what happens when the fixed layout table goes on top.</p>
-		
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
 		
     <script type="text/javascript" src="../scrolling.js"></script>
   </body>
