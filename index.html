@@ -61,7 +61,27 @@
 		}
 		.rotable:hover div.rotor {
 			display: block;
+		}
+		.sizer {
+			display: none;
+			position: absolute;
+			width: 16px;
+			height: 16px;
+			bottom: -4px;
+			right: -4px;
+			opacity: 0.8;
+			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH3wUaESwc6CzCdwAAAapJREFUOMuNkjuL6mAQht+JS+KlsAnYWG0XsYh2KQQRjo0i2GplYSHir7DQwsJWLASx9i8IluKJ9iIiNlHxiIVCAmZOtXHjbXdgmG9mmIdh3g/MjFdu27Yr9vt9vu8LeGNE5Monkwni8Th/r70F3INisRgikQhUVeWvOjHfgLZtQxBuzHa7za1WC9lsFpZlIRgMQpZl7Pd7jMdj6LpODwAiAhE5ME3TOJ1Ow+PxgIjAzJAkCY1GA7VaDR/3qzIziAiCIKDT6fByucTlcoFpmjidTgiFQpjNZsjlcqjX6/Rw+ev16orfvdlssqIoXC6XHTWcpmEYvFgsmJkxGo34mazFYpGTyaSr5zyOx+MnAK5Wq5xKpZ4ChsPhQ905uWmay0qlAgBIJBJP5czn83RfcwCiKP7x+XyQZdkl5U/20ev1WBRFWJYFSZIgCAJWqxUGgwGv12tkMhmoqkovP9lms2FN01AqlRytD4cD5vM5zuczptMpvdtACIfDpOv63263i0AgAL/fD8Mw4PV6fxwGcFNht9tNFUXhaDT6UoVn7kq22+2/QqHw62Fmxn8pB4mgcwgvogAAAABJRU5ErkJggg==);
+		}
+		.sizable:hover div.sizer {
+			display: block;
 		}	
+    
+    #dynamize {
+      background-color: #fff;
+    }
+    #dynamize thead {
+      background-color: #ccc;
+    }
 		</style>
 
     <title>Dynamize.js by j-pel</title>
@@ -75,6 +95,20 @@
         <a href="https://github.com/j-pel/dynamize" class="button"><small>View project on</small> GitHub</a>
       </div>
     </header>
+
+<table id="dynamize" class="scrollable movable rotable sizable" style="position: absolute; width: 200px; height: 60px; top: 105px; left: 365px;">
+  <thead>
+    <!--tr><th colspan=2>Dynamize Toolbox</th></tr-->
+    <tr><th>Tool</th><th>Status</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><a href="scrolling.html">scrolling.js</a></td><td>Ready to use</td></tr>
+    <tr><td><a href="moving.html">moving.js</a></td><td>Ready to use</td></tr>
+    <tr><td><a href="rotating.html">rotating.js</a></td><td>Ready to use</td></tr>
+    <tr><td><a href="sizing.html">sizing.js</a></td><td>Ready to use</td></tr>
+    <tr><td><a href="couching.html">couching.js</a></td><td>Ready to use</td></tr>
+  </tbody>
+</table>
 
     <div id="content-wrapper">
       <div class="inner clearfix">
@@ -144,11 +178,15 @@
     </div>
 
     <script type="text/javascript" src="https://rawgit.com/j-pel/dynamize/master/moving.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/j-pel/dynamize/master/sizing.js"></script>
     <script type="text/javascript" src="https://rawgit.com/j-pel/dynamize/master/rotating.js"></script>
+    <!--script type="text/javascript" src="https://rawgit.com/j-pel/dynamize/master/scrolling.js"></script-->
     <script>
+	stamp2.style.transform = 'rotate(30deg)';
+  dynamize.style.transform = 'rotate(-15deg)';
 	moving.init(function(info){console.log(info)});
 	rotating.init(function(info){console.log(info)});
-	stamp2.style.transform = 'rotate(30deg)';
+	sizing.init(function(info){console.log(info)});
   window.addEventListener('resize', adjust, false);
   function adjust() {
     stamp2.style.top = playground.offsetTop + "px";
