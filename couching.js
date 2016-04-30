@@ -258,6 +258,24 @@ function Couching(database) {
     req.send();
   }
 
+  self.query = function(view, options, callback) {
+    var req = new XMLHttpRequest();
+    req.onreadystatechange=function() {
+      if (req.readyState==4) {
+				obj = JSON.parse(this.responseText)
+				callback(obj);
+      }
+    }
+    var query = "";
+    view = view.split("/");
+    for (opt in options) {
+      query += encodeURI(opt+"="+options[opt]+"&");
+    }
+    req.open('GET', self.server + self.db + "/_design/" + view[0] 
+      + "/_view/" + view[1] + "?" + query.slice(0,-1));
+    req.send();
+  }
+    
   /*!
    * storeDoc(req, doc, callback)
    * Helper fucntion to store a document into the database.
