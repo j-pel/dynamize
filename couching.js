@@ -61,34 +61,38 @@ function Couching(database) {
 
 	self.login = function(user, callback) {
     var req = new XMLHttpRequest();
-    req.open('POST', self.server + "_session");
+    req.open('POST', self.server + "_session", true, 'superv', 'pserv');
     req.withCredentials = true;
-    req.setRequestHeader('Accept', 'application/json');
+		//req.setRequestHeader('Access-Control-Allow-Origin', '*');
+		req.setRequestHeader('Accept', 'application/json');
     req.onreadystatechange=function() {
       //console.log("Headers",req.getAllResponseHeaders());
+      //console.log("Headers",req.getResponseHeader('Set-Cookie'));
       if (req.readyState==4) {
-				obj = JSON.parse(this.responseText)
+				//console.log("Response",this);
+				obj = JSON.parse(this.responseText);
 				if (req.status == 200) {
-					self.username = user.username;
+					self.name = user.name;
 					self.password = user.password;
 					self.roles = obj.roles
 				}
 				callback(obj);
       }
     }
-    req.setRequestHeader('Accept', 'application/json');
+    //req.setRequestHeader('X-PINGOTHER', 'pingpong');
+    //req.setRequestHeader('Content-Type', 'application/json');
+    //req.setRequestHeader('X-CouchDB-WWW-Authenticate', 'Cookie');
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    req.setRequestHeader('Access-Control-Allow-Origin', 'http://mt22-fis');
-    req.setRequestHeader('X-CouchDB-WWW-Authenticate', 'Cookie');
-    console.log("Credentials",JSON.stringify(user)); 
-    req.send(JSON.stringify(user));
+    //req.setRequestHeader('X-CouchDB-WWW-Authenticate', 'Cookie');
+    //req.send(JSON.stringify(user));
+    req.send('name='+user.name+'&password='+user.password);
     return(0);
 	}
 
 	self.session = function(callback) {
     var req = new XMLHttpRequest();
     req.open('GET', self.server + "_session");
-    //req.setRequestHeader('Cookie',cookie);
+    //req.setRequestHeader('X-CouchDB-WWW-Authenticate', 'Cookie');
     req.onreadystatechange=function() {
       if (req.readyState==4) {
 				obj = JSON.parse(this.responseText)
@@ -146,7 +150,7 @@ function Couching(database) {
    */
   self.get = function(id, callback) {
     var req = new XMLHttpRequest();
-    req.addEventListener("load",function(evt) {
+    req.onreadystatechange=function() {
       var obj = JSON.parse(this.responseText);
       callback(obj);
     })

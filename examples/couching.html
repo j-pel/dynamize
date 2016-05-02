@@ -1,0 +1,42 @@
+<html>
+	<head>
+		<title>Simple example for couching with CouchDB</title>
+	</head>
+  <style>
+  </style>
+  <body>
+    <h1>Couching.js</h1>
+    <p>This is a comodity frontend to manage a CouchDB instance.</p>
+    <h2>Use case 1:</h2>
+    <pre id=log>
+    </pre>
+		
+    <!--script type="text/javascript" src="https://cdn.rawgit.com/j-pel/dynamize/master/scrolling.js"></script-->
+    <script type="text/javascript" src="../couching.js"></script>
+    <script type="text/javascript">
+
+var cdb = Couching("http://jmp-fis:5984/test");
+cdb.query("main/index",{
+	includeDocs: true,
+	descending: true,
+	limit: 10
+},show);
+
+function show(info) {
+	console.log("show", info);
+}
+	
+function log(info) {
+	//var log = document.getElementById('log');
+	//log.innerText += Object.values(info);
+	console.log(info);
+	cdb.session(log2);
+}
+
+function log2(info) {
+	console.log(info);
+}
+    
+    </script>
+  </body>
+</html>
