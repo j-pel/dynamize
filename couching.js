@@ -52,7 +52,6 @@ function Couching(database) {
 					self.status = "error";
 					console.log("error", req.responseText);
 				}
-        //callback(obj);
       }
     }
     req.send(null);
@@ -61,12 +60,12 @@ function Couching(database) {
 
 	self.login = function(user, callback) {
     var req = new XMLHttpRequest();
-    req.open('POST', self.server + "_session", true, 'superv', 'pserv');
+    req.open('POST', self.server + "_session", true);
     req.withCredentials = true;
 		//req.setRequestHeader('Access-Control-Allow-Origin', '*');
-		req.setRequestHeader('Accept', 'application/json');
+		//req.setRequestHeader('Accept', 'application/json');
     req.onreadystatechange=function() {
-      //console.log("Headers",req.getAllResponseHeaders());
+      console.log("Headers",req.getAllResponseHeaders());
       //console.log("Headers",req.getResponseHeader('Set-Cookie'));
       if (req.readyState==4) {
 				//console.log("Response",this);
@@ -153,7 +152,7 @@ function Couching(database) {
     req.onreadystatechange=function() {
       var obj = JSON.parse(this.responseText);
       callback(obj);
-    })
+    }
     req.open('GET', self.server + self.db + "/" + id);
     req.send();
   }
@@ -263,10 +262,11 @@ function Couching(database) {
   }
 
   self.query = function(view, options, callback) {
+    if (self.status!="database ok") return(-1);
     var req = new XMLHttpRequest();
     req.onreadystatechange=function() {
       if (req.readyState==4) {
-				obj = JSON.parse(this.responseText)
+				obj = JSON.parse(this.responseText);
 				callback(obj);
       }
     }
@@ -340,6 +340,7 @@ function Couching(database) {
   }
 
 	function createDatabase() {
+    if (!self.user) return(-1);
     var req = new XMLHttpRequest();
     req.open('PUT', self.server + self.db);
     req.onreadystatechange=function() {

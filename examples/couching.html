@@ -1,5 +1,6 @@
 <html>
 	<head>
+    <meta charset='utf-8'>
 		<title>Simple example for couching with CouchDB</title>
 	</head>
   <style>
@@ -15,13 +16,29 @@
     <script type="text/javascript" src="../couching.js"></script>
     <script type="text/javascript">
 
-var cdb = Couching("http://jmp-fis:5984/test");
-cdb.query("main/index",{
+//var cdb = Couching("http://jmp-fis:5984/test");
+//var cdb = Couching("http://192.168.1.54:5984/ahorros");
+//console.log(cdb);
+
+var database = "http://192.168.1.54:5984/ahorros";
+var re = /(^https?\:\/\/)([^@]+@|)([^\/?#]+(?:[\/?#]|$))([^\/?#]+(?:[\/?#]|$))/i;
+console.log(database.match(re))
+database = "http://jorge:mario@192.168.1.54:5984/ahorros";
+console.log(database.match(re))
+
+/*
+cdb.login({
+  name: 'jorge',
+  password: 'ostrojpa'
+},show);
+
+/*
+var u = cdb.query("main/index",{
 	includeDocs: true,
 	descending: true,
 	limit: 10
 },show);
-
+*/
 function show(info) {
 	console.log("show", info);
 }
