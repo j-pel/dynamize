@@ -13,6 +13,8 @@
 
 function Couching(database) {
 
+  'use strict';
+
   self = {}
   
   /* client API */
@@ -26,7 +28,7 @@ function Couching(database) {
    * @param {database} full HTTP address of a CouchDB compatible database.
    * @api public
    */
-  self.init = function(database) {
+  self.init2 = function(database) {
     var url = database.match(/(^https?\:\/\/)([^@]+@|)([^\/?#]+(?:[\/?#]|$))([^\/?#]+(?:[\/?#]|$))/i);
     self.protocol = url[1];
     self.basicauth = Base64.encode(url[2].slice(0,-1));
@@ -63,7 +65,41 @@ function Couching(database) {
     return(self);
   }
 
-	self.login = function(user, callback) {
+  function reqJSON(op,url,params=null) {
+    var xhr = new XMLHttpRequest();
+    return new Promise(function(resolve, reject) {
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            resolve(JSON.parse(xhr.responseText));
+          } else {
+            reject(JSON.parse(xhr.responseText));
+          }
+        }
+      };
+      xhr.open(op, url, true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify(params));
+    });
+  }
+
+	self.login = function(user) {
+    return new Promise(function(resolve,reject) {
+      reqJSON('POST', self.protocol + self.host + "_session",user)
+      .then(function(data){
+        self.basicauth = Base64.encode(user.name+":"+user.password);
+        self.roles = data.roles;
+        resolve(data);
+      }).catch(function(err){
+        self.basicauth = "";
+        self.roles = [];
+        reject(err);
+      })
+    });
+  }
+
+
+	self.login2 = function(user, callback) {
     var req = new XMLHttpRequest();
     req.open('POST', self.protocol + self.host + "_session", true);
     req.withCredentials = true;
@@ -398,7 +434,17 @@ function Couching(database) {
     return(0);
 	}		
 	
-  self.init(database);
+  var url = database.match(/(^https?\:\/\/)([^@]+@|)([^\/?#]+(?:[\/?#]|$))([^\/?#]+(?:[\/?#]|$))/i);
+  self.protocol = url[1];
+  self.basicauth = Base64.encode(url[2].slice(0,-1));
+  self.host = url[3];
+  self.db = url[4];
+  reqJSON('GET', self.protocol + self.host + self.db)
+  .then(function(data){
+    self.info = data;
+  }).catch(function(err){
+    self.error = err;
+  });
   return(self);
 }
 

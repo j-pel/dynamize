@@ -17,18 +17,19 @@
     <script type="text/javascript" src="../couching.js"></script>
     <script type="text/javascript">
 
+//var cdb = Couching("http://jmp-fis:5984/test");
+var cdb = Couching("http://192.168.1.54:5984/test");
+
 function start() {
-  //var cdb = Couching("http://jmp-fis:5984/test");
-  var cdb = Couching("http://192.168.1.54:5984/test");
 	console.log(cdb);
-  cdb.promise.then(function(value){
-    console.log("promise fullfilled",value);
-    cdb.login({
-      name: '',
-      password: ''
-    },testing);
+  cdb.login({
+    name: '',
+    password: ''
+  })
+  .then(function(data){
+    console.log("login ok", data);
   }).catch(function(err){
-    console.log("promise rejected",err);
+    console.log("login bad", err);
   });
 }
 
