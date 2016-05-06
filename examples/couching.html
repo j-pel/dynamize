@@ -21,14 +21,24 @@
 var cdb = Couching("http://192.168.1.54:5984/test");
 
 function start() {
-	console.log(cdb);
+  console.log(cdb);
+  cdb.create();
+  cdb.session()
+  .then(function(data){
+    console.log("session ok", data);
+  })
+  .catch(function(err){
+    console.log("session bad", err);
+  });
+  return(0);
   cdb.login({
     name: '',
     password: ''
   })
   .then(function(data){
     console.log("login ok", data);
-  }).catch(function(err){
+  })
+  .catch(function(err){
     console.log("login bad", err);
   });
 }

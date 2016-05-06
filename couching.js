@@ -4,85 +4,44 @@
  * Copyright © 2016 Jorge M. Peláez | MIT license
  * http://j-pel.github.io/dynamize
  * 
- * UNDER DEVELOPMENT: Anything can change
- * There are no safeguards
+ * UNDER DEVELOPMENT: API is still changing
+ * Still not production ready
  * 
  */
 
-  /* Object constructor */
+/* Object Constructor */
+
+/*!
+ * Couching(server)
+ * Starts or changes the database handler to a specific server.
+ * It verifies that the server is a proper CouchDB instance and
+ * opens or create the database of given name.
+ * 
+ * @param {database} full HTTP address of a CouchDB compatible database.
+ * @api public
+ */
 
 function Couching(database) {
 
   'use strict';
 
   self = {}
+
+
+  var url = database.match(/(^https?\:\/\/)([^@]+@|)([^\/?#]+(?:[\/?#]|$))([^\/?#]+(?:[\/?#]|$))/i);
+  self.protocol = url[1];
+  self.basicauth = Base64.encode(url[2].slice(0,-1));
+  self.host = url[3];
+  self.db = url[4];
+  reqJSON('GET', self.protocol + self.host + self.db)
+  .then(function(data){
+    self.info = data;
+  }).catch(function(err){
+    self.error = err;
+  });
   
   /* client API */
   
-  /*!
-   * init(server)
-   * Starts or changes the database handler to a specific server.
-   * It verifies that the server is a proper CouchDB instance and
-   * opens or create the database of given name.
-   * 
-   * @param {database} full HTTP address of a CouchDB compatible database.
-   * @api public
-   */
-  self.init2 = function(database) {
-    var url = database.match(/(^https?\:\/\/)([^@]+@|)([^\/?#]+(?:[\/?#]|$))([^\/?#]+(?:[\/?#]|$))/i);
-    self.protocol = url[1];
-    self.basicauth = Base64.encode(url[2].slice(0,-1));
-    self.host = url[3];
-    self.db = url[4];
-    self.promise = new Promise(function (resolve, reject) {
-      var req = new XMLHttpRequest();
-      req.onreadystatechange=function() {
-        if (req.readyState==4) {
-          switch (req.status) {
-          case 0:
-            self.status = "no server";
-            //console.log("no server", req.responseText);
-            break;
-          case 200:
-            self.status = "database ok";
-            resolve(this.response);
-            //console.log("open", JSON.parse(this.responseText));
-            break;
-          case 404:
-            self.status = "no database";
-            createDatabase();
-            reject(this.statusText);
-            break;
-          default:
-            self.status = "error";
-            console.log("error", req.responseText);
-          }
-        }
-      }
-      req.open('GET', self.protocol + self.host + self.db);
-      req.send(null);
-    });
-    return(self);
-  }
-
-  function reqJSON(op,url,params=null) {
-    var xhr = new XMLHttpRequest();
-    return new Promise(function(resolve, reject) {
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            resolve(JSON.parse(xhr.responseText));
-          } else {
-            reject(JSON.parse(xhr.responseText));
-          }
-        }
-      };
-      xhr.open(op, url, true);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.send(JSON.stringify(params));
-    });
-  }
-
 	self.login = function(user) {
     return new Promise(function(resolve,reject) {
       reqJSON('POST', self.protocol + self.host + "_session",user)
@@ -98,57 +57,46 @@ function Couching(database) {
     });
   }
 
-
-	self.login2 = function(user, callback) {
-    var req = new XMLHttpRequest();
-    req.open('POST', self.protocol + self.host + "_session", true);
-    req.withCredentials = true;
-		//req.setRequestHeader('Access-Control-Allow-Origin', '*');
-		//req.setRequestHeader('Accept', 'application/json');
-    req.onreadystatechange=function() {
-      //console.log("Headers",req.getAllResponseHeaders());
-      //console.log("Headers",req.getResponseHeader('Set-Cookie'));
-      if (req.readyState==4) {
-				//console.log("Response",this);
-				obj = JSON.parse(this.responseText);
-				if (req.status == 200) {
-					self.basicauth = Base64.encode(user.name+":"+user.password);
-					self.roles = obj.roles
-				}
-				callback(obj);
-      }
-    }
-    //req.setRequestHeader('X-PINGOTHER', 'pingpong');
-    //req.setRequestHeader('Content-Type', 'application/json');
-    //req.setRequestHeader('X-CouchDB-WWW-Authenticate', 'Cookie');
-    req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    //req.setRequestHeader('X-CouchDB-WWW-Authenticate', 'Cookie');
-    //req.send(JSON.stringify(user));
-    req.send('name='+user.name+'&password='+user.password);
-    return(0);
-	}
-
-	self.session = function(callback) {
-    var req = new XMLHttpRequest();
-    req.open('GET', self.protocol + self.host + "_session");
-    //req.setRequestHeader('X-CouchDB-WWW-Authenticate', 'Cookie');
-    req.onreadystatechange=function() {
-      if (req.readyState==4) {
-				obj = JSON.parse(this.responseText)
-				if (req.status == 200) {
-				}
-				callback(obj);
-      }
-    }
-    req.setRequestHeader("Content-Type", "application/json");
-    req.send(null);
-    return(0);
-	}
+	self.create = function() {
+    if (self.info) return(0);
+    if (!self.basicauth||self.basicauth=="") return(-1);
+    reqJSON('PUT', self.protocol + self.host + self.db)
+    .then(function(data){
+      console.log("created", data);
+      self.info=data;
+      return(0);
+    }).catch(function(err){
+      console.log("not created", err);
+      self.error=err;
+      return(0);
+    });
+  };
 
 	self.clear = function() {
-		console.log("deleting database ",self);
-		deleteDatabase();
+    if (!self.basicauth||self.basicauth=="") return(-1);
+    reqJSON('DELETE', self.protocol + self.host + self.db)
+    .then(function(data){
+      console.log("deleted", data);
+      self.info=null;
+      return(0);
+    }).catch(function(err){
+      console.log("not deleted", err);
+      self.error=err;
+      return(0);
+    });
+  };
+
+	self.session = function(callback) {
+    return new Promise(function(resolve,reject) {
+      reqJSON('GET', self.protocol + self.host + "_session")
+      .then(function(data){
+        resolve(data);
+      }).catch(function(err){
+        reject(err);
+      })
+    });
 	}
+
   /*!
    * head(id, callback)
    * The lightest and fastest call to seek for a document knowing its
@@ -307,6 +255,8 @@ function Couching(database) {
       + "/_view/" + view[1] + "?" + query.slice(0,-1));
     req.send();
   }
+
+  /* private helpers */
     
   /*!
    * storeDoc(req, doc, callback)
@@ -367,85 +317,38 @@ function Couching(database) {
     }
   }
 
-	function createDatabase() {
-    if (!self.basicauth||self.basicauth=="") return(-1);
-    var req = new XMLHttpRequest();
-    req.open('PUT', self.protocol + self.host + self.db);
-    req.setRequestHeader('Authorization', 'Basic ' + self.basicauth);
-    req.onreadystatechange=function() {
-      if (req.readyState==4) {
-        switch (req.status) {
-				case 0:
-					self.status = "no server";
-					//console.log("no server", req.responseText);
-					break;
-				case 201:
-					self.status = "database ok";
-					//console.log("open", JSON.parse(this.responseText));
-					break;
-				case 400: //400 Bad Request – Invalid database name
-				case 401: //401 Unauthorized – CouchDB Server Administrator privileges required
-				case 412: //412 Precondition Failed – Database already exists
-					self.status = "no database";
-					//console.log("creating fails for",req.status, req.responseText);
-					break;
-				default:
-					self.status = "error";
-					console.log("error", req.responseText);
-				}
-        //callback(obj);
+  function reqJSON(method, url, args=null) {
+    var xhr = new XMLHttpRequest();
+    return new Promise(function(resolve, reject) {
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          switch (xhr.status) {
+          case 200:
+          case 201:
+            resolve(JSON.parse(xhr.responseText));
+            break;
+          case 400: //400 Bad Request – Invalid database name
+          case 401: //401 Unauthorized – CouchDB Server Administrator privileges required
+          case 412: //412 Precondition Failed – Database already exists
+          default:
+            reject(JSON.parse(xhr.responseText));
+          }
+        }
+      };
+      xhr.open(method, url, true);
+      if (self.basicauth!="") 
+        xhr.setRequestHeader('Authorization', 'Basic ' + self.basicauth);
+      if (args && (method === 'POST' || method === 'PUT')) {
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(args));
+      } else {
+        xhr.send(null)
       }
-    }
-    req.send(null);
-    return(0);
-	}		
+    });
+  }
 
-	function deleteDatabase() {
-    if (!self.basicauth||self.basicauth=="") return(-1);
-    var req = new XMLHttpRequest();
-    req.open('DELETE', self.protocol + self.host + self.db);
-    req.setRequestHeader('Authorization', 'Basic ' + self.basicauth);
-    req.onreadystatechange=function() {
-      if (req.readyState==4) {
-					console.log("delete", req.responseText);
-        switch (req.status) {
-				case 0:
-					self.status = "no server";
-					//console.log("no server", req.responseText);
-					break;
-				case 201:
-					self.status = "database ok";
-					//console.log("open", JSON.parse(this.responseText));
-					break;
-				case 400: //400 Bad Request – Invalid database name
-				case 401: //401 Unauthorized – CouchDB Server Administrator privileges required
-				case 412: //412 Precondition Failed – Database already exists
-					self.status = "no database";
-					//console.log("creating fails for",req.status, req.responseText);
-					break;
-				default:
-					self.status = "error";
-					console.log("error", req.responseText);
-				}
-        //callback(obj);
-      }
-    }
-    req.send(null);
-    return(0);
-	}		
-	
-  var url = database.match(/(^https?\:\/\/)([^@]+@|)([^\/?#]+(?:[\/?#]|$))([^\/?#]+(?:[\/?#]|$))/i);
-  self.protocol = url[1];
-  self.basicauth = Base64.encode(url[2].slice(0,-1));
-  self.host = url[3];
-  self.db = url[4];
-  reqJSON('GET', self.protocol + self.host + self.db)
-  .then(function(data){
-    self.info = data;
-  }).catch(function(err){
-    self.error = err;
-  });
   return(self);
+	
 }
 
 var Base64 = {
