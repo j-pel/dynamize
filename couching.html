@@ -43,7 +43,7 @@
         <section id="main-content">
 
     <h1>couching.js</h1>
-    <p>Couching is a very small wrapper around Apache CouchDB REST API. CouchDB comes with its own couch.js, a simple AJAX wrapper with a caveat: all calls are synchronous. That is the driver to write couching.js: A small wrapper where all functions are implemented as ES6 Promises. Fully asynchronous but trying to respect the underlying logic of CouchDB API.</p>
+    <p>Couching is a very small wrapper around Apache CouchDB REST API. CouchDB comes with its own couch.js, a simple AJAX wrapper with a caveat: is implemented with synchronous calls. That was the driving force behind couching.js project: A small, asynchronous wrapper built around ES6 Promises while preserving the simplicity and elegance of the CouchDB API.</p>
     <p>CouchDB is reliable, easy to use, flexible and fast. There are also several database service providers that let you run CouchDB instances for free. That's a lot of power to drive your own cloud.</p>
     <p>Couching is useful as a generic document store, as a solid user authentication mechanism or as originally conceived, to persist the user interactions originated by the other Dynamize.js tools.</p>
     <p>The database could be located on any server such as IrisCouch, Cloudant or on a local running instance of CouchDB.</p>
