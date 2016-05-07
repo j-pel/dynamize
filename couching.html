@@ -43,8 +43,9 @@
         <section id="main-content">
 
     <h1>couching.js</h1>
-    <p>Couching is a very small wrapper around Apache CouchDB REST API. All functions are implemented as simple AJAX callbacks. It is useful, among other things, for persist the user interactions on any Dynamize.js tool.</p>
+    <p>Couching is a very small wrapper around Apache CouchDB REST API. CouchDB comes with its own couch.js, a simple AJAX wrapper with a caveat: all calls are synchronous. That is the driver to write couching.js: A small wrapper where all functions are implemented as ES6 Promises. Fully asynchronous but trying to respect the underlying logic of CouchDB API.</p>
     <p>CouchDB is reliable, easy to use, flexible and fast. There are also several database service providers that let you run CouchDB instances for free. That's a lot of power to drive your own cloud.</p>
+    <p>Couching is useful as a generic document store, as a solid user authentication mechanism or as originally conceived, to persist the user interactions originated by the other Dynamize.js tools.</p>
     <p>The database could be located on any server such as IrisCouch, Cloudant or on a local running instance of CouchDB.</p>
     <p>Couch databases are stores for freeform JSON documents. Just create a database and start feeding documents into it. To retrieve a particular document, use the document id. To retrieve several related documents, a view should be created as a javascript map function iterating through all documents in the database.</p>
     <p>In order to use it for persisting the kind of interactions derived from Dynamize, just create a database and store a document for each UI element. Then update the document each time the element changes, by means of the store function on each tool.</p>
