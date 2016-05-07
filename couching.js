@@ -4,8 +4,8 @@
  * Copyright © 2016 Jorge M. Peláez | MIT license
  * http://j-pel.github.io/dynamize
  * 
- * UNDER DEVELOPMENT: API is still changing
- * Still not production ready
+ * UNDER DEVELOPMENT: API frozen but incomplete
+ * Not ready for production
  * 
  */
 
@@ -27,7 +27,6 @@ function Couching(database) {
 
   self = {}
 
-
   var url = database.match(/(^https?\:\/\/)([^@]+@|)([^\/?#]+(?:[\/?#]|$))([^\/?#]+(?:[\/?#]|$))/i);
   self.protocol = url[1];
   self.basicauth = Base64.encode(url[2].slice(0,-1));
@@ -42,6 +41,17 @@ function Couching(database) {
   
   /* client API */
   
+  /*!
+   * login(user)
+   * To verify user credentials to the system and start a session for
+   * the given user. If the credentials are incorrect, the session
+   * is closed and the database is in visitors' access state.
+   * 
+   * A Promise is returned with the given authorization or an error.
+   * 
+   * @param {user} object containing user.name and user.password.
+   * @api public
+   */
 	self.login = function(user) {
     return new Promise(function(resolve,reject) {
       reqJSON('POST', self.protocol + self.host + "_session",user)
@@ -57,6 +67,13 @@ function Couching(database) {
     });
   }
 
+  /*!
+   * create()
+   * To create a new database on the CouchDB instance.
+   * It works only if the logged user has admin capabilities.
+   * 
+   * @api public
+   */
 	self.create = function() {
     if (self.info) return(0);
     if (!self.basicauth||self.basicauth=="") return(-1);
@@ -72,6 +89,13 @@ function Couching(database) {
     });
   };
 
+  /*!
+   * clear()
+   * To delete the entire database from CouchDB instance.
+   * It works only if the logged user has admin capabilities.
+   * 
+   * @api public
+   */
 	self.clear = function() {
     if (!self.basicauth||self.basicauth=="") return(-1);
     reqJSON('DELETE', self.protocol + self.host + self.db)
@@ -86,7 +110,15 @@ function Couching(database) {
     });
   };
 
-	self.session = function(callback) {
+  /*!
+   * session()
+   * To get the current session information from CouchDB.
+   * 
+   * A Promise is returned with the required information or error.
+   * 
+   * @api public
+   */
+	self.session = function() {
     return new Promise(function(resolve,reject) {
       reqJSON('GET', self.protocol + self.host + "_session")
       .then(function(data){
@@ -98,59 +130,88 @@ function Couching(database) {
 	}
 
   /*!
-   * head(id, callback)
+   * head(id)
    * The lightest and fastest call to seek for a document knowing its
    * id. It will return the header information as a javascript object
    * with a property called ETag with the current revision number
    * if the document exists. Otherwise, the object will have an error
    * property plus the other header information.
    * 
-   * @param {id} document internal id.
-   * @param {callback} function to receive CouchDB answer.
-   * @api public
-   */
-  self.head = function(id, callback) {
-    var req = new XMLHttpRequest();
-    req.open('HEAD', self.protocol + self.host + self.db + "/" + id);
-    req.onreadystatechange=function() {
-      if (req.readyState==4) {
-        var head = req.getAllResponseHeaders();
-        var obj = (req.status == 404) ?
-          {error: "not_found", reason: "missing"} : {};
-        var list = head.split("\n").forEach(function(row){
-          var cell = row.split(":");
-          if (cell[1]) obj[cell[0]] =
-            cell[1].replace(/<(.*)>/, '$1').trim().replace(/"/g,"");
-        });
-        callback(obj);
-      }
-    }
-    req.send(null);
-    return(0);
-  }
-
-  /*!
-   * get(id, callback)
-   * To retrieve the document with given id. It will return the current
-   * document as a javascript object if the document exists. Otherwise,
-   * it will return 404 (not found).
+   * A Promise is returned with the required header or error message.
    * 
    * @param {id} document internal id.
-   * @param {callback} function to receive CouchDB answer.
    * @api public
    */
-  self.get = function(id, callback) {
+  self.head = function(id) {
     var req = new XMLHttpRequest();
-    req.onreadystatechange=function() {
-      var obj = JSON.parse(this.responseText);
-      callback(obj);
-    }
-    req.open('GET', self.protocol + self.host + self.db + "/" + id);
-    req.send();
+    return new Promise(function(resolve,reject) {
+      req.open('HEAD', self.protocol + self.host + self.db + "/" + id);
+      req.onreadystatechange=function() {
+        if (req.readyState==4) {
+          var head = req.getAllResponseHeaders();
+          if (req.status == 404) {
+            reject({error: "not_found", reason: "missing"})
+          } else {
+            var obj = {};
+            var list = head.split("\n").forEach(function(row){
+              var cell = row.split(":");
+              if (cell[1]) obj[cell[0].toLowerCase()] =
+                cell[1].replace(/<(.*)>/, '$1').trim().replace(/"/g,"");
+            }); // Lower case to work around browsers' implementations
+            resolve(obj);
+          }
+        }
+      }
+      req.send(null);
+    });
   }
 
   /*!
-   * delete(id, callback)
+   * get(id)
+   * To retrieve the document with given id. It will return the current
+   * document as a javascript object if the document exists. Otherwise,
+   * it will return {Error: not found}.
+   * 
+   * A Promise is returned with the required document or error message.
+   * 
+   * @param {id} document internal id.
+   * @api public
+   */
+  self.get = function(id) {
+    return new Promise(function(resolve,reject) {
+      reqJSON('GET', self.protocol + self.host + self.db + "/" + id)
+      .then(function(data){
+        resolve(data);
+      }).catch(function(err){
+        reject(err);
+      });
+    });
+  }
+
+  /*!
+   * uuid(count)
+   * Requests one or more Universally Unique Identifiers (UUIDs) from
+   * the CouchDB instance. The response is a JSON object providing a
+   * list of UUIDs.
+   * 
+   * A Promise is returned with an array with the UUIDs.
+   * 
+   * @param {count} Number of UUIDs to return. Default is 1.
+   * @api public
+   */
+  self.uuid = function(count=1) {
+    return new Promise(function(resolve,reject) {
+      reqJSON('GET', self.protocol + self.host + "_uuids?count="+count)
+      .then(function(data){
+        resolve(data.uuids);
+      }).catch(function(err){
+        reject(err);
+      });
+    });
+  }
+
+  /*!
+   * delete(id)
    * To delete the document with given id. Document current revision is
    * obtained by HEAD request to the database.
    * If successful, it will return the revision id for the deletion stub.
@@ -165,43 +226,81 @@ function Couching(database) {
    * of the latter is pending)
    * 
    * @param {id} document internal id.
-   * @param {callback} function to receive CouchDB answer.
    * @api public
    */
-  self.delete = function(id, callback) {
-    self.head(id, function(head){
-      deleteDoc(head, id, callback);
+  self.delete = function(id) {
+    return new Promise(function(resolve,reject) {
+      self.head(id)
+      .then(function(data) {
+        console.log("Head is", data);
+        reqJSON('DELETE', self.protocol + self.host + self.db + "/" +
+          id + "?rev=" + data.etag)
+        .then(function(data1){
+          resolve(data1);
+        })
+        .catch(function(err1){
+          reject(err1);
+        })
+      })
+      .catch(function(err) {
+        reject(err);
+      });
     });
   }
 
   /*!
-   * put(doc, callback)
+   * put(doc)
    * To store new documents into the database or to revise an existing
-   * document. If the document does not contain an id, a new id is
+   * document. If the document does not contain an id, a new uuid is
    * assigned.
+   * If the document exists, a new revision is generated.
+   * 
+   * A Promise is returned with the response from CouchDB.
    * 
    * @param {doc} document as a javascript object.
-   * @param {callback} function to receive CouchDB answer.
    * @api public
    */
-  self.put = function(doc, callback) {
-    var req = new XMLHttpRequest();
-    req.addEventListener("load",function(evt) {
-      storeDoc(this, doc, callback);
-    })
-    if (doc._id) {
-      req.open('GET', self.protocol + self.host + self.db + "/" + doc._id);
-    } else {
-      req.open('GET', self.protocol + self.host + "_uuids");
+  self.put = function(doc) {
+    if (!doc._id) { // recursive call when doc._id is missing
+      self.uuid(1)
+      .then(function(data) {
+        doc._id = data[0];
+        return(self.put(doc));
+      });
+    } else {        // main put call to return a Promise
+      return new Promise(function(resolve,reject) {
+        self.get(doc._id)
+        .then(function(data) {
+          for (var prop in doc) {
+            data[prop] = doc[prop];
+          }
+          reqJSON('PUT', self.protocol + self.host + self.db + "/" +
+            doc._id, data)
+          .then(function(data1){
+            resolve(data1);
+          })
+          .catch(function(err1){
+            reject(err);
+          })
+        })
+        .catch(function(err) {
+          reqJSON('PUT', self.protocol + self.host + self.db + "/" +
+            doc._id, doc)
+          .then(function(data1){
+            resolve(data1);
+          }).catch(function(err1){
+            reject(err);
+          })
+        });
+      });
     }
-    req.send();
   }
 
   /*!
-   * post(doc, callback)
+   * post(doc)
    * To store new documents into the database. Unlike put call, it will
    * always create a new document with an id that is assigned during
-   * document creation. Any id passed in doc is discarded.
+   * document creation. If doc._id is passed, it is discarded.
    * 
    * This implementation does not use the POST method. The reason comes
    * from CouchDB docs: "It is recommended that you avoid POST when
@@ -209,114 +308,51 @@ function Couching(database) {
    * occasionally resend POST requests, which can result in duplicate
    * document creation."
    * 
+   * A Promise is returned with the response from CouchDB.
+   * 
    * @param {doc} document as a javascript object.
-   * @param {callback} function to receive CouchDB answer.
    * @api public
    */
 
-  self.post = function(doc, callback) {
+  self.post = function(doc) {
     if (doc._id) {
       doc._id = undefined;
     }
-    var req = new XMLHttpRequest();
-    req.addEventListener("load",function(evt) {
-      storeDoc(this, doc, callback);
-    })
-    req.open('GET', self.protocol + self.host + "_uuids");
-    req.send();
+    return(self.put(doc));
   }
 
   /*!
-   * query(view, options, callback)
+   * query(view, options)
    * To query a map design/view on the database considering the
    * options' values. The resulted documents will be passed
    * to the callback function.
    * 
+   * A Promise is returned with the query result from CouchDB.
+   * 
    * @param {view} name of the design/view as defined on database.
    * @param {options} query options as a javascript object.
-   * @param {callback} function to receive CouchDB retrieved documents.
    * @api public
    */
-  self.query = function(view, options, callback) {
-    //if (self.status!="database ok") return(-1);
-    var req = new XMLHttpRequest();
-    req.onreadystatechange=function() {
-      if (req.readyState==4) {
-				obj = JSON.parse(this.responseText);
-				callback(obj);
-      }
-    }
+  self.query = function(view, options) {
     var query = "";
     view = view.split("/");
-    for (opt in options) {
+    for (var opt in options) {
       query += encodeURI(opt+"="+options[opt]+"&");
     }
-    req.open('GET', self.protocol + self.host + self.db + "_design/" + view[0] 
-      + "/_view/" + view[1] + "?" + query.slice(0,-1));
-    req.send();
+    return new Promise(function(resolve,reject) {
+      reqJSON('GET', self.protocol + self.host + self.db +
+        "/_design/" + view[0] + "/_view/" + view[1] +
+        "?" + query.slice(0,-1))
+      .then(function(data){
+        resolve(data);
+      }).catch(function(err){
+        reject(err);
+      });
+    });
   }
 
   /* private helpers */
     
-  /*!
-   * storeDoc(req, doc, callback)
-   * Helper fucntion to store a document into the database.
-   * If the document does not exist, the document is created.
-   * If the document does not contain an id, one UUID is provided.
-   * 
-   * @param {req} request from a CouchDB query.
-   * @param {doc} new/revised document as a javascript object.
-   * @param {callback} function to receive CouchDB answer.
-   * @api private
-   */
-  function storeDoc(req, doc, callback) {
-    if (req.status==404) {
-      var obj = doc;
-    } else {
-      var obj = JSON.parse(req.responseText);
-      if (obj.uuids) {
-        doc._id = obj.uuids[0];
-        obj = doc;
-      } else {
-        for (var prop in doc) {
-          obj[prop] = doc[prop];
-        }
-      }
-    }
-    var req = new XMLHttpRequest();
-    req.addEventListener("load", function(evt) {
-      var obj = JSON.parse(this.responseText);
-      callback(obj);
-    });
-    req.open('PUT', self.protocol + self.host + self.db + "/" + obj._id);
-    req.setRequestHeader("Content-Type", "application/json");
-    req.send(JSON.stringify(obj));
-  }
-
-  /*!
-   * deleteDoc(head, id, callback)
-   * Helper fucntion to delete a document from the database.
-   * If the document does not exist, nothing happens.
-   * 
-   * @param {head} header object from a HEAD CouchDB request.
-   * @param {id} existing document id.
-   * @param {callback} function to receive CouchDB answer.
-   * @api private
-   */
-  function deleteDoc(head, id, callback) {
-    if (head.error) {
-      callback(head);
-    } else {
-      var req = new XMLHttpRequest();
-      req.addEventListener("load", function(evt) {
-        callback(this);
-      });
-      req.open('DELETE', self.protocol + self.host + self.db + "/" + id + 
-        "?rev=" + head.ETag);
-      req.send();
-    }
-  }
-
   function reqJSON(method, url, args=null) {
     var xhr = new XMLHttpRequest();
     return new Promise(function(resolve, reject) {

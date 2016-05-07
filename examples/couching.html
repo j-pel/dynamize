@@ -7,7 +7,7 @@
   </style>
   <body>
     <h1>Couching.js</h1>
-    <p>This is a comodity frontend to manage a CouchDB instance.</p>
+    <p>This is a comodity frontend to manage a CouchDB instance using ES6 promises.</p>
     <h2>Use case 1:</h2>
     <pre id=log>
     </pre>
@@ -30,7 +30,18 @@ function start() {
   .catch(function(err){
     console.log("session bad", err);
   });
-  return(0);
+
+  cdb.query("main/index",{
+    includeDocs: true,
+    descending: true,
+    limit: 10
+  }).then(function(data) {
+    console.log("query ok",data);
+  }).catch(function(err) {
+    console.log("query bad",err);
+  });
+  
+/*
   cdb.login({
     name: '',
     password: ''
@@ -41,6 +52,39 @@ function start() {
   .catch(function(err){
     console.log("login bad", err);
   });
+
+  cdb.get("test1")
+  .then(function(data){
+    console.log("get ok", data);
+  })
+  .catch(function(err){
+    console.log("get bad", err);
+  });
+
+	var doc = {
+		_id: "test3",
+		test: 1,
+		testing: "put new document operation",
+    pesting: "tresting",
+		ok: true,
+		error: null
+	};
+	cdb.put(doc)
+  .then(function(data){
+    console.log("put result ok", data);
+  })
+  .catch(function(err){
+    console.log("put result bad", err);
+  });
+
+	cdb.delete("test2")
+  .then(function(data){
+    console.log("delete result ok", data);
+  })
+  .catch(function(err){
+    console.log("delete result bad", err);
+  });
+*/
 }
 
 function testing(info) {
