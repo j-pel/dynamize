@@ -5,7 +5,7 @@
  * http://j-pel.github.io/dynamize
  * 
  * UNDER DEVELOPMENT: API frozen but incomplete
- * Not ready for production
+ * May be used for production but not recomended
  * 
  */
 
@@ -75,17 +75,17 @@ function Couching(database) {
    * @api public
    */
 	self.create = function() {
-    if (self.info) return(0);
-    if (!self.basicauth||self.basicauth=="") return(-1);
-    reqJSON('PUT', self.protocol + self.host + self.db)
-    .then(function(data){
-      console.log("created", data);
-      self.info=data;
-      return(0);
-    }).catch(function(err){
-      console.log("not created", err);
-      self.error=err;
-      return(0);
+    return new Promise(function(resolve,reject) {
+      reqJSON('PUT', self.protocol + self.host + self.db)
+      .then(function(data){
+        self.info=data;
+        resolve(data);
+        return(0);
+      }).catch(function(err){
+        self.error=err;
+        reject(err);
+        return(0);
+      });
     });
   };
 
@@ -97,16 +97,17 @@ function Couching(database) {
    * @api public
    */
 	self.clear = function() {
-    //if (!self.basicauth||self.basicauth=="") return(-1);
-    reqJSON('DELETE', self.protocol + self.host + self.db)
-    .then(function(data){
-      console.log("deleted", data);
-      self.info=null;
-      return(0);
-    }).catch(function(err){
-      console.log("not deleted", err);
-      self.error=err;
-      return(0);
+    return new Promise(function(resolve,reject) {
+      reqJSON('DELETE', self.protocol + self.host + self.db)
+      .then(function(data){
+        self.info=null;
+        resolve(data);
+        return(0);
+      }).catch(function(err){
+        self.error=err;
+        reject(err);
+        return(0);
+      });
     });
   };
 

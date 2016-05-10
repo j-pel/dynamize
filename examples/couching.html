@@ -8,164 +8,176 @@
   <body>
     <h1>Couching.js</h1>
     <p>This is a comodity frontend to manage a CouchDB instance using ES6 promises.</p>
-    <h2>Use case 1:</h2>
-    <pre id=log>
-    </pre>
-		<button onclick="start();">Start</button>
-		<button onclick="stop();">Delete</button>
-    <!--script type="text/javascript" src="https://cdn.rawgit.com/j-pel/dynamize/master/scrolling.js"></script-->
+    <h2>How to use</h2>
+    <p>The following is a step by step guide to test the functionality included in couching.js. Just press the "Next" button to start.</p>
+    <table>
+      <tr><td>CouchDB connection:</td><td>Admin user:</td><td>Password:</td><td></td>
+      </tr>
+      <tr>
+        <td>
+          <input id="database" size=32
+            placeholder="http://localhost:5984/test"
+            value="http://192.168.1.54:5984/test" />
+        </td>
+        <td>
+          <input id="username"  size=12 
+            placeholder="admin" value="jorge" />
+        </td>
+        <td>
+          <input id="password"  size=12 
+            type="password" value="" />
+        </td>
+        <td>
+          <button id="next" onclick="next();">Next</button>
+          
+        </td>
+        <td style="width: 100%"><button id="restart" style="display: none;" onclick="restart();">Restart</button>&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan=6>
+          <h3 id="title">Before starting</h3>
+          <p id="description">Couching requires access to an Apache CouchDB or API compatible databases. It is very easy to install and start a CouchDB instance. Otherwise, it is possible to run CouchDB as a service from some cloud providers. Some of them are free for low traffic applications.<br />
+          Couching initializer returns an object instance with the database name and uri. If the database do not exist, it must be created before using it. Only an administrator can create one. A login is needed.</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan=2><fieldset style="height: 220px;">
+          <legend>code</legend>
+          <pre id=code>cdb = Couching(database.value);
+show(cdb)
+          </pre></fieldset>
+        </td>
+        <td colspan=4><fieldset style="height: 220px;">
+          <legend>show()</legend>
+          <pre id='result'></pre></fieldset>
+        </td>
+      </tr>
+    </table>
+
+    <table id="test_field" style="width:100%;"></table>
     <script type="text/javascript" src="../couching.js"></script>
+    <!--script type="text/javascript" src="http://www.gerd-tentler.de/tools/codeview/codeview.js"></script-->
     <script type="text/javascript">
 
-//var cdb = Couching("http://jmp-fis:5984/test");
-var cdb = Couching("http://192.168.1.54:5984/test");
+var cdb = Couching(database.value);
+show(cdb);
+var test = 0;
+var tests = [
+{
+  title: "Logging in",
+  description:"With proper user credentials, the login call will be succesful and the roles the logged in user has became accessible. In order to create a database, the user must have admin role.",
+  code: "cdb.login({ \n\
+  name: username.value, \n\
+  password: password.value \n\
+}).then(function(data){ \n\
+  show(data); \n\
+}).catch(function(err){ \n\
+  show(err); \n\
+});"
+},
+{
+  title: "Creating",
+  description:"If the user logged in before has admin role, the call to create the database is succesful, otherwise none of the following tests will succeed.",
+  code: "cdb.create().then(function(value){ \n\
+  show(value); \n\
+}).catch(function(err){ \n\
+  show(err); \n\
+});"
+},
+{
+  title: "Storing",
+  description:"",
+  code: "cdb.put({_id: 'test1',value: 12}).then(function(value){ \n\
+  show(value); \n\
+}).catch(function(err){ \n\
+  show(err); \n\
+});"
+},
+{
+  title: "Retrieving",
+  description:"",
+  code: "cdb.get('test1').then(function(value){ \n\
+  show(value); \n\
+}).catch(function(err){ \n\
+  show(err); \n\
+});"
+},
+{
+  title: "Storing a view",
+  description:"",
+  code: "cdb.put({ \n\
+    _id: '_design/main', \n\
+    views: { \n\
+      index:{ \n\
+        map:'function(doc){emit(doc);}' \n\
+      } \n\
+    }, \n\
+    language: 'javascript' \n\
+  }).then(function(value){ \n\
+  show(value); \n\
+}).catch(function(err){ \n\
+  show(err); \n\
+});"
+},
+{
+  title: "Querying",
+  description:"",
+  code: "cdb.query(\"main/index\",{ \n\
+  includeDocs: true, \n\
+  descending: true, \n\
+  limit: 10 \n\
+}).then(function(data) { \n\
+  show(data); \n\
+}).catch(function(err) { \n\
+  show(err); \n\
+});"
+},
+{
+  title: "Clearing",
+  description:"If the user logged in before has admin role, the call to clear the database is succesful, otherwise nothing happens. The database with all its contents is completely deleted.",
+  code: "cdb.clear().then(function(value){ \n\
+  show(value); \n\
+}).catch(function(err){ \n\
+  show(err); \n\
+});"
+}];
 
-function start() {
-  console.log(cdb);
-  cdb.create();
-  cdb.session()
-  .then(function(data){
-    console.log("session ok", data);
-  })
-  .catch(function(err){
-    console.log("session bad", err);
-  });
-
-  cdb.query("main/index",{
-    includeDocs: true,
-    descending: true,
-    limit: 10
-  }).then(function(data) {
-    console.log("query ok",data);
-  }).catch(function(err) {
-    console.log("query bad",err);
-  });
-  
-/*
-  cdb.login({
-    name: '',
-    password: ''
-  })
-  .then(function(data){
-    console.log("login ok", data);
-  })
-  .catch(function(err){
-    console.log("login bad", err);
-  });
-
-  cdb.get("test1")
-  .then(function(data){
-    console.log("get ok", data);
-  })
-  .catch(function(err){
-    console.log("get bad", err);
-  });
-
-	var doc = {
-		_id: "test3",
-		test: 1,
-		testing: "put new document operation",
-    pesting: "tresting",
-		ok: true,
-		error: null
-	};
-	cdb.put(doc)
-  .then(function(data){
-    console.log("put result ok", data);
-  })
-  .catch(function(err){
-    console.log("put result bad", err);
-  });
-
-	cdb.delete("test2")
-  .then(function(data){
-    console.log("delete result ok", data);
-  })
-  .catch(function(err){
-    console.log("delete result bad", err);
-  });
-*/
+function next() {
+  if (test==tests.length) {
+    var but = document.getElementById("next");
+    document.getElementById("restart").style.display = 'block';
+    but.disable=true;
+    return(0);
+  }
+  var current = tests[test];
+  document.getElementById("title").innerText = "Test "+(test+1)+": "+current.title;
+  document.getElementById("description").innerText = current.description;
+  document.getElementById("code").innerText = current.code;
+  eval(current.code);
+  test++;
 }
 
-function testing(info) {
-	console.log("testing",info)
-  if (info.roles) if (info.roles.indexOf("_admin")==-1) return(0);
-	console.log("Admin starting tests on",cdb);
-	var doc = {
-		_id: "test1",
-		test: 1,
-		testing: "put new document operation",
-		ok: true,
-		error: null
-	};
-	cdb.put(doc, function(info){
-		assert(info,doc);
-	});
-
-	doc = {
-		_id: "test2",
-		test: 2,
-		testing: "post new document operation",
-		ok: true,
-		error: null
-	};
-	cdb.put(doc, function(info){
-		assert(info,doc);
-	});
-
-	doc = {
-		_id: "test1",
-		test: 3,
-		testing: "put existing document operation",
-		ok: null,
-		error: "conflict"
-	};
-	cdb.put(doc, function(info){
-		assert(info,doc);
-	});
-
-	cdb.get("test1",test1);
+function restart() {
+  test = 0;
+  document.getElementById("restart").style.display = 'none';
+  document.getElementById("next").disable = false;
+  next();
 }
 
-function stop() {
-	cdb.clear();
+function show(info) {
+	var result = "";
+  if (typeof(info)==='object') {
+    for (var prop in info) {
+      if (typeof(info[prop])!='function') {
+        result += prop+ ": "+ info[prop] + "\n";
+      }
+    }
+  } else {
+    result += info + "\n";
+  }
+  document.getElementById('result').innerText = result;
 }
 
-/*
-var u = cdb.query("main/index",{
-	includeDocs: true,
-	descending: true,
-	limit: 10
-},show);
-*/
-
-function test1(info) {
-	console.log("get", info);
-	info.test = 4;
-	info.testing = "put existing document operation"
-	cdb.put(info, function(info){
-		assert(info,{
-			ok: true,
-			error: null
-		});
-	});
-}
-
-function assert(info, result) {
-	console.log("assert", info, result);
-}
-	
-function log(info) {
-	//var log = document.getElementById('log');
-	//log.innerText += Object.values(info);
-	console.log(info);
-	cdb.session(log2);
-}
-
-function log2(info) {
-	console.log(info);
-}
-    
     </script>
   </body>
 </html>
