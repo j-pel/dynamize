@@ -85,9 +85,18 @@ var tests = [
 });"
 },
 {
-  title: "Storing",
+  title: "Storing with put",
   description:"",
   code: "cdb.put({_id: 'test1',value: 12}).then(function(value){ \n\
+  show(value); \n\
+}).catch(function(err){ \n\
+  show(err); \n\
+});"
+},
+{
+title:"Storing with post",
+description:"",
+code:"{cdb.post({_id:'test2', value:6}).then(function(value){ \n\
   show(value); \n\
 }).catch(function(err){ \n\
   show(err); \n\
