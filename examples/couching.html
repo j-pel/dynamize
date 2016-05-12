@@ -74,8 +74,7 @@ var tests = [
 }).catch(function(err){ \n\
   show(err); \n\
 });"
-},
-{
+},{
   title: "Creating",
   description:"If the user logged in before has admin role, the call to create the database is succesful, otherwise none of the following tests will succeed.",
   code: "cdb.create().then(function(value){ \n\
@@ -83,26 +82,23 @@ var tests = [
 }).catch(function(err){ \n\
   show(err); \n\
 });"
-},
-{
+},{
   title: "Storing with put",
   description:"",
-  code: "cdb.put({_id: 'test1',value: 12}).then(function(value){ \n\
+  code: "cdb.put({_id: 'test1',prop: 12}).then(function(value){ \n\
   show(value); \n\
 }).catch(function(err){ \n\
   show(err); \n\
 });"
-},
-{
+},{
 title:"Storing with post",
 description:"",
-code:"{cdb.post({_id:'test2', value:6}).then(function(value){ \n\
+code:"cdb.post({_id:'test2', prop:6}).then(function(value){ \n\
   show(value); \n\
 }).catch(function(err){ \n\
   show(err); \n\
 });"
-},
-{
+},{
   title: "Retrieving",
   description:"",
   code: "cdb.get('test1').then(function(value){ \n\
@@ -110,8 +106,15 @@ code:"{cdb.post({_id:'test2', value:6}).then(function(value){ \n\
 }).catch(function(err){ \n\
   show(err); \n\
 });"
-},
-{
+},{
+  title: "Head call",
+  description:"A head call is the least intensive call to the database. It retrieves just the header, containing the document revision.",
+  code: "cdb.head('test1').then(function(value){ \n\
+  show(value); \n\
+}).catch(function(err){ \n\
+  show(err); \n\
+});"
+},{
   title: "Storing a view",
   description:"",
   code: "cdb.put({ \n\
@@ -127,8 +130,7 @@ code:"{cdb.post({_id:'test2', value:6}).then(function(value){ \n\
 }).catch(function(err){ \n\
   show(err); \n\
 });"
-},
-{
+},{
   title: "Querying",
   description:"",
   code: "cdb.query(\"main/index\",{ \n\
@@ -140,8 +142,7 @@ code:"{cdb.post({_id:'test2', value:6}).then(function(value){ \n\
 }).catch(function(err) { \n\
   show(err); \n\
 });"
-},
-{
+},{
   title: "Clearing",
   description:"If the user logged in before has admin role, the call to clear the database is succesful, otherwise nothing happens. The database with all its contents is completely deleted.",
   code: "cdb.clear().then(function(value){ \n\
