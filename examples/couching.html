@@ -48,7 +48,7 @@ show(cdb)
           </pre></fieldset>
         </td>
         <td colspan=4><fieldset style="height: 220px;">
-          <legend>show()</legend>
+          <legend>show() output</legend>
           <pre id='result'></pre></fieldset>
         </td>
       </tr>
@@ -60,7 +60,14 @@ show(cdb)
     <script type="text/javascript">
 
 var cdb = Couching(database.value);
-show(cdb);
+console.log(cdb.post({did:'test3', prop:6}));
+/*
+.then(function(value){
+  console.log(value);
+}).catch(function(err){
+  console.log("err",err);
+});
+*/
 var test = 0;
 var tests = [
 {

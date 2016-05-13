@@ -32,8 +32,8 @@ function Couching(database) {
   self.basicauth = window.btoa(url[2].slice(0,-1));
   self.host = url[3];
   self.db = url[4];
-  reqJSON('GET', self.protocol + self.host + self.db)
-  .then(function(data){
+  reqJSON('GET', self.protocol +
+    self.host + self.db).then(function(data){
     self.info = data;
   }).catch(function(err){
     self.error = err;
@@ -54,8 +54,8 @@ function Couching(database) {
    */
 	self.login = function(user) {
     return new Promise(function(resolve,reject) {
-      reqJSON('POST', self.protocol + self.host + "_session",user)
-      .then(function(data){
+      reqJSON('POST', self.protocol +
+        self.host + "_session",user).then(function(data){
         self.basicauth = window.btoa(user.name+":"+user.password);
         self.roles = data.roles;
         resolve(data);
@@ -76,8 +76,8 @@ function Couching(database) {
    */
 	self.create = function() {
     return new Promise(function(resolve,reject) {
-      reqJSON('PUT', self.protocol + self.host + self.db)
-      .then(function(data){
+      reqJSON('PUT', self.protocol +
+        self.host + self.db).then(function(data){
         self.info=data;
         resolve(data);
         return(0);
@@ -98,8 +98,8 @@ function Couching(database) {
    */
 	self.clear = function() {
     return new Promise(function(resolve,reject) {
-      reqJSON('DELETE', self.protocol + self.host + self.db)
-      .then(function(data){
+      reqJSON('DELETE', self.protocol +
+        self.host + self.db).then(function(data){
         self.info=null;
         resolve(data);
         return(0);
@@ -121,8 +121,8 @@ function Couching(database) {
    */
 	self.session = function() {
     return new Promise(function(resolve,reject) {
-      reqJSON('GET', self.protocol + self.host + "_session")
-      .then(function(data){
+      reqJSON('GET', self.protocol +
+        self.host + "_session").then(function(data){
         resolve(data);
       }).catch(function(err){
         reject(err);
@@ -180,8 +180,8 @@ function Couching(database) {
    */
   self.get = function(id) {
     return new Promise(function(resolve,reject) {
-      reqJSON('GET', self.protocol + self.host + self.db + "/" + id)
-      .then(function(data){
+      reqJSON('GET', self.protocol +
+        self.host + self.db + "/" + id).then(function(data){
         resolve(data);
       }).catch(function(err){
         reject(err);
@@ -202,8 +202,8 @@ function Couching(database) {
    */
   self.uuid = function(count=1) {
     return new Promise(function(resolve,reject) {
-      reqJSON('GET', self.protocol + self.host + "_uuids?count="+count)
-      .then(function(data){
+      reqJSON('GET', self.protocol +
+        self.host + "_uuids?count="+count).then(function(data){
         resolve(data.uuids);
       }).catch(function(err){
         reject(err);
@@ -231,19 +231,15 @@ function Couching(database) {
    */
   self.delete = function(id) {
     return new Promise(function(resolve,reject) {
-      self.head(id)
-      .then(function(data) {
+      self.head(id).then(function(data) {
         console.log("Head is", data);
         reqJSON('DELETE', self.protocol + self.host + self.db + "/" +
-          id + "?rev=" + data.etag)
-        .then(function(data1){
+          id + "?rev=" + data.etag).then(function(data1){
           resolve(data1);
-        })
-        .catch(function(err1){
+        }).catch(function(err1){
           reject(err1);
-        })
-      })
-      .catch(function(err) {
+        });
+      }).catch(function(err) {
         reject(err);
       });
     });
@@ -262,35 +258,39 @@ function Couching(database) {
    * @api public
    */
   self.put = function(doc) {
+    console.log("enter put with",doc);
     if (!doc._id) { // recursive call when doc._id is missing
-      self.uuid(1)
-      .then(function(data) {
+      console.log("put no id",doc);
+      self.uuid(1).then(function(data) {
         doc._id = data[0];
-        return(self.put(doc));
+        console.log("put",doc);
+        return self.put(doc);
+      }).catch(function(err){
+        console.log(err);
       });
     } else {        // main put call to return a Promise
+      console.log("put with id",doc);
       return new Promise(function(resolve,reject) {
-        self.get(doc._id)
-        .then(function(data) {
+        self.get(doc._id).then(function(data) {
+      console.log("doc exists",doc,data);
           for (var prop in doc) {
             data[prop] = doc[prop];
           }
           reqJSON('PUT', self.protocol + self.host + self.db + "/" +
-            doc._id, data)
-          .then(function(data1){
-            resolve(data1);
-          })
-          .catch(function(err1){
-            reject(err);
-          })
-        })
-        .catch(function(err) {
-          reqJSON('PUT', self.protocol + self.host + self.db + "/" +
-            doc._id, doc)
-          .then(function(data1){
+            doc._id, data).then(function(data1){
             resolve(data1);
           }).catch(function(err1){
             reject(err);
+          })
+        }).catch(function(err) {
+      console.log("doc not exist",doc,err);
+          reqJSON('PUT', self.protocol + self.host + self.db + "/" +
+            doc._id, doc).then(function(data2){
+      console.log("doc created",doc,data2);
+            resolve(data2);
+          }).catch(function(err2){
+      console.log("doc not created",doc,err2);
+            reject(err2);
           })
         });
       });
@@ -316,8 +316,9 @@ function Couching(database) {
    */
 
   self.post = function(doc) {
+    console.log("post",doc);
     if (doc._id) {
-      doc._id = undefined;
+      doc._id = null;
     }
     return(self.put(doc));
   }
@@ -343,8 +344,7 @@ function Couching(database) {
     return new Promise(function(resolve,reject) {
       reqJSON('GET', self.protocol + self.host + self.db +
         "/_design/" + view[0] + "/_view/" + view[1] +
-        "?" + query.slice(0,-1))
-      .then(function(data){
+        "?" + query.slice(0,-1)).then(function(data){
         resolve(data);
       }).catch(function(err){
         reject(err);
@@ -379,7 +379,7 @@ function Couching(database) {
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify(args));
       } else {
-        xhr.send(null)
+        xhr.send(null);
       }
     });
   }
