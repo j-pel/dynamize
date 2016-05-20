@@ -4,6 +4,8 @@
  * Copyright © 2016 Jorge M. Peláez | MIT license
  * http://j-pel.github.io/dynamize
  * 
+ * This is still an early draft
+ *
  */
 
 (function(exports) {
