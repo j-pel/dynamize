@@ -5,7 +5,7 @@
  * http://j-pel.github.io/dynamize
  * 
  * UNDER DEVELOPMENT: API frozen but incomplete
- * May be used for production but not recomended
+ * May be used for production but not recommended
  * 
  */
 
@@ -74,7 +74,7 @@ function Couching(database) {
    * 
    * @api public
    */
-	self.create = function() {
+self.create = function() {
     return new Promise(function(resolve,reject) {
       reqJSON('PUT', self.protocol +
         self.host + self.db).then(function(data){
