@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+		<style>
+		div.small-box {
+			position: absolute;
+			border: 1pt dotted #999;
+			text-align: center;
+			vertical-align: middle;
+			width: 48px;
+			height: 48px;
+			padding: 4px;
+			margin: 2px;
+			font-size: 10pt;
+			text-decoration: none;
+		}
+		.sizer {
+			display: none;
+			position: absolute;
+			width: 16px;
+			height: 16px;
+			bottom: -4px;
+			right: -4px;
+			opacity: 0.8;
+			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH3wUaESwc6CzCdwAAAapJREFUOMuNkjuL6mAQht+JS+KlsAnYWG0XsYh2KQQRjo0i2GplYSHir7DQwsJWLASx9i8IluKJ9iIiNlHxiIVCAmZOtXHjbXdgmG9mmIdh3g/MjFdu27Yr9vt9vu8LeGNE5Monkwni8Th/r70F3INisRgikQhUVeWvOjHfgLZtQxBuzHa7za1WC9lsFpZlIRgMQpZl7Pd7jMdj6LpODwAiAhE5ME3TOJ1Ow+PxgIjAzJAkCY1GA7VaDR/3qzIziAiCIKDT6fByucTlcoFpmjidTgiFQpjNZsjlcqjX6/Rw+ev16orfvdlssqIoXC6XHTWcpmEYvFgsmJkxGo34mazFYpGTyaSr5zyOx+MnAK5Wq5xKpZ4ChsPhQ905uWmay0qlAgBIJBJP5czn83RfcwCiKP7x+XyQZdkl5U/20ev1WBRFWJYFSZIgCAJWqxUGgwGv12tkMhmoqkovP9lms2FN01AqlRytD4cD5vM5zuczptMpvdtACIfDpOv63263i0AgAL/fD8Mw4PV6fxwGcFNht9tNFUXhaDT6UoVn7kq22+2/QqHw62Fmxn8pB4mgcwgvogAAAABJRU5ErkJggg==);
+		}
+		.sizable:hover div.sizer {
+			display: block;
+		}	
+		</style>
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Dynamize.js by j-pel</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Dynamize.js</h1>
+        <h2>Small plain vanilla javascript goodies for enhancing user interaction</h2>
+        <a href="https://github.com/j-pel/dynamize" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+
+    <h1>Sliding.js</h1>
+    <p>This tool is useful for several scenarios. From slide presentation layouts and image carousels to touch friendly pagination systems.</p>
+    <p>It is simple to use. Just identify the items that should be made slidable. Then append each slide as an object, including a function to draw the slide. Each slide could have a different draw function and different information on it.</p>
+    <h2>Use case 1: Slides</h2>
+    <pre>
+    &lt;div class="slidable" style="border: 1px solid black;"&gt;
+    &lt;/div&gt;
+    &lt;script type="text/javascript"&gt;
+
+      sliding.appendSlide({title: "Slide one", draw: paintSlide});
+      sliding.appendSlide({title: "Slide two", draw: paintSlide});
+      sliding.appendSlide({title: "Slide three", color: 'yellow', draw: paintColorSlide});
+
+      function paintSlide(obj, info){
+        obj.innerHTML = info.title;
+      }
+
+      function paintColorSlide(obj, info){
+        obj.innerHTML = info.title;
+        obj.style.backgroundColor = info.color;
+      }
+
+    &lt;/script&gt;
+    </pre>
+    <div class="slidable" style="border: 1px solid black;">
+    </div>
+
+    <h2>Bugfixes</h2>
+
+    <p>Please feel free to report bugs or to request features at <a href="https://github.com/j-pel/dynamize/issues">github.com/j-pel/dynamize</a>.</p>
+
+    <script type="text/javascript" src="https://cdn.rawgit.com/j-pel/dynamize/master/sliding.js"></script>
+    <script type="text/javascript">
+
+      sliding.appendSlide({title: "Slide one", draw: paintSlide});
+      sliding.appendSlide({title: "Slide two", draw: paintSlide});
+      sliding.appendSlide({title: "Slide three", color: 'yellow', draw: paintColorSlide});
+
+      function paintSlide(obj, info){
+        obj.innerHTML = info.title;
+      }
+
+      function paintColorSlide(obj, info){
+        obj.innerHTML = info.title;
+        obj.style.backgroundColor = info.color;
+      }
+
+    </script>
+  </body>
+</html>
