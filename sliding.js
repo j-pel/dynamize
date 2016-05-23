@@ -10,20 +10,22 @@
  */
 
 (function(exports) {
+
   var sliders = [];
   var slides = [];
   var curSlide = 0;
+
+  document.addEventListener('keydown', handleKeyDown, false);
 
   var elementList = document.getElementsByClassName('slidable');
   for (var i = 0; i < elementList.length; i++) {
     var ele = elementList[i];
     sliders.push(ele);
+    ele.addEventListener('touchstart', handleTouchStart, false);
+    ele.addEventListener('touchmove', handleTouchMove, true);
+    ele.addEventListener('touchleave', handleTouchEnd, true);
+    ele.addEventListener('touchend', handleTouchEnd, true);
   }
-  document.addEventListener('keydown', handleKeyDown, false);
-  document.addEventListener('touchstart', handleTouchStart, false);
-  document.addEventListener('touchmove', handleTouchMove, true);
-  document.addEventListener('touchleave', handleTouchEnd, true);
-  document.addEventListener('touchend', handleTouchEnd, true);
 
   var appendSlide = exports.appendSlide = function(info) {
     slides.push(info);
@@ -32,6 +34,7 @@
 
   var handleTouchStart = function (event) {
     var touches = event.changedTouches[0];
+    console.log("Start touch",touches);
     touchstart = [touches.pageX,touches.pageY,new Date().getTime()];
     //event.preventDefault();
   }
@@ -42,6 +45,7 @@
 
   var handleTouchEnd = function (event) {
     var touches = event.changedTouches[0];
+    console.log("End touch",touches);
     var dist = [
       touches.pageX-touchstart[0],
       touches.pageY-touchstart[1],
@@ -53,7 +57,7 @@
     }
   }
 
-  function prevSlide() {
+  var prevSlide = exports.prevSlide = function() {
     if (curSlide>0) curSlide--;
     for (var s in sliders) {
       var draw = slides[curSlide].draw;
@@ -61,7 +65,7 @@
     }
   }
 
-  function nextSlide() {
+  var nextSlide = exports.nextSlide = function() {
     if (curSlide<(slides.length-1)) curSlide++;
     for (var s in sliders) {
       var draw = slides[curSlide].draw;
