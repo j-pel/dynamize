@@ -3,27 +3,32 @@
  *
  * Copyright © 2016 Jorge M. Peláez | MIT license
  * http://j-pel.github.io/dynamize
- * 
+ *
  * UNDER DEVELOPMENT: Proof of concept
- * May be used for production but not recommended
- * 
+ * Not ready for production
+ *
  */
 
 (function(exports) {
+  var sliders = [];
+  var slides = [];
+  var curSlide = 0;
 
   var elementList = document.getElementsByClassName('slidable');
   for (var i = 0; i < elementList.length; i++) {
     var ele = elementList[i];
-    ele.addEventListener('keydown', handleKeyDown, false);
-    ele.style.cursor = 'move';
-    if (!ele.id) {
-      ele.id = "nn_m_"+i; // for unidentified nodes: important for storing
-    }
+    sliders.push(ele);
   }
+  document.addEventListener('keydown', handleKeyDown, false);
   document.addEventListener('touchstart', handleTouchStart, false);
-  document.addEventListener("touchmove", handleTouchMove, true);
-  document.addEventListener("touchleave", handleTouchEnd, true);
-  document.addEventListener("touchend", handleTouchEnd, true);
+  document.addEventListener('touchmove', handleTouchMove, true);
+  document.addEventListener('touchleave', handleTouchEnd, true);
+  document.addEventListener('touchend', handleTouchEnd, true);
+
+  var appendSlide = exports.appendSlide = function(info) {
+    slides.push(info);
+    if (curSlide==0) prevSlide();
+  }
 
   var handleTouchStart = function (event) {
     var touches = event.changedTouches[0];
@@ -48,20 +53,35 @@
     }
   }
 
+  function prevSlide() {
+    if (curSlide>0) curSlide--;
+    for (var s in sliders) {
+      var draw = slides[curSlide].draw;
+      draw(sliders[s],slides[curSlide]);
+    }
+  }
+
+  function nextSlide() {
+    if (curSlide<(slides.length-1)) curSlide++;
+    for (var s in sliders) {
+      var draw = slides[curSlide].draw;
+      draw(sliders[s],slides[curSlide]);
+    }
+  }
+
   function handleKeyDown(event){
     if(document.activeElement.tagName=='INPUT') return 0;
     switch(event.keyCode) {
       case 38:  // Up
       case 40:  // Down
-        document.getElementById('month-list').focus();
         break;
       case 33:  // PgUp
       case 37:  // Left
-        nextSlide()
+        prevSlide()
         break;
       case 34:  // PgDown
       case 39:  // Right
-        prevSlide()
+        nextSlide()
         break;
       default:
         break;

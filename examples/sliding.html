@@ -8,29 +8,51 @@
   <body>
     <h1>Sliding.js</h1>
     <p>This tool is useful for several scenarios. From slide presentation layouts and image carousels to touch friendly pagination systems.</p>
-    <p>It is simple to use. Just identify the items that should be made slidable. The contents are not affected in any way.</p>
+    <p>It is simple to use. Just identify the items that should be made slidable. Then append each slide as an object, including a function to draw the slide. Each slide could have a different draw function and different information on it.</p>
     <h2>Use case 1: Slides</h2>
     <pre>
-    &lt;div class="slidable"&gt;
+    &lt;div class="slidable" style="border: 1px solid black;"&gt;
     &lt;/div&gt;
+    &lt;script type="text/javascript"&gt;
+
+      sliding.appendSlide({title: "Slide one", draw: paintSlide});
+      sliding.appendSlide({title: "Slide two", draw: paintSlide});
+      sliding.appendSlide({title: "Slide three", color: 'yellow', draw: paintColorSlide});
+
+      function paintSlide(obj, info){
+        obj.innerHTML = info.title;
+      }
+
+      function paintColorSlide(obj, info){
+        obj.innerHTML = info.title;
+        obj.style.backgroundColor = info.color;
+      }
+
+    &lt;/script&gt;
     </pre>
-    <div class="slidable">
-      <ul>
-        <li>One</li>
-        <li>Two</li>
-        <li>Three</li>
-        <li>Four</li>
-        <li>Five</li>
-      </ul>
+    <div class="slidable" style="border: 1px solid black;">
     </div>
 
     <h2>Bugfixes</h2>
-    
-    <p>Please feel free to create an issue to report any bug, feature requests, and more at <a href="https://github.com/j-pel/dynamize/issues">github.com/j-pel/dynamize</a>.</p>
-    
+
+    <p>Please feel free to report bugs or to request features at <a href="https://github.com/j-pel/dynamize/issues">github.com/j-pel/dynamize</a>.</p>
+
     <script type="text/javascript" src="../sliding.js"></script>
     <script type="text/javascript">
-      
+
+      sliding.appendSlide({title: "Slide one", draw: paintSlide});
+      sliding.appendSlide({title: "Slide two", draw: paintSlide});
+      sliding.appendSlide({title: "Slide three", color: 'yellow', draw: paintColorSlide});
+
+      function paintSlide(obj, info){
+        obj.innerHTML = info.title;
+      }
+
+      function paintColorSlide(obj, info){
+        obj.innerHTML = info.title;
+        obj.style.backgroundColor = info.color;
+      }
+
     </script>
   </body>
 </html>
