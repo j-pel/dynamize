@@ -29,7 +29,7 @@
 
   var appendSlide = exports.appendSlide = function(info) {
     slides.push(info);
-    if (curSlide==0) prevSlide();
+    if (curSlide==0) previous();
   }
 
   var handleTouchStart = function (event) {
@@ -52,12 +52,12 @@
       new Date().getTime()-touchstart[2]
     ];
     if ((dist[2]<300)&&(Math.abs(dist[1])<100)) {
-      if (dist[0]<-200) prevSlide()
-      else if (dist[0]>200) nextSlide();
+      if (dist[0]<-200) previous()
+      else if (dist[0]>200) next();
     }
   }
 
-  var prevSlide = exports.prevSlide = function() {
+  var previous = exports.previous = function() {
     if (curSlide>0) curSlide--;
     for (var s in sliders) {
       var draw = slides[curSlide].draw;
@@ -65,7 +65,7 @@
     }
   }
 
-  var nextSlide = exports.nextSlide = function() {
+  var next = exports.next = function() {
     if (curSlide<(slides.length-1)) curSlide++;
     for (var s in sliders) {
       var draw = slides[curSlide].draw;
@@ -81,11 +81,11 @@
         break;
       case 33:  // PgUp
       case 37:  // Left
-        prevSlide()
+        previous()
         break;
       case 34:  // PgDown
       case 39:  // Right
-        nextSlide()
+        next()
         break;
       default:
         break;
