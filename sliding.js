@@ -27,6 +27,8 @@
     ele.addEventListener('touchend', handleTouchEnd, true);
   }
 
+/* fu	nction */
+
   var appendSlide = exports.appendSlide = function(info) {
     slides.push(info);
     if (curSlide==0) previous();
