@@ -3,20 +3,18 @@
  *
  * Copyright © 2016 Jorge M. Peláez | MIT license
  * http://j-pel.github.io/dynamize
- * 
+ *
  * UNDER DEVELOPMENT: API frozen but incomplete
  * May be used for production but not recommended
- * 
+ *
  */
-
-/* Object Constructor */
 
 /*!
  * Couching(server)
  * Starts or changes the database handler to a specific server.
  * It verifies that the server is a proper CouchDB instance and
  * opens or create the database of given name.
- * 
+ *
  * @param {database} full HTTP address of a CouchDB compatible database.
  * @api public
  */
@@ -24,6 +22,8 @@
 function Couching(database) {
 
   'use strict';
+
+  /* Object Constructor */
 
   self = {}
 
@@ -38,17 +38,17 @@ function Couching(database) {
   }).catch(function(err){
     self.error = err;
   });
-  
+
   /* client API */
-  
+
   /*!
    * login(user)
    * To verify user credentials to the system and start a session for
    * the given user. If the credentials are incorrect, the session
    * is closed and the database is in visitors' access state.
-   * 
+   *
    * A Promise is returned with the given authorization or an error.
-   * 
+   *
    * @param {user} object containing user.name and user.password.
    * @api public
    */
@@ -71,7 +71,7 @@ function Couching(database) {
    * create()
    * To create a new database on the CouchDB instance.
    * It works only if the logged user has admin capabilities.
-   * 
+   *
    * @api public
    */
 self.create = function() {
@@ -93,7 +93,7 @@ self.create = function() {
    * clear()
    * To delete the entire database from CouchDB instance.
    * It works only if the logged user has admin capabilities.
-   * 
+   *
    * @api public
    */
 	self.clear = function() {
@@ -114,9 +114,9 @@ self.create = function() {
   /*!
    * session()
    * To get the current session information from CouchDB.
-   * 
+   *
    * A Promise is returned with the required information or error.
-   * 
+   *
    * @api public
    */
 	self.session = function() {
@@ -137,9 +137,9 @@ self.create = function() {
    * with a property called ETag with the current revision number
    * if the document exists. Otherwise, the object will have an error
    * property plus the other header information.
-   * 
+   *
    * A Promise is returned with the required header or error message.
-   * 
+   *
    * @param {id} document internal id.
    * @api public
    */
@@ -172,9 +172,9 @@ self.create = function() {
    * To retrieve the document with given id. It will return the current
    * document as a javascript object if the document exists. Otherwise,
    * it will return {Error: not found}.
-   * 
+   *
    * A Promise is returned with the required document or error message.
-   * 
+   *
    * @param {id} document internal id.
    * @api public
    */
@@ -194,9 +194,9 @@ self.create = function() {
    * Requests one or more Universally Unique Identifiers (UUIDs) from
    * the CouchDB instance. The response is a JSON object providing a
    * list of UUIDs.
-   * 
+   *
    * A Promise is returned with an array with the UUIDs.
-   * 
+   *
    * @param {count} Number of UUIDs to return. Default is 1.
    * @api public
    */
@@ -225,14 +225,13 @@ self.create = function() {
    * preserved. This is to allow, for example, recording the time you
    * deleted a document, or the reason you deleted it. (Implementation
    * of the latter is pending)
-   * 
+   *
    * @param {id} document internal id.
    * @api public
    */
   self.delete = function(id) {
     return new Promise(function(resolve,reject) {
       self.head(id).then(function(data) {
-        console.log("Head is", data);
         reqJSON('DELETE', self.protocol + self.host + self.db + "/" +
           id + "?rev=" + data.etag).then(function(data1){
           resolve(data1);
@@ -251,28 +250,28 @@ self.create = function() {
    * document. If the document does not contain an id, a new uuid is
    * assigned.
    * If the document exists, a new revision is generated.
-   * 
+   *
    * A Promise is returned with the response from CouchDB.
-   * 
+   *
    * @param {doc} document as a javascript object.
    * @api public
    */
   self.put = function(doc) {
-    console.log("enter put with",doc);
-    if (!doc._id) { // recursive call when doc._id is missing
-      console.log("put no id",doc);
-      self.uuid(1).then(function(data) {
-        doc._id = data[0];
-        console.log("put",doc);
-        return self.put(doc);
-      }).catch(function(err){
-        console.log(err);
-      });
-    } else {        // main put call to return a Promise
-      console.log("put with id",doc);
-      return new Promise(function(resolve,reject) {
+    return new Promise(function(resolve,reject) {
+      if (!doc._id) {
+        self.uuid(1).then(function(data) {
+          doc._id = data[0];
+          reqJSON('PUT', self.protocol + self.host + self.db + "/" +
+            doc._id, doc).then(function(data1){
+            resolve(data1);
+          }).catch(function(err1){
+            reject(err1);
+          });
+        }).catch(function(err){
+          reject(err);
+        });
+      } else {
         self.get(doc._id).then(function(data) {
-      console.log("doc exists",doc,data);
           for (var prop in doc) {
             data[prop] = doc[prop];
           }
@@ -280,21 +279,18 @@ self.create = function() {
             doc._id, data).then(function(data1){
             resolve(data1);
           }).catch(function(err1){
-            reject(err);
+            reject(err1);
           })
         }).catch(function(err) {
-      console.log("doc not exist",doc,err);
           reqJSON('PUT', self.protocol + self.host + self.db + "/" +
             doc._id, doc).then(function(data2){
-      console.log("doc created",doc,data2);
             resolve(data2);
           }).catch(function(err2){
-      console.log("doc not created",doc,err2);
             reject(err2);
-          })
+          });
         });
-      });
-    }
+      }
+    });
   }
 
   /*!
@@ -302,25 +298,28 @@ self.create = function() {
    * To store new documents into the database. Unlike put call, it will
    * always create a new document with an id that is assigned during
    * document creation. If doc._id is passed, it is discarded.
-   * 
+   *
    * This implementation does not use the POST method. The reason comes
    * from CouchDB docs: "It is recommended that you avoid POST when
    * possible, because proxies and other network intermediaries will
    * occasionally resend POST requests, which can result in duplicate
    * document creation."
-   * 
+   *
    * A Promise is returned with the response from CouchDB.
-   * 
+   *
    * @param {doc} document as a javascript object.
    * @api public
    */
 
   self.post = function(doc) {
-    console.log("post",doc);
-    if (doc._id) {
-      doc._id = null;
-    }
-    return(self.put(doc));
+    return new Promise(function(resolve,reject) {
+      if (doc._id) doc._id = null;
+      self.put(doc).then(function(value){
+        resolve(value);
+      }).catch(function(err){
+        reject(err);
+      });
+    });
   }
 
   /*!
@@ -328,9 +327,9 @@ self.create = function() {
    * To query a map design/view on the database considering the
    * options' values. The resulted documents will be passed
    * to the callback function.
-   * 
+   *
    * A Promise is returned with the query result from CouchDB.
-   * 
+   *
    * @param {view} name of the design/view as defined on database.
    * @param {options} query options as a javascript object.
    * @api public
@@ -353,7 +352,7 @@ self.create = function() {
   }
 
   /* private helpers */
-    
+
   function reqJSON(method, url, args=null) {
     var xhr = new XMLHttpRequest();
     return new Promise(function(resolve, reject) {
@@ -373,7 +372,7 @@ self.create = function() {
         }
       };
       xhr.open(method, url, true);
-      if (self.basicauth!="") 
+      if (self.basicauth!="")
         xhr.setRequestHeader('Authorization', 'Basic ' + self.basicauth);
       if (args && (method === 'POST' || method === 'PUT')) {
         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -385,5 +384,5 @@ self.create = function() {
   }
 
   return(self);
-	
+
 }

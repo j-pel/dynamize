@@ -4,10 +4,16 @@
 		<title>Simple example for couching with CouchDB</title>
 	</head>
   <style>
+  pre.code {
+    font-size: 9pt;
+    padding: 2px;
+    border: 1px solid #aaa;
+    border-left: 10px solid #aaa;
+  }
   </style>
   <body>
     <h1>Couching.js</h1>
-    <p>This is a comodity frontend to manage a CouchDB instance using ES6 promises.</p>
+    <p>This is an easy to use and fully asynchronous frontend to manage a CouchDB instance using ES6 promises.</p>
     <h2>How to use</h2>
     <p>The following is a step by step guide to test the functionality included in couching.js. Just press the "Next" button to start.</p>
     <table>
@@ -20,16 +26,16 @@
             value="http://192.168.1.54:5984/test" />
         </td>
         <td>
-          <input id="username"  size=12 
+          <input id="username"  size=12
             placeholder="admin" value="jorge" />
         </td>
         <td>
-          <input id="password"  size=12 
+          <input id="password"  size=12
             type="password" value="" />
         </td>
         <td>
           <button id="next" onclick="next();">Next</button>
-          
+
         </td>
         <td style="width: 100%"><button id="restart" style="display: none;" onclick="restart();">Restart</button>&nbsp;</td>
       </tr>
@@ -43,7 +49,7 @@
       <tr>
         <td colspan=2><fieldset style="height: 220px;">
           <legend>code</legend>
-          <pre id=code>cdb = Couching(database.value);
+          <pre class=code id=code>cdb = Couching(database.value);
 show(cdb)
           </pre></fieldset>
         </td>
@@ -60,14 +66,7 @@ show(cdb)
     <script type="text/javascript">
 
 var cdb = Couching(database.value);
-console.log(cdb.post({did:'test3', prop:6}));
-/*
-.then(function(value){
-  console.log(value);
-}).catch(function(err){
-  console.log("err",err);
-});
-*/
+
 var test = 0;
 var tests = [
 {
@@ -83,7 +82,7 @@ var tests = [
 });"
 },{
   title: "Creating",
-  description:"If the user logged in before has admin role, the call to create the database is succesful, otherwise none of the following tests will succeed.",
+  description:"If the user logged in in the previous step has admin role defined, the call to create the database is succesful, otherwise the test fails and none of the succesive steps could proceed.",
   code: "cdb.create().then(function(value){ \n\
   show(value); \n\
 }).catch(function(err){ \n\
@@ -91,7 +90,7 @@ var tests = [
 });"
 },{
   title: "Storing with put",
-  description:"",
+  description:"The put call is used to store a document into the database. If the document has an _id defined and a document with the same _id is found already in the database, the result is a revised, merged document. If the document _id is new, the document is stored as is. If no _id is provided, the document is stored with a given unique _id.",
   code: "cdb.put({_id: 'test1',prop: 12}).then(function(value){ \n\
   show(value); \n\
 }).catch(function(err){ \n\
@@ -99,7 +98,7 @@ var tests = [
 });"
 },{
 title:"Storing with post",
-description:"",
+description:"The post call is used to store new documents into the database. If an _id is given, it is discarded and a new, unique _id is given instead.",
 code:"cdb.post({_id:'test2', prop:6}).then(function(value){ \n\
   show(value); \n\
 }).catch(function(err){ \n\
@@ -107,7 +106,7 @@ code:"cdb.post({_id:'test2', prop:6}).then(function(value){ \n\
 });"
 },{
   title: "Retrieving",
-  description:"",
+  description:"The get call is used to retrieve a document from the database knowing its _id.",
   code: "cdb.get('test1').then(function(value){ \n\
   show(value); \n\
 }).catch(function(err){ \n\
@@ -123,7 +122,7 @@ code:"cdb.post({_id:'test2', prop:6}).then(function(value){ \n\
 });"
 },{
   title: "Storing a view",
-  description:"",
+  description:"A view is stored with a put call as any other document but with an special _id starting in '_design/'. A view is used to query the database by means of a Map/Reduce interface.",
   code: "cdb.put({ \n\
     _id: '_design/main', \n\
     views: { \n\
@@ -139,7 +138,7 @@ code:"cdb.post({_id:'test2', prop:6}).then(function(value){ \n\
 });"
 },{
   title: "Querying",
-  description:"",
+  description:"The Map/Reduce interface is the mechanism used to query CouchDB databases. The Map function stored in the view will iterate through all documents in the database. The Reduce function will process all documents to obtain a single value.",
   code: "cdb.query(\"main/index\",{ \n\
   includeDocs: true, \n\
   descending: true, \n\
