@@ -4,9 +4,6 @@
  * Copyright © 2016 Jorge M. Peláez | MIT license
  * http://j-pel.github.io/dynamize
  *
- * UNDER DEVELOPMENT: Proof of concept
- * Not ready for production
- *
  */
 
 (function(exports) {
@@ -27,12 +24,30 @@
     ele.addEventListener('touchend', handleTouchEnd, true);
   }
 
-/* fu	nction */
+/* Public API calls */
 
-  var appendSlide = exports.appendSlide = function(info) {
+  var append = exports.append = function(info) {
     slides.push(info);
     if (curSlide==0) previous();
   }
+
+  var previous = exports.previous = function() {
+    if (curSlide>0) curSlide--;
+    for (var s in sliders) {
+      var draw = slides[curSlide].draw;
+      draw(sliders[s],slides[curSlide]);
+    }
+  }
+
+  var next = exports.next = function() {
+    if (curSlide<(slides.length-1)) curSlide++;
+    for (var s in sliders) {
+      var draw = slides[curSlide].draw;
+      draw(sliders[s],slides[curSlide]);
+    }
+  }
+
+/* Private helper functions */
 
   var handleTouchStart = function (event) {
     var touches = event.changedTouches[0];
@@ -56,22 +71,6 @@
     if ((dist[2]<300)&&(Math.abs(dist[1])<100)) {
       if (dist[0]<-200) previous()
       else if (dist[0]>200) next();
-    }
-  }
-
-  var previous = exports.previous = function() {
-    if (curSlide>0) curSlide--;
-    for (var s in sliders) {
-      var draw = slides[curSlide].draw;
-      draw(sliders[s],slides[curSlide]);
-    }
-  }
-
-  var next = exports.next = function() {
-    if (curSlide<(slides.length-1)) curSlide++;
-    for (var s in sliders) {
-      var draw = slides[curSlide].draw;
-      draw(sliders[s],slides[curSlide]);
     }
   }
 
