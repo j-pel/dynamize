@@ -2,14 +2,13 @@
 	<head>
     <meta charset='utf-8'>
 		<title>Simple example for couching with CouchDB</title>
+    <link rel="stylesheet" href="http://codemirror.net/lib/codemirror.css">
 	</head>
   <style>
-  pre.code {
-    font-size: 9pt;
-    padding: 2px;
-    border: 1px solid #aaa;
-    border-left: 10px solid #aaa;
-  }
+      .CodeMirror {
+        border: 1px solid #eee;
+        height: 90%;
+      }
   </style>
   <body>
     <h1>Couching.js</h1>
@@ -42,16 +41,14 @@
       <tr>
         <td colspan=6>
           <h3 id="title">Before starting</h3>
-          <p id="description">Couching requires access to an Apache CouchDB or API compatible databases. It is very easy to install and start a CouchDB instance. Otherwise, it is possible to run CouchDB as a service from some cloud providers. Some of them are free for low traffic applications.<br />
-          Couching initializer returns an object instance with the database name and uri. If the database do not exist, it must be created before using it. Only an administrator can create one. A login is needed.</p>
+          <p id="description">Couching requires access to a CouchDB instance. Installing and running CouchDB is straightforward. Once installed, it will listen to port 5984 by default. It is possible also to run CouchDB as a service from a cloud provider. Some of them offers CouchDB for free for low traffic applications.</p>
+          <p>Couching initializer returns an object instance with the database name and uri. If the database does not exist, it must be created before using it. Only an user with admin role can create one, so a succesful login is needed. Press the "Next" button in order to log into the database.</p>
         </td>
       </tr>
       <tr>
-        <td colspan=2><fieldset style="height: 220px;">
+        <td colspan=2><fieldset id=code style="height: 220px;">
           <legend>code</legend>
-          <pre class=code id=code>cdb = Couching(database.value);
-show(cdb)
-          </pre></fieldset>
+          </fieldset>
         </td>
         <td colspan=4><fieldset style="height: 220px;">
           <legend>show() output</legend>
@@ -62,8 +59,17 @@ show(cdb)
 
     <table id="test_field" style="width:100%;"></table>
     <script type="text/javascript" src="../couching.js"></script>
+    <script src="http://codemirror.net/lib/codemirror.js"></script>
+    <script src="http://codemirror.net/mode/javascript/javascript.js"></script>
     <!--script type="text/javascript" src="http://www.gerd-tentler.de/tools/codeview/codeview.js"></script-->
     <script type="text/javascript">
+
+var editor = CodeMirror(document.getElementById('code'), {
+  value: "cdb = Couching(database.value);\nshow(cdb); // display on side\n",
+  lineWrapping: true,
+  lineNumbers: true,
+  mode:  "javascript"
+});
 
 var cdb = Couching(database.value);
 
@@ -71,7 +77,7 @@ var test = 0;
 var tests = [
 {
   title: "Logging in",
-  description:"With proper user credentials, the login call will be succesful and the roles the logged in user has became accessible. In order to create a database, the user must have admin role.",
+  description:"With proper user credentials, the login call will be succesful and the capabilities are those related to the roles the user has defined. In order to create a database, one of those roles is the 'admin' role.",
   code: "cdb.login({ \n\
   name: username.value, \n\
   password: password.value \n\
@@ -168,7 +174,7 @@ function next() {
   var current = tests[test];
   document.getElementById("title").innerText = "Test "+(test+1)+": "+current.title;
   document.getElementById("description").innerText = current.description;
-  document.getElementById("code").innerText = current.code;
+  editor.setValue(current.code);
   eval(current.code);
   test++;
 }

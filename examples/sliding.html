@@ -2,13 +2,13 @@
   <head>
     <meta charset='utf-8'>
     <title>Simple example for fixed header tables</title>
+    <link rel="stylesheet" href="http://codemirror.net/lib/codemirror.css">
   </head>
   <style>
-  pre.code {
-    font-size: 9pt;
-    padding: 2px;
-    border: 1px solid #aaa;
-    border-left: 10px solid #aaa;
+  .CodeMirror {
+    border: 1px solid #eee;
+    height: 240px;
+    width: 100%;
   }
   </style>
   <body>
@@ -20,7 +20,7 @@
 		<button onclick="sliding.previous()">Previous slide</button>
 		<button onclick="sliding.next()">Next slide</button><br /><br />
     <div class="slidable" style="border: 1px solid black;"></div>
-    <pre class=code>
+    <textarea id="ed1" class="CodeMirror">
 &lt;div class="slidable" style="border: 1px solid black;"&gt;&lt;/div&gt;
 
 &lt;script type="text/javascript"&gt;
@@ -38,15 +38,24 @@
     viewport.style.backgroundColor = info.color;
   }
 &lt;/script&gt;
-    </pre>
+    </textarea>
 
     <h2>Bugfixes</h2>
 
     <p>Please feel free to report bugs or to request features at <a href="https://github.com/j-pel/dynamize/issues">github.com/j-pel/dynamize</a>.</p>
 
     <script type="text/javascript" src="../sliding.js"></script>
-    <script type="text/javascript">
-
+    <script src="http://codemirror.net/lib/codemirror.js"></script>
+    <script src="http://codemirror.net/mode/javascript/javascript.js"></script>
+    <script src="http://codemirror.net/mode/xml/xml.js"></script>
+    <script src="http://codemirror.net/mode/css/css.js"></script>
+    <script src="http://codemirror.net/mode/htmlmixed/htmlmixed.js"></script>
+    <script>
+      var editor1 = CodeMirror.fromTextArea(ed1, {
+        lineWrapping: true,
+        lineNumbers: true,
+        mode:  "htmlmixed"
+      });
       sliding.append({title: "Slide one", draw: paintSlide});
       sliding.append({title: "Slide two", draw: paintSlide});
       sliding.append({title: "Slide three", color: 'yellow', draw: paintColorSlide});

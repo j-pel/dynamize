@@ -2,6 +2,7 @@
 	<head>
     <meta charset='utf-8'>
 		<title>Simple example for fixed header tables</title>
+    <link rel="stylesheet" href="http://codemirror.net/lib/codemirror.css">
 	</head>
   <style>
   body {
@@ -13,28 +14,34 @@
   thead {
     background-color: #ccc;
   }
-  </style>
+  .CodeMirror {
+    border: 1px solid #eee;
+    height: 240px;
+    width: 100%;
+  }
+</style>
   <body>
     <h1>Scrolling.js</h1>
-    <p>The internet is full of solutions for fixing headers on html tables. Most of them are very complicated or required special html rigid constructs or needed frameworks such as jQuery et al.</p>
+    <p>The internet is full of solutions for fixing headers on html tables. Most of them are either very complicated or required special html rigid constructs or needed big frameworks such as jQuery.</p>
     <p>That is why I decided to reinvent the wheel. I liked a plain vanilla javascript solution in the spirit of the DOM that respected the css layouts and the semantics of html. The solution proposed here covers two use cases: a full displayed table that maintain the header on top of the window when scrolled and other one that scrolls in a fixed space.</p>
     <p>In order to have a scrollable table, there is only need to include a script tag at the end of the <code>&lt;body&gt;</code> and add a class for the <code>&lt;table&gt;</code> that is going to be made scrollable. All css is preserved and there is no specific markup required.</p>
     <h2>Use case 1:</h2>
-    <pre>
-    &lt;table&gt;
-      &lt;thead class="fix-top"&gt;
-        &lt;tr&gt;
-          &lt;th&gt;Release&lt;/th&gt;&lt;th&gt;Codename&lt;/th&gt;&lt;th&gt;Year&lt;/th&gt;&lt;th&gt;Comments&lt;/th&gt;
-        &lt;/tr&gt;
-      &lt;/thead&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;1.1&lt;/td&gt;&lt;td&gt;Buzz&lt;/td&gt;&lt;td&gt;1996&lt;/td&gt;&lt;td&gt;474&lt;/td&gt;
-        &lt;/tr&gt;
-          (...)
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-    </pre>
+    <textarea id="ed1" class="CodeMirror">
+<table>
+  <thead class="fix-top">
+    <tr>
+      <th>%eax</th><th>Name</th><th>Source</th>
+      <th>%ebx</th><th>%ecx</th><th>%edx</th><th>%esx</th><th>%edi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td><td>sys_exit</td>
+      (...)
+    </tr>
+  </tbody>
+</table>
+    </textarea>
 
     <h3>Some Linux syscalls</h3>
 
@@ -87,21 +94,21 @@
 
     <h2>Use case 2:</h2>
 
-    <pre>
-    &lt;table class="scrollable"&gt;
-      &lt;thead&gt;
-        &lt;tr&gt;
-          &lt;th&gt;Release&lt;/th&gt;&lt;th&gt;Codename&lt;/th&gt;&lt;th&gt;Year&lt;/th&gt;&lt;th&gt;Comments&lt;/th&gt;
-        &lt;/tr&gt;
-      &lt;/thead&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;1.1&lt;/td&gt;&lt;td&gt;Buzz&lt;/td&gt;&lt;td&gt;1996&lt;/td&gt;&lt;td&gt;474&lt;/td&gt;
-        &lt;/tr&gt;
-          (...)
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-    </pre>
+    <textarea id="ed2" class="CodeMirror">
+&lt;table class="scrollable"&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Release&lt;/th&gt;&lt;th&gt;Codename&lt;/th&gt;&lt;th&gt;Year&lt;/th&gt;&lt;th&gt;Comments&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1.1&lt;/td&gt;&lt;td&gt;Buzz&lt;/td&gt;&lt;td&gt;1996&lt;/td&gt;&lt;td&gt;474&lt;/td&gt;
+    &lt;/tr&gt;
+      (...)
+  &lt;/tbody&gt;
+&lt;/table&gt;
+    </textarea>
     <h3>Debian releases</h3>
 
   <div style="padding: 20px;">
@@ -170,5 +177,22 @@
 		<p>There will be some empty space in order to provide enough scroll space to see what happens when the fixed layout table goes on top.</p>
 		
     <script type="text/javascript" src="../scrolling.js"></script>
+    <script src="http://codemirror.net/lib/codemirror.js"></script>
+    <script src="http://codemirror.net/mode/javascript/javascript.js"></script>
+    <script src="http://codemirror.net/mode/xml/xml.js"></script>
+    <script src="http://codemirror.net/mode/css/css.js"></script>
+    <script src="http://codemirror.net/mode/htmlmixed/htmlmixed.js"></script>
+    <script>
+    var editor1 = CodeMirror.fromTextArea(ed1, {
+      lineWrapping: true,
+      lineNumbers: true,
+      mode:  "htmlmixed"
+    });
+    var editor2 = CodeMirror.fromTextArea(ed2,{
+      lineWrapping: true,
+      lineNumbers: true,
+      mode:  "htmlmixed"
+    });
+    </script>
   </body>
 </html>
