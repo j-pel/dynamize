@@ -8,7 +8,11 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <link rel="stylesheet" href="http://codemirror.net/lib/codemirror.css">
 		<style>
+    h1 a {
+      color: #fff;
+    }
 		div.small-box {
 			position: absolute;
 			border: 1pt dotted #999;
@@ -34,6 +38,12 @@
 		.sizable:hover div.sizer {
 			display: block;
 		}	
+    .CodeMirror {
+      font-size: 9pt;
+      border: 1px solid #eee;
+      height: 240px;
+      width: 100%;
+    }
 		</style>
 
     <!--[if lt IE 9]>
@@ -46,7 +56,7 @@
   <body>
     <header>
       <div class="inner">
-        <h1>Dynamize.js</h1>
+        <h1><a href="index.html">Dynamize.js</a></h1>
         <h2>Small plain vanilla javascript goodies for enhancing user interaction</h2>
         <a href="https://github.com/j-pel/dynamize" class="button"><small>View project on</small> GitHub</a>
       </div>
@@ -59,26 +69,26 @@
     <p>This tool is useful for several scenarios. From slide presentation layouts and image carousels to touch friendly pagination systems.</p>
     <p>It is simple to use. Just identify the items that should be made slidable. Then append each slide as an object, including a function to draw the slide. Each slide could have a different draw function and different information on it.</p>
     <h2>Use case 1: Slides</h2>
-    <pre>
-    &lt;div class="slidable" style="border: 1px solid black;"&gt;
-    &lt;/div&gt;
-    &lt;script type="text/javascript"&gt;
+    <textarea id="ed1" class="CodeMirror">
+&lt;div class="slidable" style="border: 1px solid black;"&gt;
+&lt;/div&gt;
+&lt;script type="text/javascript"&gt;
 
-      sliding.appendSlide({title: "Slide one", draw: paintSlide});
-      sliding.appendSlide({title: "Slide two", draw: paintSlide});
-      sliding.appendSlide({title: "Slide three", color: 'yellow', draw: paintColorSlide});
+  sliding.append({title: "Slide one", draw: paintSlide});
+  sliding.append({title: "Slide two", draw: paintSlide});
+  sliding.append({title: "Slide three", color: 'yellow', draw: paintColorSlide});
 
-      function paintSlide(obj, info){
-        obj.innerHTML = info.title;
-      }
+  function paintSlide(obj, info){
+    obj.innerHTML = info.title;
+  }
 
-      function paintColorSlide(obj, info){
-        obj.innerHTML = info.title;
-        obj.style.backgroundColor = info.color;
-      }
+  function paintColorSlide(obj, info){
+    obj.innerHTML = info.title;
+    obj.style.backgroundColor = info.color;
+  }
 
-    &lt;/script&gt;
-    </pre>
+&lt;/script&gt;
+    </textarea>
     <div class="slidable" style="border: 1px solid black;">
     </div>
 
@@ -87,11 +97,21 @@
     <p>Please feel free to report bugs or to request features at <a href="https://github.com/j-pel/dynamize/issues">github.com/j-pel/dynamize</a>.</p>
 
     <script type="text/javascript" src="https://cdn.rawgit.com/j-pel/dynamize/master/sliding.js"></script>
-    <script type="text/javascript">
+    <script src="http://codemirror.net/lib/codemirror.js"></script>
+    <script src="http://codemirror.net/mode/javascript/javascript.js"></script>
+    <script src="http://codemirror.net/mode/xml/xml.js"></script>
+    <script src="http://codemirror.net/mode/css/css.js"></script>
+    <script src="http://codemirror.net/mode/htmlmixed/htmlmixed.js"></script>
+    <script>
+      var editor1 = CodeMirror.fromTextArea(ed1, {
+        lineWrapping: true,
+        lineNumbers: true,
+        mode:  "htmlmixed"
+      });
 
-      sliding.appendSlide({title: "Slide one", draw: paintSlide});
-      sliding.appendSlide({title: "Slide two", draw: paintSlide});
-      sliding.appendSlide({title: "Slide three", color: 'yellow', draw: paintColorSlide});
+      sliding.append({title: "Slide one", draw: paintSlide});
+      sliding.append({title: "Slide two", draw: paintSlide});
+      sliding.append({title: "Slide three", color: 'yellow', draw: paintColorSlide});
 
       function paintSlide(obj, info){
         obj.innerHTML = info.title;

@@ -8,7 +8,11 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-		<style>
+    <link rel="stylesheet" href="http://codemirror.net/lib/codemirror.css">
+	<style>
+        h1 a {
+            color: #fff;
+        }
 		div.small-box {
 			position: absolute;
 			border: 1pt dotted #999;
@@ -21,7 +25,13 @@
 			font-size: 10pt;
 			text-decoration: none;
 		}
-		</style>
+        .CodeMirror {
+            font-size: 9pt;
+            border: 1px solid #eee;
+            height: 240px;
+            width: 100%;
+        }
+	</style>
 
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -33,7 +43,7 @@
   <body>
     <header>
       <div class="inner">
-        <h1>Dynamize.js</h1>
+        <h1><a href="index.html">Dynamize.js</a></h1>
         <h2>Small plain vanilla javascript goodies for enhancing user interaction</h2>
         <a href="https://github.com/j-pel/dynamize" class="button"><small>View project on</small> GitHub</a>
       </div>
@@ -43,19 +53,187 @@
         <section id="main-content">
 
     <h1>couching.js</h1>
-    <p>Couching is a very small wrapper around Apache CouchDB REST API. CouchDB comes with its own couch.js, a simple AJAX wrapper with a caveat: is implemented with synchronous calls. That was the driving force behind couching.js project: A small, asynchronous wrapper built around ES6 Promises while preserving the simplicity and elegance of the CouchDB API.</p>
-    <p>CouchDB is reliable, easy to use, flexible and fast. There are also several database service providers that let you run CouchDB instances for free. That's a lot of power to drive your own cloud.</p>
-    <p>Couching is useful as a generic document store, as a solid user authentication mechanism or as originally conceived, to persist the user interactions originated by the other Dynamize.js tools.</p>
-    <p>The database could be located on any server such as IrisCouch, Cloudant or on a local running instance of CouchDB.</p>
-    <p>Couch databases are stores for freeform JSON documents. Just create a database and start feeding documents into it. To retrieve a particular document, use the document id. To retrieve several related documents, a view should be created as a javascript map function iterating through all documents in the database.</p>
-    <p>In order to use it for persisting the kind of interactions derived from Dynamize, just create a database and store a document for each UI element. Then update the document each time the element changes, by means of the store function on each tool.</p>
-				
-    <h2>Use case:</h2>
-    <pre>
+    <p>This is an easy to use and fully asynchronous frontend to manage a CouchDB instance using ES6 promises.</p>
+    <h2>How to use</h2>
+    <p>The following is a step by step guide to test the functionality included in couching.js. Just press the "Next" button to start.</p>
+    <table>
+      <tr><td>CouchDB connection:</td><td>Admin user:</td><td>Password:</td><td></td>
+      </tr>
+      <tr>
+        <td>
+          <input id="database" size=32
+            placeholder="http://localhost:5984/test"
+            value="http://localhost:5984/test" />
+        </td>
+        <td>
+          <input id="username"  size=12
+            placeholder="admin" value="" />
+        </td>
+        <td>
+          <input id="password"  size=12
+            type="password" value="" />
+        </td>
+        <td>
+          <button id="next" onclick="next();">Next</button>
 
-// This is still under construction
+        </td>
+        <td style="width: 100%"><button id="restart" style="display: none;" onclick="restart();">Restart</button>&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan=6>
+          <h3 id="title">Before starting</h3>
+          <p id="description">Couching requires access to a CouchDB instance. Installing and running CouchDB is straightforward. Once installed, it will listen to port 5984 by default. It is possible also to run CouchDB as a service from a cloud provider. Some of them offers CouchDB for free for low traffic applications.</p>
+          <p>Couching initializer returns an object instance with the database name and uri. If the database does not exist, it must be created before using it. Only an user with admin role can create one, so a succesful login is needed. Press the "Next" button in order to log into the database.</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan=2><fieldset id=code style="height: 220px;">
+          <legend>code</legend>
+          </fieldset>
+        </td>
+        <td colspan=4><fieldset style="height: 220px;">
+          <legend>show() output</legend>
+          <pre id='result'></pre></fieldset>
+        </td>
+      </tr>
+    </table>
 
-    </pre>
-
+    <table id="test_field" style="width:100%;"></table>
+    <script type="text/javascript" src="https://rawgit.com/j-pel/dynamize/master/couching.js"></script>
+    <script src="http://codemirror.net/lib/codemirror.js"></script>
+    <script src="http://codemirror.net/mode/javascript/javascript.js"></script>
+    <!--script type="text/javascript" src="http://www.gerd-tentler.de/tools/codeview/codeview.js"></script-->
+    <script type="text/javascript">
+var editor = CodeMirror(document.getElementById('code'), {
+  value: "cdb = Couching(database.value);\nshow(cdb); // display on side\n",
+  lineWrapping: true,
+  lineNumbers: true,
+  mode:  "javascript"
+});
+var cdb = Couching(database.value);
+var test = 0;
+var tests = [
+{
+  title: "Logging in",
+  description:"With proper user credentials, the login call will be succesful and the capabilities are those related to the roles the user has defined. In order to create a database, one of those roles is the 'admin' role.",
+  code: "cdb.login({ \n\
+  name: username.value, \n\
+  password: password.value \n\
+}).then(function(data){ \n\
+  show(data); \n\
+}).catch(function(err){ \n\
+  show(err); \n\
+});"
+},{
+  title: "Creating",
+  description:"If the user logged in in the previous step has admin role defined, the call to create the database is succesful, otherwise the test fails and none of the succesive steps could proceed.",
+  code: "cdb.create().then(function(value){ \n\
+  show(value); \n\
+}).catch(function(err){ \n\
+  show(err); \n\
+});"
+},{
+  title: "Storing with put",
+  description:"The put call is used to store a document into the database. If the document has an _id defined and a document with the same _id is found already in the database, the result is a revised, merged document. If the document _id is new, the document is stored as is. If no _id is provided, the document is stored with a given unique _id.",
+  code: "cdb.put({_id: 'test1',prop: 12}).then(function(value){ \n\
+  show(value); \n\
+}).catch(function(err){ \n\
+  show(err); \n\
+});"
+},{
+title:"Storing with post",
+description:"The post call is used to store new documents into the database. If an _id is given, it is discarded and a new, unique _id is given instead.",
+code:"cdb.post({_id:'test2', prop:6}).then(function(value){ \n\
+  show(value); \n\
+}).catch(function(err){ \n\
+  show(err); \n\
+});"
+},{
+  title: "Retrieving",
+  description:"The get call is used to retrieve a document from the database knowing its _id.",
+  code: "cdb.get('test1').then(function(value){ \n\
+  show(value); \n\
+}).catch(function(err){ \n\
+  show(err); \n\
+});"
+},{
+  title: "Head call",
+  description:"A head call is the least intensive call to the database. It retrieves just the header, containing the document revision.",
+  code: "cdb.head('test1').then(function(value){ \n\
+  show(value); \n\
+}).catch(function(err){ \n\
+  show(err); \n\
+});"
+},{
+  title: "Storing a view",
+  description:"A view is stored with a put call as any other document but with an special _id starting in '_design/'. A view is used to query the database by means of a Map/Reduce interface.",
+  code: "cdb.put({ \n\
+    _id: '_design/main', \n\
+    views: { \n\
+      index:{ \n\
+        map:'function(doc){emit(doc);}' \n\
+      } \n\
+    }, \n\
+    language: 'javascript' \n\
+  }).then(function(value){ \n\
+  show(value); \n\
+}).catch(function(err){ \n\
+  show(err); \n\
+});"
+},{
+  title: "Querying",
+  description:"The Map/Reduce interface is the mechanism used to query CouchDB databases. The Map function stored in the view will iterate through all documents in the database. The Reduce function will process all documents to obtain a single value.",
+  code: "cdb.query(\"main/index\",{ \n\
+  includeDocs: true, \n\
+  descending: true, \n\
+  limit: 10 \n\
+}).then(function(data) { \n\
+  show(data); \n\
+}).catch(function(err) { \n\
+  show(err); \n\
+});"
+},{
+  title: "Clearing",
+  description:"If the user logged in before has admin role, the call to clear the database is succesful, otherwise nothing happens. The database with all its contents is completely deleted.",
+  code: "cdb.clear().then(function(value){ \n\
+  show(value); \n\
+}).catch(function(err){ \n\
+  show(err); \n\
+});"
+}];
+function next() {
+  if (test==tests.length) {
+    var but = document.getElementById("next");
+    document.getElementById("restart").style.display = 'block';
+    but.disable=true;
+    return(0);
+  }
+  var current = tests[test];
+  document.getElementById("title").innerText = "Test "+(test+1)+": "+current.title;
+  document.getElementById("description").innerText = current.description;
+  editor.setValue(current.code);
+  eval(current.code);
+  test++;
+}
+function restart() {
+  test = 0;
+  document.getElementById("restart").style.display = 'none';
+  document.getElementById("next").disable = false;
+  next();
+}
+function show(info) {
+    var result = "";
+  if (typeof(info)==='object') {
+    for (var prop in info) {
+      if (typeof(info[prop])!='function') {
+        result += prop+ ": "+ info[prop] + "\n";
+      }
+    }
+  } else {
+    result += info + "\n";
+  }
+  document.getElementById('result').innerText = result;
+}
+    </script>
   </body>
 </html>

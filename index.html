@@ -22,6 +22,9 @@
       text-align: left;
       padding-left: 10px;
     }
+    table.top-fixed {
+      background-color: #ccc;
+    }
     div.stamp {
 			position: absolute;
 			padding: 0px;
@@ -95,45 +98,49 @@
         <a href="https://github.com/j-pel/dynamize" class="button"><small>View project on</small> GitHub</a>
       </div>
     </header>
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+<p>When enhancing a website for eye-candy and user interaction, there is nothing better than finding a pure CSS + HTML solution. When such a solution is not available, the developer needs to resort to javascript. That was the origin of Dynamize.js: a loose collection of small, independient, plain vanilla javascript files to do one specific task and designed to avoid messing with the existing site layout.</p>
 
-<table id="dynamize" class="scrollable movable rotable sizable" style="position: absolute; width: 200px; height: 60px; top: 105px; left: 365px;">
+<p>In other words, if you need to add a particular functionality covered by one Dynamize tool, just grab the file, drop it in your existing website project and there is a good chance that everything is going to work as expected regardless of the nature of the project, even when external javascript frameworks are used.</p>
+
+<p>Currently, the collection is composed by the following tools:</p>
+
+<br />
+<table id="dynamize" class="scrollable movable rotable sizable" style="width: 320px; height: 160px;">
   <thead>
     <!--tr><th colspan=2>Dynamize Toolbox</th></tr-->
     <tr><th>Tool</th><th>Status</th></tr>
   </thead>
   <tbody>
-    <tr><td><a href="scrolling.html">scrolling.js</a></td><td>Ready to use</td></tr>
-    <tr><td><a href="moving.html">moving.js</a></td><td>Ready to use</td></tr>
-    <tr><td><a href="rotating.html">rotating.js</a></td><td>Ready to use</td></tr>
-    <tr><td><a href="sizing.html">sizing.js</a></td><td>Ready to use</td></tr>
-<tr><td><a href="sliding.html">sliding.js</a></td><td>Ready to use</td></tr>
-
-    <tr><td><a href="couching.html">couching.js</a></td><td>Ready to use</td></tr>
+    <tr>
+      <td><a href="moving.html">moving.js</a></td><td>Ready to use</td>
+    </tr>
+    <tr>
+      <td><a href="rotating.html">rotating.js</a></td><td>Ready to use</td>
+    </tr>
+    <tr>
+      <td><a href="sizing.html">sizing.js</a></td><td>Ready to use</td>
+    </tr>
+    <tr>
+      <td><a href="sliding.html">sliding.js</a></td><td>Ready to use</td>
+    </tr>
+    <tr>
+      <td><a href="scrolling.html">scrolling.js</a></td><td>Ready to use</td>
+    </tr>
+    <tr>
+      <td><a href="couching.html">couching.js</a></td><td>Ready to use</td>
+    </tr>
   </tbody>
 </table>
-
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-
-<p>When enhancing a website for eye-candy and user interaction, there is nothing better than a pure CSS + HTML solution. When such a solution is not available, the developer needs to resort to javascript. That is the origin of Dynamize.js: a loose collection of small, independient, plain vanilla javascript files to do one specific task and designed to avoid messing with the existing site layout.</p>
-
-<p>In other words, just grab the file you want, drop it in your existing website project and there is a good chance that everything is going to work as expected regardless of the nature of the project, even when external frameworks are used.</p>
-
-<p>Currently, the collection is composed by:</p>
-
-<table id="playground">
-  <tr><td style="width:220px;"><a href="scrolling.html">scrolling.js</a></td><td rowspan=20><div id="stamp2" class="stamp movable rotable">Move<br />me</div></td></tr>
-  <tr><td><a href="moving.html">moving.js</a></td></tr>
-  <tr><td><a href="rotating.html">rotating.js</a></td></tr>
-  <tr><td><a href="sizing.html">sizing.js</a></td></tr>
-<tr><td><a href="sliding.html">sliding.js</a></td></tr>
-  <tr><td><a href="couching.html">couching.js</a></td></tr>
-</table>
 <br />
-<p>The names are self explanatory, however, there are example pages for each one.</p>
+<br />
+<br />
 
-<p>They were tested and are known to work well on:</p>
+<p>The names are self explanatory, however, there are example pages for showing each one in action. They play well with each other as you could see in the above fixed header table that is also movable, sizable and rotable.</p>
+
+<p>They were tested and are known to work well on the following systems and browsers:</p>
 
 <table><thead></thead><tbody>
 <tr>
@@ -176,6 +183,9 @@
           <p class="repo-owner"><a href="https://github.com/j-pel/dynamize">dynamize.js</a> is maintained by <a href="https://github.com/j-pel">j-pel</a>.</p>
 
           <p>Site layout based on the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+
+          <div id="stamp2" class="stamp movable rotable">Move<br />me</div>
+
         </aside>
       </div>
     </div>
@@ -183,18 +193,14 @@
     <script type="text/javascript" src="https://rawgit.com/j-pel/dynamize/master/moving.js"></script>
     <script type="text/javascript" src="https://rawgit.com/j-pel/dynamize/master/sizing.js"></script>
     <script type="text/javascript" src="https://rawgit.com/j-pel/dynamize/master/rotating.js"></script>
-    <!--script type="text/javascript" src="https://rawgit.com/j-pel/dynamize/master/scrolling.js"></script-->
+    <script type="text/javascript" src="https://rawgit.com/j-pel/dynamize/master/scrolling.js"></script>
     <script>
-	stamp2.style.transform = 'rotate(30deg)';
-  dynamize.style.transform = 'rotate(-15deg)';
-	moving.init(function(info){console.log(info)});
-	rotating.init(function(info){console.log(info)});
-	sizing.init(function(info){console.log(info)});
-  window.addEventListener('resize', adjust, false);
-  function adjust() {
-    stamp2.style.top = playground.offsetTop + "px";
-  }
-  adjust();
+    	moving.init(function(info){console.log(info)});
+    	rotating.init(function(info){console.log(info)});
+    	sizing.init(function(info){console.log(info)});
+      stamp2.style.transform = 'rotate(30deg)';
+      nn_m_0.style.transform = 'rotate(-5deg)';
+      nn_m_0.style.zIndex = '1';
     </script>
   </body>
 </html>

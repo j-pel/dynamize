@@ -8,7 +8,11 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-		<style>
+    <link rel="stylesheet" href="http://codemirror.net/lib/codemirror.css">
+	<style>
+		h1 a {
+			color: #fff;
+		}
 		div.small-box {
 			position: absolute;
 			border: 1pt dotted #999;
@@ -35,7 +39,13 @@
 		.rotable:hover div.rotor {
 			display: block;
 		}	
-		</style>
+		.CodeMirror {
+			font-size: 9pt;
+			border: 1px solid #eee;
+			height: 240px;
+			width: 100%;
+		}
+	</style>
 
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -47,7 +57,7 @@
   <body>
     <header>
       <div class="inner">
-        <h1>Dynamize.js</h1>
+        <h1><a href="index.html">Dynamize.js</a></h1>
         <h2>Small plain vanilla javascript goodies for enhancing user interaction</h2>
         <a href="https://github.com/j-pel/dynamize" class="button"><small>View project on</small> GitHub</a>
       </div>
@@ -61,13 +71,11 @@
     <p>In order to have a rotable object, there is only need to include a script tag at the end of the <code>&lt;body&gt;</code> and add a class for the object that is going to rotate. All css is preserved and there is a small specific markup required: the objects have to be absolutely positioned.</p>
 				
     <h2>Use case:</h2>
-    <pre>
+    <textarea id="ed1" class="CodeMirror">
 &lt;body&gt;
 	&lt;div id="f1" class="small-box" style="top: 0px; left: 175px;"&gt;I'm fixed&lt;/div&gt;
 	&lt;div id="m1" class="small-box rotable" style="top: 0px; left: 260px;"&gt;Move me&lt;/div&gt;
 	&lt;div id="m2" class="small-box rotable" style="top: 0px; left: 345px; background-color:#cce;"&gt;Move me too!&lt;/div&gt;
-
-			(...)
 
 	&lt;script type="text/javascript" src="javascripts/rotating.js"&gt;&lt;/script&gt;
 	&lt;script&gt;
@@ -78,7 +86,7 @@
 		rotating.init(store_changes);
 	&lt;/script&gt;
 &lt;/body&gt;
-    </pre>
+    </textarea>
 
 	<div id="f1" class="small-box" style="top: 0px; left: 175px;">I'm fixed</div>
 	<div id="m1" class="small-box rotable" style="top: 0px; left: 260px;">Rotate me</div>
@@ -90,7 +98,17 @@
 		</div>
 
     <script type="text/javascript" src="https://cdn.rawgit.com/j-pel/dynamize/master/rotating.js"></script>
+    <script src="http://codemirror.net/lib/codemirror.js"></script>
+    <script src="http://codemirror.net/mode/javascript/javascript.js"></script>
+    <script src="http://codemirror.net/mode/xml/xml.js"></script>
+    <script src="http://codemirror.net/mode/css/css.js"></script>
+    <script src="http://codemirror.net/mode/htmlmixed/htmlmixed.js"></script>
     <script>
+      var editor1 = CodeMirror.fromTextArea(ed1, {
+        lineWrapping: true,
+        lineNumbers: true,
+        mode:  "htmlmixed"
+      });
 			var store_changes = function(changes) {
 				console.log("storing",changes);
 				return 0;

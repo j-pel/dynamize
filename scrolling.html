@@ -8,13 +8,23 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <link rel="stylesheet" href="http://codemirror.net/lib/codemirror.css">
 		<style>
+    h1 a {
+      color: #fff;
+    }
 		body {
       height: 4000px;
     }
     thead {
 			background-color: #ccc;
 		}
+    .CodeMirror {
+      font-size: 9pt;
+      border: 1px solid #eee;
+      height: 240px;
+      width: 100%;
+    }
 		</style>
 
     <!--[if lt IE 9]>
@@ -27,7 +37,7 @@
   <body>
     <header>
       <div class="inner">
-        <h1>Dynamize.js</h1>
+        <h1><a href="index.html">Dynamize.js</a></h1>
         <h2>Small plain vanilla javascript goodies for enhancing user interaction</h2>
         <a href="https://github.com/j-pel/dynamize" class="button"><small>View project on</small> GitHub</a>
       </div>
@@ -42,7 +52,7 @@
     <p>In order to have a scrollable table, there is only need to include a script tag at the end of the <code>&lt;body&gt;</code> and add a class for the <code>&lt;table&gt;</code> that is going to be made scrollable. All css is preserved and there is no specific markup required. Actually, there is an <a href="https://github.com/j-pel/dynamize/issues/1">open issue</a> with nested <code>&lt;divs&gt;</code> that is being addressed.</p>
 				
     <h2>Use case 1:</h2>
-    <pre>
+    <textarea id="ed1" class="CodeMirror">
     &lt;table&gt;
       &lt;thead class="fix-top"&gt;
         &lt;tr&gt;
@@ -107,11 +117,11 @@
 
     <h2>Use case 2:</h2>
 
-    <pre>
+    <textarea id="ed1" class="CodeMirror">
     &lt;table class="scrollable"&gt;
       &lt;thead&gt;
         &lt;tr&gt;
-          &lt;th&gt;Release&lt;/th&gt;&lt;th&gt;Codename&lt;/th&gt;&lt;th&gt;Year&lt;/th&gt;&lt;th&gt;Comments&lt;/th&gt;
+          &lt;th&gt;Release&lt;/th&gt;&lt;th&gt;Codename&lt;/th&gt;&lt;th&gt;Year&lt;/th&gt;&lt;th&gt;Packages&lt;/th&gt;
         &lt;/tr&gt;
       &lt;/thead&gt;
       &lt;tbody&gt;
@@ -121,14 +131,14 @@
           (...)
       &lt;/tbody&gt;
     &lt;/table&gt;
-    </pre>
+    </textarea>
 
 
     <h3>Debian releases</h3>
     <table class="scrollable" style="max-width: 420px; min-width: 300px; max-height: 200px;">
       <thead>
         <tr>
-          <th>Release</th><th>Codename</th><th>Year</th><th>Comments</th>
+          <th>Release</th><th>Codename</th><th>Year</th><th>Packages</th>
         </tr>
       </thead>
       <tbody>
@@ -194,5 +204,17 @@
 		</div>
 
     <script type="text/javascript" src="https://cdn.rawgit.com/j-pel/dynamize/master/scrolling.js"></script>
+    <script src="http://codemirror.net/lib/codemirror.js"></script>
+    <script src="http://codemirror.net/mode/javascript/javascript.js"></script>
+    <script src="http://codemirror.net/mode/xml/xml.js"></script>
+    <script src="http://codemirror.net/mode/css/css.js"></script>
+    <script src="http://codemirror.net/mode/htmlmixed/htmlmixed.js"></script>
+    <script>
+      var editor1 = CodeMirror.fromTextArea(ed1, {
+        lineWrapping: true,
+        lineNumbers: true,
+        mode:  "htmlmixed"
+      });
+    </script>
   </body>
 </html>
