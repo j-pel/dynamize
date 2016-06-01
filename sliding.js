@@ -54,6 +54,23 @@
     }
   }
 
+  var select = exports.select = function(index) {
+    if ((index>=0)&&(index<slides.length)) {
+      curSlide = index;
+      for (var s in sliders) {
+        var draw = slides[curSlide].draw;
+        draw(sliders[s],slides[curSlide]);
+      }
+    }
+  }
+
+  var selected = exports.selected = function() {
+    if (curSlide==null)
+      return (1);
+    else
+      return curSlide;
+  }
+
 /* Private helper functions */
 
   var handleTouchStart = function (event) {

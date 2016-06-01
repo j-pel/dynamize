@@ -25,7 +25,7 @@ function Couching(database) {
 
   /* Object Constructor */
 
-  self = {}
+  var self = {};
 
   var url = database.match(/(^https?\:\/\/)([^@]+@|)([^\/?#]+(?:[\/?#]|$))([^\/?#]+(?:[\/?#]|$))/i);
   self.protocol = url[1];
@@ -200,7 +200,8 @@ self.create = function() {
    * @param {count} Number of UUIDs to return. Default is 1.
    * @api public
    */
-  self.uuid = function(count=1) {
+  self.uuid = function(count) {
+    if(count === undefined) { count = 1; }
     return new Promise(function(resolve,reject) {
       reqJSON('GET', self.protocol +
         self.host + "_uuids?count="+count).then(function(data){
@@ -353,7 +354,8 @@ self.create = function() {
 
   /* private helpers */
 
-  function reqJSON(method, url, args=null) {
+  function reqJSON(method, url, args) {
+    if(args === undefined) { args = null; }
     var xhr = new XMLHttpRequest();
     return new Promise(function(resolve, reject) {
       xhr.onreadystatechange = function () {
