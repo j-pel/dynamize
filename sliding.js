@@ -10,7 +10,7 @@
 
   var sliders = [];
   var slides = [];
-  var curSlide = 0;
+  var curSlide = null;
 
   document.addEventListener('keydown', handleKeyDown, false);
 
@@ -28,22 +28,29 @@
 
   var append = exports.append = function(info) {
     slides.push(info);
-    if (curSlide==0) previous();
+    if (curSlide==null) { // Paint first appended slide
+      curSlide = 1;
+      previous();
+    } 
   }
 
   var previous = exports.previous = function() {
-    if (curSlide>0) curSlide--;
-    for (var s in sliders) {
-      var draw = slides[curSlide].draw;
-      draw(sliders[s],slides[curSlide]);
+    if (curSlide>0) {
+      curSlide--;
+      for (var s in sliders) {
+        var draw = slides[curSlide].draw;
+        draw(sliders[s],slides[curSlide]);
+      }
     }
   }
 
   var next = exports.next = function() {
-    if (curSlide<(slides.length-1)) curSlide++;
-    for (var s in sliders) {
-      var draw = slides[curSlide].draw;
-      draw(sliders[s],slides[curSlide]);
+    if (curSlide<(slides.length-1)) {
+      curSlide++;
+      for (var s in sliders) {
+        var draw = slides[curSlide].draw;
+        draw(sliders[s],slides[curSlide]);
+      }
     }
   }
 
