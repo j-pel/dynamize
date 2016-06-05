@@ -26,6 +26,11 @@
 
 /* Public API calls */
 
+  var reset = exports.reset = function() {
+    slides = [];
+    curSlide = null;
+  }
+
   var append = exports.append = function(info) {
     slides.push(info);
     if (curSlide==null) { // Paint first appended slide
