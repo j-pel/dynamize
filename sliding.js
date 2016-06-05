@@ -59,6 +59,13 @@
     }
   }
 
+  var replace = exports.replace = function(info,index) {
+    if(index === undefined) index = curSlide;
+    if ((index>=0)&&(index<slides.length)) {
+      slides[index] = info;
+    }
+  }
+
   var select = exports.select = function(index) {
     if ((index>=0)&&(index<slides.length)) {
       curSlide = index;
