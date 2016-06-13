@@ -22,35 +22,37 @@
         <td>
           <input id="database" size=32
             placeholder="http://localhost:5984/test"
-            value="http://192.168.1.54:5984/test" />
+            value="http://localhost:5984/test" />
         </td>
         <td>
           <input id="username"  size=12
-            placeholder="admin" value="jorge" />
+            placeholder="admin" value="" />
         </td>
         <td>
           <input id="password"  size=12
             type="password" value="" />
         </td>
         <td>
-          <button id="next" onclick="next();">Next</button>
-
+          <nobr>
+            <button id="prev" disabled=true onclick="prev();">Previous</button>
+            <button id="next" onclick="next();">Next</button>
+            <button id="restart" disabled=true onclick="restart();">Restart</button>
+          </nobr>
         </td>
-        <td style="width: 100%"><button id="restart" style="display: none;" onclick="restart();">Restart</button>&nbsp;</td>
       </tr>
       <tr>
         <td colspan=6>
-          <h3 id="title">Before starting</h3>
-          <p id="description">Couching requires access to a CouchDB instance. Installing and running CouchDB is straightforward. Once installed, it will listen to port 5984 by default. It is possible also to run CouchDB as a service from a cloud provider. Some of them offers CouchDB for free for low traffic applications.</p>
-          <p>Couching initializer returns an object instance with the database name and uri. If the database does not exist, it must be created before using it. Only an user with admin role can create one, so a succesful login is needed. Press the "Next" button in order to log into the database.</p>
+          <h3 id="title"></h3>
+          <p id="description"></p>
         </td>
       </tr>
       <tr>
         <td colspan=2><fieldset id=code style="height: 220px;">
           <legend>code</legend>
           </fieldset>
+          <div style="text-align: right;"><button id="run" onclick="runCode();">Run</button></div>
         </td>
-        <td colspan=4><fieldset style="height: 220px;">
+        <td colspan=4><fieldset style="height: 240px;">
           <legend>show() output</legend>
           <pre id='result'></pre></fieldset>
         </td>
@@ -64,18 +66,15 @@
     <!--script type="text/javascript" src="http://www.gerd-tentler.de/tools/codeview/codeview.js"></script-->
     <script type="text/javascript">
 
-var editor = CodeMirror(document.getElementById('code'), {
-  value: "cdb = Couching(database.value);\nshow(cdb); // display on side\n",
-  lineWrapping: true,
-  lineNumbers: true,
-  mode:  "javascript"
-});
-
-var cdb = Couching(database.value);
-
+var cdb = {};
 var test = 0;
 var tests = [
 {
+  title: "Before starting",
+  description:"Couching requires access to a CouchDB instance. Installing and running CouchDB is straightforward. Once installed, it will listen to port 5984 by default. It is possible also to run CouchDB as a service from a cloud provider. Some of them offers CouchDB for free for low traffic applications.</p>\
+          <p>Couching initializer returns an object instance with the database name and uri. If the database does not exist, it must be created before using it. Only an user with admin role can create one, so a succesful login is needed. Press the \"Next\" button in order to log into the database.",
+  code: "cdb = Couching(database.value);\nshow(cdb); // display on side\n"
+},{
   title: "Logging in",
   description:"With proper user credentials, the login call will be succesful and the capabilities are those related to the roles the user has defined. In order to create a database, one of those roles is the 'admin' role.",
   code: "cdb.login({ \n\
@@ -164,29 +163,55 @@ code:"cdb.post({_id:'test2', prop:6}).then(function(value){ \n\
 });"
 }];
 
+var editor = CodeMirror(document.getElementById('code'), {
+  value: tests[0].code,
+  lineWrapping: true,
+  lineNumbers: true,
+  mode:  "javascript"
+});
+document.getElementById("title").innerHTML = tests[0].title;
+document.getElementById("description").innerHTML = tests[0].description;
+
+function prev() {
+  if (test===0) {
+    document.getElementById("prev").disabled=true;
+  } else {
+    document.getElementById("next").disabled=false;
+    test--;
+    var current = tests[test];
+    document.getElementById("title").innerText = "Test "+(test+1)+": "+current.title;
+    document.getElementById("description").innerText = current.description;
+    editor.setValue(current.code);
+  }
+}
+
 function next() {
   if (test==tests.length) {
-    var but = document.getElementById("next");
-    document.getElementById("restart").style.display = 'block';
-    but.disable=true;
-    return(0);
+    document.getElementById("next").disabled=true;
+    document.getElementById("restart").disabled=false;
+  } else {
+    document.getElementById("prev").disabled=false;
+    test++;
+    var current = tests[test];
+    document.getElementById("title").innerText = "Test "+(test+1)+": "+current.title;
+    document.getElementById("description").innerText = current.description;
+    editor.setValue(current.code);
   }
-  var current = tests[test];
-  document.getElementById("title").innerText = "Test "+(test+1)+": "+current.title;
-  document.getElementById("description").innerText = current.description;
-  editor.setValue(current.code);
-  eval(current.code);
-  test++;
+}
+
+function runCode() {
+  console.log(editor.getValue());
+  eval(editor.getValue());
 }
 
 function restart() {
   test = 0;
-  document.getElementById("restart").style.display = 'none';
   document.getElementById("next").disable = false;
   next();
 }
 
 function show(info) {
+  console.log(info);
 	var result = "";
   if (typeof(info)==='object') {
     for (var prop in info) {
@@ -197,7 +222,7 @@ function show(info) {
   } else {
     result += info + "\n";
   }
-  document.getElementById('result').innerText = result;
+  document.getElementById('result').innerHTML = result;
 }
 
     </script>
