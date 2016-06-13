@@ -11,7 +11,8 @@
   var sliders = [];
   var slides = [];
   var curSlide = null;
-
+  var touchstart = [0,0,0];
+  
   document.addEventListener('keydown', handleKeyDown, false);
 
   var elementList = document.getElementsByClassName('slidable');
