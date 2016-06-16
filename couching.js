@@ -250,6 +250,7 @@ self.create = function() {
    * To store new documents into the database or to revise an existing
    * document. If the document does not contain an id, a new uuid is
    * assigned.
+   * CouchDB requires the id to be a string.
    * If the document exists, a new revision is generated.
    *
    * A Promise is returned with the response from CouchDB.
@@ -272,6 +273,7 @@ self.create = function() {
           reject(err);
         });
       } else {
+        doc._id = String(doc._id);
         self.get(doc._id).then(function(data) {
           for (var prop in doc) {
             data[prop] = doc[prop];

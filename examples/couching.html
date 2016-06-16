@@ -15,45 +15,33 @@
     <p>This is an easy to use and fully asynchronous frontend to manage a CouchDB instance using ES6 promises.</p>
     <h2>How to use</h2>
     <p>The following is a step by step guide to test the functionality included in couching.js. Just press the "Next" button to start.</p>
-    <table>
-      <tr><td>CouchDB connection:</td><td>Admin user:</td><td>Password:</td><td></td>
-      </tr>
-      <tr>
-        <td>
-          <input id="database" size=32
-            placeholder="http://localhost:5984/test"
-            value="http://localhost:5984/test" />
-        </td>
-        <td>
-          <input id="username"  size=12
-            placeholder="admin" value="" />
-        </td>
-        <td>
-          <input id="password"  size=12
-            type="password" value="" />
-        </td>
-        <td>
-          <nobr>
-            <button id="prev" disabled=true onclick="prev();">Previous</button>
-            <button id="next" onclick="next();">Next</button>
-            <button id="restart" disabled=true onclick="restart();">Restart</button>
-          </nobr>
-        </td>
-      </tr>
-      <tr>
-        <td colspan=6>
+    <form>
+      <label>CouchDB connection:<input id="database" size=32
+        placeholder="http://localhost:5984/test"
+        value="http://localhost:5984/test" /></label>
+      <label>User: <input id="username"  size=12
+        placeholder="admin" value="" /></label>
+      <label>Password: <input id="password"  size=12
+        type="password" value="" /></label>
+      <nobr>
+        <button type="button" id="prev" disabled=true onclick="prevTest();">Previous</button>
+        <button type="button" id="next" onclick="nextTest();">Next</button>
+      </nobr>
+    </form>  
+    <table style="width: 100%;">
+        <td colspan=3>
           <h3 id="title"></h3>
           <p id="description"></p>
         </td>
       </tr>
       <tr>
-        <td colspan=2><fieldset id=code style="height: 220px;">
+        <td style="width:50%;"><fieldset id=code style="height: 240px;">
           <legend>code</legend>
           </fieldset>
-          <div style="text-align: right;"><button id="run" onclick="runCode();">Run</button></div>
         </td>
-        <td colspan=4><fieldset style="height: 240px;">
-          <legend>show() output</legend>
+        <td>
+          <button id="run" onclick="runCode();">Run</button>
+          <fieldset style="height: 220px;"><legend>show() output</legend>
           <pre id='result'></pre></fieldset>
         </td>
       </tr>
@@ -67,7 +55,7 @@
     <script type="text/javascript">
 
 var cdb = {};
-var test = 0;
+var test = 1;
 var tests = [
 {
   title: "Before starting",
@@ -169,33 +157,30 @@ var editor = CodeMirror(document.getElementById('code'), {
   lineNumbers: true,
   mode:  "javascript"
 });
-document.getElementById("title").innerHTML = tests[0].title;
-document.getElementById("description").innerHTML = tests[0].description;
 
-function prev() {
-  if (test===0) {
-    document.getElementById("prev").disabled=true;
-  } else {
+function prevTest() {
+  if (test>0) {
     document.getElementById("next").disabled=false;
     test--;
     var current = tests[test];
     document.getElementById("title").innerText = "Test "+(test+1)+": "+current.title;
     document.getElementById("description").innerText = current.description;
     editor.setValue(current.code);
+  } else {
+    document.getElementById("prev").disabled=true;
   }
 }
 
-function next() {
-  if (test==tests.length) {
-    document.getElementById("next").disabled=true;
-    document.getElementById("restart").disabled=false;
-  } else {
+function nextTest() {
+  if (test<tests.length) {
     document.getElementById("prev").disabled=false;
     test++;
     var current = tests[test];
     document.getElementById("title").innerText = "Test "+(test+1)+": "+current.title;
     document.getElementById("description").innerText = current.description;
     editor.setValue(current.code);
+  } else {
+    document.getElementById("next").disabled=true;
   }
 }
 
@@ -224,6 +209,8 @@ function show(info) {
   }
   document.getElementById('result').innerHTML = result;
 }
+
+prevTest();
 
     </script>
   </body>
