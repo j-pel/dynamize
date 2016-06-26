@@ -112,6 +112,25 @@ self.create = function() {
   };
 
   /*!
+   * restart()
+   * To restart current CouchDB server.
+   *
+   * A Promise is returned with the required information or error.
+   *
+   * @api public
+   */
+	self.restart = function() {
+    return new Promise(function(resolve,reject) {
+      reqJSON('POST', self.protocol +
+        self.host + "_restart",{}).then(function(data){
+        resolve(data);
+      }).catch(function(err){
+        reject(err);
+      })
+    });
+	}
+
+  /*!
    * session()
    * To get the current session information from CouchDB.
    *
@@ -119,7 +138,7 @@ self.create = function() {
    *
    * @api public
    */
-	self.session = function() {
+  self.session = function() {
     return new Promise(function(resolve,reject) {
       reqJSON('GET', self.protocol +
         self.host + "_session").then(function(data){
@@ -128,7 +147,7 @@ self.create = function() {
         reject(err);
       })
     });
-	}
+  }
 
   /*!
    * head(id)
