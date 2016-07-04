@@ -63,9 +63,9 @@ function Couching(database) {
         self.basicauth = "";
         self.roles = [];
         reject(err);
-      })
+      });
     });
-  }
+  };
 
   /*!
    * create()
@@ -126,9 +126,9 @@ self.create = function() {
         resolve(data);
       }).catch(function(err){
         reject(err);
-      })
+      });
     });
-	}
+	};
 
   /*!
    * session()
@@ -145,9 +145,9 @@ self.create = function() {
         resolve(data);
       }).catch(function(err){
         reject(err);
-      })
+      });
     });
-  }
+  };
 
   /*!
    * head(id)
@@ -170,7 +170,7 @@ self.create = function() {
         if (req.readyState==4) {
           var head = req.getAllResponseHeaders();
           if (req.status == 404) {
-            reject({error: "not_found", reason: "missing"})
+            reject({error: "not_found", reason: "missing"});
           } else {
             var obj = {};
             var list = head.split("\n").forEach(function(row){
@@ -181,10 +181,10 @@ self.create = function() {
             resolve(obj);
           }
         }
-      }
+      };
       req.send(null);
     });
-  }
+  };
 
   /*!
    * get(id)
@@ -206,7 +206,7 @@ self.create = function() {
         reject(err);
       });
     });
-  }
+  };
 
   /*!
    * uuid(count)
@@ -229,7 +229,7 @@ self.create = function() {
         reject(err);
       });
     });
-  }
+  };
 
   /*!
    * delete(id)
@@ -262,7 +262,7 @@ self.create = function() {
         reject(err);
       });
     });
-  }
+  };
 
   /*!
    * put(doc)
@@ -302,7 +302,7 @@ self.create = function() {
             resolve(data1);
           }).catch(function(err1){
             reject(err1);
-          })
+          });
         }).catch(function(err) {
           reqJSON('PUT', self.protocol + self.host + self.db + "/" +
             doc._id, doc).then(function(data2){
@@ -313,7 +313,7 @@ self.create = function() {
         });
       }
     });
-  }
+  };
 
   /*!
    * post(doc)
@@ -342,7 +342,7 @@ self.create = function() {
         reject(err);
       });
     });
-  }
+  };
 
   /*!
    * query(view, options)
@@ -371,7 +371,7 @@ self.create = function() {
         reject(err);
       });
     });
-  }
+  };
 
   /* private helpers */
 
@@ -389,13 +389,14 @@ self.create = function() {
           case 400: //400 Bad Request – Invalid database name
           case 401: //401 Unauthorized – CouchDB Server Administrator privileges required
           case 412: //412 Precondition Failed – Database already exists
+            //break;
           default:
             reject(JSON.parse(xhr.responseText));
           }
         }
       };
       xhr.open(method, url, true);
-      if (self.basicauth!="")
+      if (self.basicauth!=="")
         xhr.setRequestHeader('Authorization', 'Basic ' + self.basicauth);
       if (args && (method === 'POST' || method === 'PUT')) {
         xhr.setRequestHeader('Content-Type', 'application/json');
