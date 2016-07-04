@@ -16,6 +16,8 @@ Currently, the collection is composed by:
 
 The names are self explanatory, however, there are example files for each one.
 
+Couching is being assigned its own repository.
+
 ### Browser Support
 
 Tested and known to work well on:
