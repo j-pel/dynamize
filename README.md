@@ -16,7 +16,7 @@ Currently, the collection is composed by:
 
 The names are self explanatory, however, there are example files for each one.
 
-Couching is being assigned its own repository.
+Couching outgrows the initial scope of Dynamize. It is being assigned its own repository with another tools for better manage CouchDB from a browser.
 
 ### Browser Support
 
