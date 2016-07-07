@@ -1,0 +1,46 @@
+<html>
+	<head>
+    <meta charset='utf-8'>
+		<title>Simple example for couching with CouchDB</title>
+    <link rel="stylesheet" href="http://codemirror.net/lib/codemirror.css">
+	</head>
+  <style>
+      .CodeMirror {
+        border: 1px solid #eee;
+        height: 90%;
+      }
+  </style>
+  <body>
+    <h1>Couching.js</h1>
+    <p>This is an easy to use and fully asynchronous frontend to manage a CouchDB instance using ES6 promises.</p>
+    <h2>Attachments</h2>
+    <p>The following is a step by step guide to test the functionality included in couching.js. Just press the "Next" button to start.</p>
+    <form>
+      <input type="file" id="uploadfile" name="uploadfile" />
+      <input type="button" value="upload" onclick="upload()" />
+    </form>
+    <script type="text/javascript" src="../couching.js"></script>
+    <script src="http://codemirror.net/lib/codemirror.js"></script>
+    <script src="http://codemirror.net/mode/javascript/javascript.js"></script>
+    <!--script type="text/javascript" src="http://www.gerd-tentler.de/tools/codeview/codeview.js"></script-->
+    <script type="text/javascript">
+  
+function upload() {
+  var xhr = new XMLHttpRequest();
+  var file = document.getElementById("uploadfile");
+  var formData = new FormData();
+  formData.append("upload", file.files[0]);
+  console.log(file.files[0]);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      alert(xhr.statusText);
+    }
+  }
+  xhr.open('PUT', url+file.files[0].name+"?rev="+rev, true);
+  xhr.setRequestHeader("Content-Type", "multipart/form-data");
+  xhr.send(formData);
+}
+
+    </script>
+  </body>
+</html>
