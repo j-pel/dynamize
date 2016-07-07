@@ -24,21 +24,12 @@
     <script src="http://codemirror.net/mode/javascript/javascript.js"></script>
     <!--script type="text/javascript" src="http://www.gerd-tentler.de/tools/codeview/codeview.js"></script-->
     <script type="text/javascript">
-  
+var db = Couching('http://pelares.com/test');
+console.log(db);
 function upload() {
-  var xhr = new XMLHttpRequest();
   var file = document.getElementById("uploadfile");
-  var formData = new FormData();
-  formData.append("upload", file.files[0]);
-  console.log(file.files[0]);
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState == 4 && xhr.status == 200) {
-      alert(xhr.statusText);
-    }
-  }
-  xhr.open('PUT', url+file.files[0].name+"?rev="+rev, true);
-  xhr.setRequestHeader("Content-Type", "multipart/form-data");
-  xhr.send(formData);
+  console.log(file.files);
+  db.attach('uno',file.files);
 }
 
     </script>

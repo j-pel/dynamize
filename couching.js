@@ -153,7 +153,7 @@ self.create = function() {
    * head(id)
    * The lightest and fastest call to seek for a document knowing its
    * id. It will return the header information as a javascript object
-   * with a property called ETag with the current revision number
+   * with a property called 'etag' with the current revision number
    * if the document exists. Otherwise, the object will have an error
    * property plus the other header information.
    *
@@ -338,6 +338,41 @@ self.create = function() {
       if (doc._id) doc._id = null;
       self.put(doc).then(function(value){
         resolve(value);
+      }).catch(function(err){
+        reject(err);
+      });
+    });
+  };
+
+  /*!
+   * attach(id,files)
+   * To store new attachments to a document in the database.
+   *
+   * A Promise is returned with the response from CouchDB.
+   *
+   * @param {doc} document as a javascript object.
+   * @api public
+   */
+
+  self.attach = function(id,files) {
+    return new Promise(function(resolve,reject) {
+      self.head(id).then(function(data) {
+        var xhr = new XMLHttpRequest();
+        var formData = new FormData();
+        formData.append('upload', files[0]);
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+            resolve(JSON.parse(xhr.responseText));
+          } else {
+            reject(JSON.parse(xhr.responseText));
+          }
+        }
+        console.log(data.etag);
+        xhr.open('PUT', self.protocol + self.host + self.db + "/" +
+          id + "/" + files[0].name+"?rev=" + data.etag, true);
+        var type = files[0].type==="" ? "multipart/form-data" : files[0].type;
+        xhr.setRequestHeader("Content-Type", type);
+        xhr.send(formData);
       }).catch(function(err){
         reject(err);
       });
