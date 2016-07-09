@@ -345,7 +345,7 @@ self.create = function() {
   };
 
   /*!
-   * attach(id,files)
+   * attach(id,file)
    * To store new attachments to a document in the database.
    *
    * A Promise is returned with the response from CouchDB.
@@ -354,28 +354,36 @@ self.create = function() {
    * @api public
    */
 
-  self.attach = function(id,files) {
+  self.attach = function(id,file) {
     return new Promise(function(resolve,reject) {
       self.head(id).then(function(data) {
         var xhr = new XMLHttpRequest();
-        var formData = new FormData();
-        formData.append('upload', files[0]);
+        //var formData = new FormData();
+        //formData.append('upload', file);
         xhr.onreadystatechange = function() {
-          if (xhr.readyState == 4 && xhr.status == 200) {
-            resolve(JSON.parse(xhr.responseText));
-          } else {
-            reject(JSON.parse(xhr.responseText));
+          if (xhr.readyState === 4) {
+            switch (xhr.status) {
+            case 200:
+            case 201:
+              resolve(JSON.parse(xhr.responseText));
+              break;
+            case 400: //400 Bad Request – Invalid database name
+            case 401: //401 Unauthorized – CouchDB Server Administrator privileges required
+            case 412: //412 Precondition Failed – Database already exists
+              //break;
+            default:
+              reject(JSON.parse(xhr.responseText));
+            }
           }
         }
-        console.log(data.etag);
         xhr.open('PUT', self.protocol + self.host + self.db + "/" +
-          id + "/" + files[0].name+"?rev=" + data.etag, true);
-        var type = files[0].type==="" ? "multipart/form-data" : files[0].type;
+          id + "/" + file.name+"?rev=" + data.etag, true);
+        var type = file.type==="" ? "multipart/form-data" : file.type;
         xhr.setRequestHeader("Content-Type", type);
-        xhr.send(formData);
-      }).catch(function(err){
-        reject(err);
+        xhr.send(file);
       });
+    }).catch(function(err){
+      reject(err);
     });
   };
 

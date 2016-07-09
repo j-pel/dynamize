@@ -16,7 +16,7 @@
     <h2>Attachments</h2>
     <p>The following is a step by step guide to test the functionality included in couching.js. Just press the "Next" button to start.</p>
     <form>
-      <input type="file" id="uploadfile" name="uploadfile" />
+      <input type="file" id="uploadfile" name="uploadfile" multiple />
       <input type="button" value="upload" onclick="upload()" />
     </form>
     <script type="text/javascript" src="../couching.js"></script>
@@ -25,13 +25,16 @@
     <!--script type="text/javascript" src="http://www.gerd-tentler.de/tools/codeview/codeview.js"></script-->
     <script type="text/javascript">
 var db = Couching('http://pelares.com/test');
-console.log(db);
 function upload() {
   var file = document.getElementById("uploadfile");
-  console.log(file.files);
-  db.attach('uno',file.files);
+  upOne(0);
+  function upOne(i) {
+    db.attach('uno',file.files[i++]).then(function(data){
+      if(i<file.files.length) upOne(i);
+    });
+  }
+  
 }
-
     </script>
   </body>
 </html>
