@@ -346,11 +346,12 @@ self.create = function() {
 
   /*!
    * attach(id,file)
-   * To store new attachments to a document in the database.
+   * To attach a file to an existing document in the database.
    *
    * A Promise is returned with the response from CouchDB.
    *
-   * @param {doc} document as a javascript object.
+   * @param {id} existing document's id.
+   * @param {file} file descriptor as a javascipt object.
    * @api public
    */
 
