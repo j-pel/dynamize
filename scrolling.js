@@ -13,10 +13,17 @@
   var elements = document.getElementsByClassName('scrollable');
   for (var i = 0; i < elements.length; i++) {
     var table = elements[i];
-    elements[i].tHead.classList.add('fix-top');
+    var thead = elements[i].tHead;
     var page = table.parentNode;
+    var header = document.createElement("div");
+    var headert = document.createElement("table");
     var scroller = document.createElement("div");
-    page.insertBefore(scroller,table)
+    thead.classList.add('top-fixed');
+    table.removeChild(thead);
+    page.insertBefore(header,table);
+    header.appendChild(headert);
+    headert.appendChild(thead);
+    page.insertBefore(scroller,table);
     page.removeChild(table);
     scroller.style.display = "block";
     ["position","width","height","maxWidth","maxHeight","minWidth","minHeight",
@@ -38,6 +45,9 @@
   for (var i = elements.length-1; elements.length > 0;i = elements.length-1) {
     var table = elements[i].parentNode;
     var head = elements[i].cloneNode(true);
+    table.removeChild(thead);
+    var theadt = document.createElement("table");
+    theadt.appendChild(thead);
     head.classList.remove('fix-top');
     var fixed = table.parentNode.insertBefore(document.createElement("table"),table);
     fixed.classList.add('top-fixed');
@@ -53,8 +63,8 @@
   function onResize() {
     var elements = document.getElementsByClassName('top-fixed');
     for (var e = 0; e < elements.length; e++) {
-      var head = elements[e].tHead.rows[0].cells;
-      var body = elements[e].nextSibling.tBodies[0]
+      var head = elements[e].rows[0].cells;
+      var body = elements[e].parentNode.parentNode.nextSibling.firstChild.tBodies[0]
       if (body.rows.length==0) return(0);
       body = body.rows[0].cells;
       for (var i=0;i<body.length;i++) {
