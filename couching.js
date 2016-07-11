@@ -388,6 +388,50 @@ self.create = function() {
     });
   };
 
+/*!
+   * dettach(id,file)
+   * To dettach a file from an existing document in the database.
+   *
+   * A Promise is returned with the response from CouchDB.
+   *
+   * @param {id} existing document's id.
+   * @param {file} file name as a string.
+   * @api public
+   */
+  self.dettach = function(id,file) {
+    return new Promise(function(resolve,reject) {
+      self.head(id).then(function(data) {
+        var xhr = new XMLHttpRequest();
+        //var formData = new FormData();
+        //formData.append('upload', file);
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4) {
+            switch (xhr.status) {
+            case 200:
+            case 201:
+              resolve(JSON.parse(xhr.responseText));
+
+              break;
+            case 400: //400 Bad Request – Invalid database name
+            case 401: //401 Unauthorized – CouchDB Server Administrator privileges required
+            case 412: //412 Precondition Failed – Database already exists
+              //break;
+            default:
+              reject(JSON.parse(xhr.responseText));
+            }
+          }
+        }
+        xhr.open('PUT', self.protocol + self.host + self.db + "/" +
+          id + "/" + file.name+"?rev=" + data.etag, true);
+        var type = file.type==="" ? "multipart/form-data" : file.type;
+        xhr.setRequestHeader("Content-Type", type);
+        xhr.send(file);
+      });
+    }).catch(function(err){
+      reject(err);
+    });
+  };
+
   /*!
    * query(view, options)
    * To query a map design/view on the database considering the
