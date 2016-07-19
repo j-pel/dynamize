@@ -6,17 +6,54 @@
  * 
  */
 
-(function() {
+(function(exports) {
 
   'use strict';
+
+  /*!
+   * refresh()
+   * Resizes the fixed headers for all columns in accordance to
+   * the table contents.
+   * 
+   * @api public
+   */
+  var refresh = exports.refresh = function() {
+    var elements = document.getElementsByClassName('top-fixed');
+    for (var e = 0; e < elements.length; e++) {
+      var head = elements[e].rows[0].cells;
+      var body = elements[e].parentNode.parentNode.nextSibling.firstChild.tBodies[0]
+      if (body.rows.length==0) return(0);
+      if (body.rows[0].cells.length>=head.length) {
+        if (body.parentNode.parentNode.offsetWidth>body.offsetWidth) {
+          var scroll_spacer = elements[e].firstChild.appendChild(document.createElement("th"));
+          scroll_spacer.style.minWidth = (body.parentNode.parentNode.offsetWidth - body.offsetWidth)+"px";
+        }
+      }
+      body = body.rows[0].cells;
+      for (var i=0;i<body.length;i++) {
+        head[i].style.minWidth = (body[i].clientWidth-2) + "px";
+      }
+    }
+  }
+
+  /*
+   * Private utils to modify the DOM in order to create the fixed headers
+   */
 
   var elements = document.getElementsByClassName('scrollable');
   for (var i = 0; i < elements.length; i++) {
     var table = elements[i];
-    elements[i].tHead.classList.add('fix-top');
+    var thead = elements[i].tHead;
     var page = table.parentNode;
+    var header = document.createElement("div");
+    var headert = document.createElement("table");
     var scroller = document.createElement("div");
-    page.insertBefore(scroller,table)
+    thead.classList.add('top-fixed');
+    table.removeChild(thead);
+    page.insertBefore(header,table);
+    header.appendChild(headert);
+    headert.appendChild(thead);
+    page.insertBefore(scroller,table);
     page.removeChild(table);
     scroller.style.display = "block";
     ["position","width","height","maxWidth","maxHeight","minWidth","minHeight",
@@ -38,6 +75,9 @@
   for (var i = elements.length-1; elements.length > 0;i = elements.length-1) {
     var table = elements[i].parentNode;
     var head = elements[i].cloneNode(true);
+    table.removeChild(thead);
+    var theadt = document.createElement("table");
+    theadt.appendChild(thead);
     head.classList.remove('fix-top');
     var fixed = table.parentNode.insertBefore(document.createElement("table"),table);
     fixed.classList.add('top-fixed');
@@ -48,19 +88,15 @@
     table.removeChild(elements[i]);
   }
   window.addEventListener('resize', onResize, false);
-  onResize();
 
   function onResize() {
-    var elements = document.getElementsByClassName('top-fixed');
-    for (var e = 0; e < elements.length; e++) {
-      var head = elements[e].tHead.rows[0].cells;
-      var body = elements[e].nextSibling.tBodies[0]
-      if (body.rows.length==0) return(0);
-      body = body.rows[0].cells;
-      for (var i=0;i<body.length;i++) {
-        head[i].style.minWidth = body[i].clientWidth + "px";
-      }
-    }
+    refresh();
   }
 
-})();
+/* NOTE: for triggering the resize event, in all browsers, use:
+  var evt = window.document.createEvent('UIEvents'); 
+  evt.initUIEvent('resize', true, false, window, 0); 
+  window.dispatchEvent(evt);
+*/
+
+})(typeof exports === 'undefined'? this['scrolling']={}: exports);
