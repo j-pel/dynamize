@@ -383,8 +383,6 @@ self.create = function() {
         xhr.setRequestHeader("Content-Type", type);
         xhr.send(file);
       });
-    }).catch(function(err){
-      reject(err);
     });
   };
 
