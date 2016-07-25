@@ -4,6 +4,7 @@
  * Copyright © 2016 Jorge M. Peláez | MIT license
  * http://j-pel.github.io/dynamize
  * 
+ * Pending: insert icon for moving.
  */
 
 (function(exports) {
