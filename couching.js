@@ -52,7 +52,7 @@ function Couching(database) {
    * @param {user} object containing user.name and user.password.
    * @api public
    */
-	self.login = function(user) {
+  self.login = function(user) {
     return new Promise(function(resolve,reject) {
       reqJSON('POST', self.protocol +
         self.host + "_session",user).then(function(data){
@@ -96,7 +96,7 @@ self.create = function() {
    *
    * @api public
    */
-	self.clear = function() {
+  self.clear = function() {
     return new Promise(function(resolve,reject) {
       reqJSON('DELETE', self.protocol +
         self.host + self.db).then(function(data){
@@ -119,7 +119,7 @@ self.create = function() {
    *
    * @api public
    */
-	self.restart = function() {
+  self.restart = function() {
     return new Promise(function(resolve,reject) {
       reqJSON('POST', self.protocol +
         self.host + "_restart",{}).then(function(data){
@@ -128,7 +128,7 @@ self.create = function() {
         reject(err);
       });
     });
-	};
+  };
 
   /*!
    * session()
@@ -371,12 +371,13 @@ self.create = function() {
             case 400: //400 Bad Request – Invalid database name
             case 401: //401 Unauthorized – CouchDB Server Administrator privileges required
             case 412: //412 Precondition Failed – Database already exists
-              //break;
+              reject(JSON.parse(xhr.responseText));
+              break;
             default:
               reject(JSON.parse(xhr.responseText));
             }
           }
-        }
+        };
         xhr.open('PUT', self.protocol + self.host + self.db + "/" +
           id + "/" + file.name+"?rev=" + data.etag, true);
         var type = file.type==="" ? "multipart/form-data" : file.type;
@@ -456,7 +457,8 @@ self.create = function() {
           case 400: //400 Bad Request – Invalid database name
           case 401: //401 Unauthorized – CouchDB Server Administrator privileges required
           case 412: //412 Precondition Failed – Database already exists
-            //break;
+            reject(JSON.parse(xhr.responseText));
+            break;
           default:
             reject(JSON.parse(xhr.responseText));
           }
