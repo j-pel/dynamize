@@ -1,7 +1,7 @@
 # Dynamize.js
-Dynamize your website: small plain vanilla javascript goodies for enhancing user interaction (it is not yet another framework)
+Dynamize your website: small plain vanilla javascript goodies for enhancing user interaction (it is not yet another javascript framework)
 
-There is a lot of functionality already considered in HTML5 + CSS3 that works out-of-the-box in all the main browsers nowadays. A developer should consider javascript as the last-resort solution.
+There is a lot of functionality already considered in HTML5 + CSS3 that works out-of-the-box in all the main browsers nowadays. A web developer should consider javascript as the last-resort solution.
 That's where Dynamize starts to be useful. The idea is not to have another javascript framework. Instead, Dynamize is designed to play nice with most of the popular frameworks: Vue, React, Angular to name a few.
 Dynamize is a loose collection of small, independient, plain vanilla javascript files to do one specific task and designed to avoid messing with the existing site layout.
 
@@ -28,9 +28,9 @@ The scope of Couching is to provide a permanent storage for changes taking advan
 
 Tested and known to work well on:
 
-Linux|![Firefox]![Chrome]![Chromium]|
+Linux|[Firefox][Chrome][Chromium]|
 ---|---|
-Windows|![Firefox]![Chrome]![IE]|
-Android|![Firefox]![Chrome]![Opera]|
-iOS|![Safari]|
-OSX|![Safari]![Chrome]|
+Windows|[Firefox][Chrome][IE]|
+Android|[Firefox][Chrome][Opera]|
+iOS|[Safari]|
+OSX|[Safari][Chrome]|
