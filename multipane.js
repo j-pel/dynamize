@@ -73,9 +73,10 @@
 		var cnTop = head_l.offsetTop + head_l.offsetHeight;
 		pane_l.style.top = (cnTop + 3)+"px";
 		pane_l.style.width = (head_l.offsetWidth - 1) + "px";
+		pane_l.style.left = head_l.offsetLeft + "px"
 		head_r.style.height = (head_l.offsetHeight - 1) + "px";
-		head_r.style.left = (head_l.offsetWidth - 1) + "px";
-		pane_r.style.left = (head_l.offsetWidth - 0) + "px";
+		head_r.style.left = (head_l.offsetLeft+head_l.offsetWidth - 1) + "px";
+		pane_r.style.left = (head_l.offsetLeft+head_l.offsetWidth - 0) + "px";
 		pane_r.style.width = (parent.offsetWidth - head_l.offsetWidth - 2) + "px";
 		pane_r.style.height = (parent.offsetHeight - cnTop - 1) + "px";
 		pane_r.style.top = (cnTop - 0)+"px";

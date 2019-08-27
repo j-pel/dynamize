@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>Simple example for Gantt viewer</title>
+  </head>
+  <style>
+  </style>
+  <body>
+    <h1>Gantting.js</h1>
+    <p>This tool is useful for managing a group of short tasks. The timeline basis is in minutes.</p>
+    <div id="workspace1"></div>
+    <br />
+    <div id="workspace2"></div>
+    <h2>Bugfixes</h2>
+
+    <p>Please feel free to report bugs or to request features at <a href="https://github.com/j-pel/dynamize/issues">github.com/j-pel/dynamize</a>.</p>
+
+    <script type="text/javascript" src="../gantting.js"></script>
+<script>
+var g1 = Gantting()
+
+g1.addTask(0,280,"First task")
+g1.addTask(225,355,"Second task")
+g1.addTask(275,325,"Third task")
+
+g1.paint(document.getElementById("workspace1"))
+
+var g2 = Gantting(document.getElementById("workspace2"))
+
+g2.addTask(0,3280,"Main task","#c0f0ca")
+g2.addTask(0,1280,"First subtask")
+g2.addTask(225,1955,"Second subtask")
+g2.addTask(975,1325,"Third subtask")
+
+g2.paint(document.getElementById("workspace1"),0.1)
+
+
+</script>
+  </body>
+</html>
