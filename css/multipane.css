@@ -1,0 +1,58 @@
+.multipane table {
+	border-collapse: collapse;
+	/*width: 100%;*/
+}
+#head_l {
+	float: left;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+}
+#head_r {
+	position: absolute;
+	left: 150px;
+	overflow-x: hidden;
+	border-bottom: 1px solid black;
+	height:54px;
+}
+#pane_l {
+	position: absolute;
+	top: 120px;
+	left: 0px;
+	height: 0px;
+	margin-top: -3px;
+	font-size: 8pt;
+	float: left;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	display: inline-block;
+	text-align: left;
+	border-right: 1px solid black;
+}
+#pane_l td {
+	padding: 0px;
+	cursor: pointer;
+}
+#pane_l td.spacer {
+	cursor: auto;
+}
+#pane_r {
+	position: absolute;
+	top: 117px;
+	left: 150px;
+	height: 0px;
+	overflow-x: scroll;
+	overflow-y: scroll;
+	border-bottom: 1px solid black;
+}
+#pane_r td {
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+	padding: 0px;
+}
+#pane_r td:nth-child(1) {
+	/* border-left: 1px solid black; */
+}
+#pane_r td.spacer {
+	cursor: auto;
+}

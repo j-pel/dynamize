@@ -1,7 +1,7 @@
 # Dynamize.js
 Dynamize your website: small plain vanilla javascript goodies for enhancing user interaction
 
-When enhancing a website for eye-candy and user interaction, the first thing to do is to find a pure CSS + HTML solution. When such a solution is not viable, the developer needs to resort to javascript. That is the origin of dynamize.js: a loose collection of small, independient, plain vanilla javascript files to do one specific task and designed to avoid messing with the existing site layout.
+When enhancing a website for eye-candy and user interaction, there is nothing better than finding a pure CSS + HTML solution. When such a solution is not viable, the developer needs to resort to javascript. That is the origin of dynamize.js: a loose collection of small, independient, plain vanilla javascript files to do one specific task and designed to avoid messing with the existing site layout.
 
 In other words, just grab the file you want, drop it in your existing website project and there is a good chance that everything is going to work as expected regardless of the nature of the project, even when external frameworks are used. 
 
@@ -16,7 +16,7 @@ Currently, the collection is composed by:
 
 The names are self explanatory, however, there are example files for each one.
 
-Couching outgrows the initial scope of Dynamize. It is being assigned its own repository with another tools for better manage CouchApps from a browser.
+Couching outgrows the initial scope of Dynamize. It is being assigned its own repository with another tools for better manage CouchDB from a browser.
 
 ### Browser Support
 
