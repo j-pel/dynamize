@@ -28,9 +28,9 @@ The scope of Couching is to provide a permanent storage for changes taking advan
 
 Tested and known to work well on:
 
-Linux|[Firefox][Chrome][Chromium]|
+Linux|![Firefox](https://github.com/alrra/browser-logos/blob/master/src/firefox/firefox_16x16.png)![Chrome](https://github.com/alrra/browser-logos/blob/master/src/chrome/chrome_16x16.png)![Chromium](https://github.com/alrra/browser-logos/blob/master/src/chromium/chromium_16x16.png)|
 ---|---|
-Windows|[Firefox][Chrome][IE]|
-Android|[Firefox][Chrome][Opera]|
-iOS|[Safari]|
-OSX|[Safari][Chrome]|
+Windows|![Firefox](https://github.com/alrra/browser-logos/blob/master/src/firefox/firefox_16x16.png)![Chrome](https://github.com/alrra/browser-logos/blob/master/src/chrome/chrome_16x16.png)|
+Android|![Firefox](https://github.com/alrra/browser-logos/blob/master/src/firefox/firefox_16x16.png)![Chrome](https://github.com/alrra/browser-logos/blob/master/src/chrome/chrome_16x16.png)![Opera](https://github.com/alrra/browser-logos/blob/master/src/opera/opera_16x16.png)|
+iOS|![Safari](https://github.com/alrra/browser-logos/blob/master/src/safari/safari_16x16.png)|
+OSX|![Safari](https://github.com/alrra/browser-logos/blob/master/src/safari/safari_16x16.png)![Chrome](https://github.com/alrra/browser-logos/blob/master/src/chrome/chrome_16x16.png)
