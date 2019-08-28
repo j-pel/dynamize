@@ -35,9 +35,9 @@ Android|[Firefox][Chrome][Opera]|
 iOS|[Safari]|
 OSX|[Safari][Chrome]|
 
-Linux|![Firefox](https://raw.github.com/alrra/browser-logos/master/firefox/firefox_32x32.png)![Chrome](https://github.com/alrra/browser-logos/blob/master/src/chrome/chrome_16x16.png)![Chromium](https://raw.github.com/alrra/browser-logos/master/chromium/chromium_32x32.png)|
+Linux|![Firefox](https://github.com/alrra/browser-logos/blob/master/src/firefox/firefox_16x16.png)![Chrome](https://github.com/alrra/browser-logos/blob/master/src/chrome/chrome_16x16.png)![Chromium](https://github.com/alrra/browser-logos/blob/master/src/chromium/chromium_16x16.png)|
 ---|---|
-Windows|![Firefox](https://raw.github.com/alrra/browser-logos/master/firefox/firefox_32x32.png)![Chrome](https://raw.github.com/alrra/browser-logos/master/chrome/chrome_32x32.png)![IE](https://raw.github.com/alrra/browser-logos/master/internet-explorer/internet-explorer_32x32.png)|
-Android|![Firefox](https://raw.github.com/alrra/browser-logos/master/firefox/firefox_32x32.png)![Chrome](https://raw.github.com/alrra/browser-logos/master/chrome/chrome_32x32.png)![Opera](https://raw.github.com/alrra/browser-logos/master/opera/opera_32x32.png)|
-iOS|![Safari](https://raw.github.com/alrra/browser-logos/master/safari/safari_32x32.png)|
+Windows|![Firefox](https://github.com/alrra/browser-logos/blob/master/src/firefox/firefox_32x32.png)![Chrome](https://github.com/alrra/browser-logos/blob/master/src/chrome/chrome_32x32.png)![IE](https://github.com/alrra/browser-logos/blob/master/src/internet-explorer/internet-explorer_32x32.png)|
+Android|![Firefox](https://github.com/alrra/browser-logos/blob/master/src/firefox/firefox_32x32.png)![Chrome](https://github.com/alrra/browser-logos/blob/master/src/chrome/chrome_32x32.png)![Opera](https://github.com/alrra/browser-logos/blob/master/src/opera/opera_32x32.png)|
+iOS|![Safari](https://github.com/alrra/browser-logos/blob/master/src/safari/safari_32x32.png)|
 OSX| [Not yet]|
