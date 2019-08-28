@@ -9,7 +9,7 @@ In other words, just grab or link the file you want to use, drop it in your exis
 
 Currently, the collection is composed by:
 
-* [scrolling.js](http://j-pel.github.io/dynamize/examples/scrolling.html)
+* [scrolling.js](https://rawgit.com/j-pel/dynamize/master/examples/scrolling.html)
 * [moving.js](http://j-pel.github.io/dynamize/examples/all.html)
 * [rotating.js](http://j-pel.github.io/dynamize/examples/all.html)
 * [sizing.js](http://j-pel.github.io/dynamize/examples/all.html)
