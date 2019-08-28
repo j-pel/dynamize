@@ -9,16 +9,16 @@ In other words, just grab or link the file you want to use, drop it in your exis
 
 Currently, the collection is composed by:
 
-* [scrolling.js](https://rawgit.com/j-pel/dynamize/master/examples/scrolling.html)
-* [moving.js](http://j-pel.github.io/dynamize/examples/all.html)
-* [rotating.js](http://j-pel.github.io/dynamize/examples/all.html)
-* [sizing.js](http://j-pel.github.io/dynamize/examples/all.html)
-* [sliding.js](http://j-pel.github.io/dynamize/examples/sliding.html)
-* [couching.js](http://j-pel.github.io/dynamize/examples/couching.html)
-* [filtering.js](http://j-pel.github.io/dynamize/examples/filtering.html)
-* [multipane.js](http://j-pel.github.io/dynamize/examples/multipane.html)
-* [gantting.js](http://j-pel.github.io/dynamize/examples/gantting.html)
-* [editing.js](http://j-pel.github.io/dynamize/examples/editing.html)
+* [scrolling.js](http://j-pel.github.io/dynamize/scrolling.html)
+* [moving.js](http://j-pel.github.io/dynamize/moving.html)
+* [rotating.js](http://j-pel.github.io/dynamize/all.html)
+* [sizing.js](http://j-pel.github.io/dynamize/rotating.html)
+* [sliding.js](http://j-pel.github.io/dynamize/sliding.html)
+* [couching.js](http://j-pel.github.io/dynamize/couching.html)
+* [filtering.js](http://j-pel.github.io/dynamize/filtering.html)
+* [multipane.js](http://j-pel.github.io/dynamize/multipane.html)
+* [gantting.js](http://j-pel.github.io/dynamize/gantting.html)
+* [editing.js](http://j-pel.github.io/dynamize/editing.html)
 
 The names are self explanatory, however, there are example files for each one.
 
