@@ -72,7 +72,7 @@ function Couching(database) {
        *
        * @api public
        */
-    self.create = function() {
+      self.create = function() {
         return new Promise(function(resolve,reject) {
           reqJSON('PUT', self.protocol +
             self.host + self.db).then(function(data){
