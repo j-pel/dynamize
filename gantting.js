@@ -27,10 +27,12 @@ function Gantting(viewport){
   self.parentNode = viewport
   self.tasks = []
   self.svg = document.createElementNS(ns, 'svg')
-  self.svg.setAttribute('width', '100%')
-  self.svg.setAttribute('height', '100%')
+	viewport.appendChild(self.svg)
+	self.svg.style.width = "550px";
+	//self.svg.style.height = "550px";
+  //self.svg.setAttribute('width', '100%')
+  //self.svg.setAttribute('height', '100%')
   self.svg.classList.add("gantt")
-  viewport.appendChild(self.svg)
   
   /* client API */
 
@@ -119,6 +121,12 @@ function Gantting(viewport){
         day++
         g.appendChild(element);
       } else {
+        var element = document.createElementNS(ns, 'text')
+        element.setAttribute('x', i);
+        element.setAttribute('y', 16);
+        element.setAttribute('style', 'text-anchor:start; font: 11px verdana; text-align: center;')
+				var txt = document.createTextNode(day+":"+day)
+        element.appendChild(txt);
         var line = document.createElementNS(ns, 'line')
         line.setAttribute('x1', i)
         line.setAttribute('y1', 20)
