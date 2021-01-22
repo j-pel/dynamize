@@ -21,17 +21,21 @@
     return list;
   };
 
+	var appendRow = exports.appendRow = function(table, data) {
+		var tr = document.createElement("tr");
+		table.appendChild(tr);
+		for (var c = 0; c < data.length; c++) {
+			var td = document.createElement("td");
+			td.tabindex = 0;
+			tr.appendChild(td);
+			const value = (data[c])?data[c]:"";
+			td.appendChild(document.createTextNode(value));
+		}
+    return tr;
+  };
+
   var appendRows = exports.appendRows = function(table,list) {
-    for (var r = 0; r < list.length; r++) {
-      var tr = document.createElement("tr");
-      table.appendChild(tr);
-      for (var c = 0; c < list[r].length; c++) {
-        var td = document.createElement("td");
-        tr.appendChild(td);
-        td.appendChild(document.createTextNode(list[r][c]));
-      }
-    }
-    return 0
+		return list.map((item)=>appendRow(table, item));
   };
 
   var filterRows = exports.filterRows = function(header) {
@@ -62,12 +66,12 @@
               }
             }
           }
-          // This routine filter out rows that do not match the regular expression
+          // This routine filters out rows that do not match the regular expression
           var re = new RegExp(filter,'i');
           list = list.filter(function(item){
             return !re.test(item[0]);
           });
-          // This routine hide the rows
+          // This routine hides the rows
           filtered += list.length;
           for (var r=0; r<list.length; r++) {
             table.tBodies[b].rows[list[r][1]].style.display="none";
@@ -100,26 +104,53 @@
       scrolling.refresh();
     }
   };
-
-  var elements = document.getElementsByClassName('filtrable');
-  for (var i = 0; i < elements.length; i++) {
-    var table = elements[i];
-    for (var h = 0; h < table.tHead.rows[0].cells.length; h++) {
-      var input = document.createElement("input");
-      var th = table.tHead.rows[0].cells[h];
-      input.placeholder = th.textContent;
-      th.removeChild(th.firstChild);
-      input.classList.add("filter");
-      th.appendChild(input);
-      //input.style.width = "100%";
-      input.onkeyup = function(evt){
-        if (evt.key == "ArrowDown") {
-          table.focus();
-        } else {
-          filterRows(evt.target.parentNode.offsetParent);
-        }
-      };
-    }
-  }
 	
+	var align = exports.align = function(data) {
+		var sheet = document.createElement('style')
+		var str = "";
+		var align = "";
+		data.forEach(function(el, index){
+			switch (el){
+				case "l":
+					align = "left"
+					break;
+				case "c":
+					align = "center"
+					break;
+				default:
+					align = "right"
+			}
+			str += ".filtrable td:nth-child("+(index+1)+") {text-align: "+align+";}";
+			str += ".filtrable th:nth-child("+(index+1)+") input {text-align: "+align+";}";
+		})
+		sheet.innerHTML = str;
+		document.body.appendChild(sheet);
+	}
+
+  var apply = exports.apply = function() {
+		const elements = document.getElementsByClassName('filtrable');
+		for (var i = 0; i < elements.length; i++) {
+			const table = elements[i];
+			const thead = (!table.tHead)?table.originalThead:table.tHead;
+			for (var h = 0; h < thead.rows[0].cells.length; h++) {
+				const input = document.createElement("input");
+				const th = thead.rows[0].cells[h];
+				const w = th.offsetWidth;
+				input.placeholder = th.textContent;
+				th.removeChild(th.firstChild);
+				input.classList.add("filter");
+				th.appendChild(input);
+				input.style.width = w+"px";
+				input.onkeyup = function(evt){
+					if (evt.key == "ArrowDown") {
+						table.focus();
+					} else {
+						filterRows(evt.target.parentNode.offsetParent);
+					}
+				};
+			}
+		}
+	}
+
 })(typeof exports === 'undefined'? this['filtering']={}: exports);
+
