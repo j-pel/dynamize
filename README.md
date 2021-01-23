@@ -32,6 +32,7 @@ The scope of Couching is to provide a permanent storage for changes taking advan
 
 Tested and known to work well on:
 
+Systems|Browsers
 Linux|![Firefox](https://github.com/alrra/browser-logos/blob/master/src/firefox/firefox_16x16.png)![Chrome](https://github.com/alrra/browser-logos/blob/master/src/chrome/chrome_16x16.png)![Chromium](https://github.com/alrra/browser-logos/blob/master/src/chromium/chromium_16x16.png)|
 ---|---|
 Windows|![Firefox](https://github.com/alrra/browser-logos/blob/master/src/firefox/firefox_16x16.png)![Chrome](https://github.com/alrra/browser-logos/blob/master/src/chrome/chrome_16x16.png)|
