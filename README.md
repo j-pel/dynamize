@@ -37,4 +37,4 @@ Linux|![Firefox](https://github.com/alrra/browser-logos/blob/master/src/firefox/
 Windows|![Firefox](https://github.com/alrra/browser-logos/blob/master/src/firefox/firefox_16x16.png)![Chrome](https://github.com/alrra/browser-logos/blob/master/src/chrome/chrome_16x16.png)|
 Android|![Firefox](https://github.com/alrra/browser-logos/blob/master/src/firefox/firefox_16x16.png)![Chrome](https://github.com/alrra/browser-logos/blob/master/src/chrome/chrome_16x16.png)![Opera](https://github.com/alrra/browser-logos/blob/master/src/opera/opera_16x16.png)|
 iOS|![Safari](https://github.com/alrra/browser-logos/blob/master/src/safari/safari_16x16.png)|
-OSX|![Safari](https://github.com/alrra/browser-logos/blob/master/src/safari/safari_16x16.png)![Chrome](https://github.com/alrra/browser-logos/blob/master/src/chrome/chrome_16x16.png)
+OSX|![Safari](https://github.com/alrra/browser-logos/blob/master/src/safari/safari_16x16.png)![Chrome](https://github.com/alrra/browser-logos/blob/master/src/chrome/chrome_16x16.png)![Firefox](https://github.com/alrra/browser-logos/blob/master/src/firefox/firefox_16x16.png)
