@@ -21,6 +21,34 @@
     return list;
   };
 
+	function appendTable(display, options) {
+		const styleSheet = document.createElement('style')
+		const tbl = document.createElement("table");
+		tbl.classList.add("filtrable");
+		tbl.classList.add("scrollable");
+		display.appendChild(tbl);
+		const hdr = document.createElement("thead");
+		hdr.classList.add('top-fixed');
+		hdr.id = "filters";
+		tbl.appendChild(hdr);
+		const bdy = document.createElement("tbody");
+		bdy.id = "list";
+		tbl.appendChild(bdy);
+		const tr = document.createElement("tr");
+		hdr.appendChild(tr);
+		for (var col = 0; col<options.columns.length; col++){
+			const th = document.createElement("th");
+			let align = options.columns[col].align;
+			if (!align||align=="") align="left";
+			styleSheet.innerHTML += ".filtrable td:nth-child("+(col+1)+") {text-align: "+align+";}";
+			styleSheet.innerHTML += ".filtrable td:nth-child("+(col+1)+") input {text-align: "+align+";}";
+			th.appendChild(document.createTextNode(options.columns[col].title));
+			tr.appendChild(th);
+		}
+		document.body.appendChild(styleSheet);
+		return bdy;
+	}
+
 	var appendRow = exports.appendRow = function(table, data) {
 		var tr = document.createElement("tr");
 		table.appendChild(tr);
