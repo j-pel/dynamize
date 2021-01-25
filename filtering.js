@@ -21,7 +21,7 @@
     return list;
   };
 
-	function appendTable(display, options) {
+	var appendTable = exports.appendTable = function(display, options) {
 		const styleSheet = document.createElement('style')
 		const tbl = document.createElement("table");
 		tbl.classList.add("filtrable");
