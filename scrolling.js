@@ -10,6 +10,35 @@
 
 	'use strict';
 
+	// Author: Paul Kinlan
+	// Source: https://paul.kinlan.me/waiting-for-an-element-to-be-created/
+	function waitForElement(selector) {
+		return new Promise(function(resolve, reject) {
+			var element = document.querySelector(selector);
+	
+			if(element) {
+				resolve(element);
+				return;
+			}
+	
+			var observer = new MutationObserver(function(mutations) {
+				mutations.forEach(function(mutation) {
+					var nodes = Array.from(mutation.addedNodes);
+					for(var node of nodes) {
+						if(node.matches && node.matches(selector)) {
+							observer.disconnect();
+							resolve(node);
+							return;
+						}
+					};
+				});
+			});
+	
+			observer.observe(document.documentElement, { childList: true, subtree: true });
+		});
+	}
+
+
 	/*!
 	 * refresh()
 	 * Resizes the fixed headers for all columns in accordance to
@@ -54,40 +83,42 @@
 			var header = document.createElement("div");
 			var headert = document.createElement("table");
 			var scroller = document.createElement("div");
-			table.originalThead = thead;
-			headert.originalTable = table;
-			thead.classList.add('top-fixed');
-			table.removeChild(thead);
-			page.insertBefore(header,table);
-			header.appendChild(headert);
-			headert.appendChild(thead);
-			page.insertBefore(scroller,table);
-			page.removeChild(table);
-			scroller.style.display = "block";
-			["width","maxWidth","minWidth","left","right"].forEach(function(prop){
-				headert.style[prop] = table.style[prop];
-				header.style[prop] = table.style[prop];
+			waitForElement(thead).then((thead)=>{
+				table.originalThead = thead;
+				headert.originalTable = table;
+				thead.classList.add('top-fixed');
+				table.removeChild(thead);
+				page.insertBefore(header,table);
+				header.appendChild(headert);
+				headert.appendChild(thead);
+				page.insertBefore(scroller,table);
+				page.removeChild(table);
+				scroller.style.display = "block";
+				["width","maxWidth","minWidth","left","right"].forEach(function(prop){
+					headert.style[prop] = table.style[prop];
+					header.style[prop] = table.style[prop];
+				});
+				["position","width","height","maxWidth","maxHeight","minWidth","minHeight",
+				"top","left","bottom","right"].forEach(function(prop){
+					scroller.style[prop] = table.style[prop];
+				});
+				["movable","rotable","sizable"].forEach(function(cls){
+					if(table.classList.contains(cls)) {
+						scroller.classList.add(cls);
+						table.classList.remove(cls);
+					}
+				});
+				header.style.backgroundColor = "ButtonHighlight";
+				header.style.position = "fixed";
+				table.style.width = "100%";
+				table.tabIndex = 0;
+				scroller.style.overflow = "scroll";
+				scroller.style.position = "relative";
+				scroller.style.top = (2 + header.offsetHeight) + "px";
+				scroller.style.height = (page.clientHeight - 2 - header.offsetHeight) + "px";
+				scroller.appendChild(table);
+				headert.style.width = parseInt(table.clientWidth) + "px";
 			});
-			["position","width","height","maxWidth","maxHeight","minWidth","minHeight",
-			"top","left","bottom","right"].forEach(function(prop){
-				scroller.style[prop] = table.style[prop];
-			});
-			["movable","rotable","sizable"].forEach(function(cls){
-				if(table.classList.contains(cls)) {
-					scroller.classList.add(cls);
-					table.classList.remove(cls);
-				}
-			});
-			header.style.backgroundColor = "ButtonHighlight";
-			header.style.position = "fixed";
-			table.style.width = "100%";
-			table.tabIndex = 0;
-			scroller.style.overflow = "scroll";
-			scroller.style.position = "relative";
-			scroller.style.top = (2 + header.offsetHeight) + "px";
-			scroller.style.height = (page.clientHeight - 2 - header.offsetHeight) + "px";
-			scroller.appendChild(table);
-			headert.style.width = parseInt(table.clientWidth) + "px";
 		}
 		refresh();
 	}
