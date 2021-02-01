@@ -54,7 +54,7 @@
 			var body = elements[e].parentNode.originalTable.tBodies[0]
 			const scroller = body.offsetParent.parentNode;
 			scroller.style.top = (2 + elements[e].parentNode.offsetHeight) + "px";
-			scroller.style.height = (scroller.parentNode.clientHeight - 2 - elements[e].parentNode.offsetHeight) + "px";
+			//scroller.style.height = (scroller.parentNode.clientHeight - 2 - elements[e].parentNode.offsetHeight) + "px";
 			if (body.rows.length==0) return(0);
 			for (var r=0;r<body.rows.length;r++){
 				if (body.rows[r].clientHeight>0) break;
