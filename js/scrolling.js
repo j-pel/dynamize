@@ -10,6 +10,7 @@
 
 	'use strict';
 
+	// Function: waitForElement
 	// Author: Paul Kinlan
 	// Source: https://paul.kinlan.me/waiting-for-an-element-to-be-created/
 	function waitForElement(selector) {
@@ -83,14 +84,16 @@
 			var header = document.createElement("div");
 			var headert = document.createElement("table");
 			var scroller = document.createElement("div");
-			waitForElement(thead).then((thead)=>{
+			//waitForElement(thead).then((thead)=>{
 				table.originalThead = thead;
 				headert.originalTable = table;
-				thead.classList.add('top-fixed');
-				table.removeChild(thead);
-				page.insertBefore(header,table);
-				header.appendChild(headert);
-				headert.appendChild(thead);
+				if(thead) {
+					thead.classList.add('top-fixed');
+					table.removeChild(thead);
+					page.insertBefore(header,table);
+					header.appendChild(headert);
+					headert.appendChild(thead);
+				}
 				page.insertBefore(scroller,table);
 				page.removeChild(table);
 				scroller.style.display = "block";
@@ -118,7 +121,7 @@
 				scroller.style.height = (page.clientHeight - 2 - header.offsetHeight) + "px";
 				scroller.appendChild(table);
 				headert.style.width = parseInt(table.clientWidth) + "px";
-			});
+			//});
 		}
 		refresh();
 	}

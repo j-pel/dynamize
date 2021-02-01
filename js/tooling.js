@@ -83,14 +83,8 @@
 					new_script.appendChild(document.createTextNode(elem.textContent));
 					document.body.appendChild(new_script);
 				}
-				const btn = document.createElement('img');
-				btn.src = '/res/gui/close.png';
-				btn.style.position = "absolute";
-				btn.style.position = "block";
-				btn.style.top = "8px";
-				btn.style.right = "8px";
-				btn.style.width = "24px";
-				btn.style.height = "24px";
+				const btn = document.createElement('div');
+				btn.classList.add("close-button");
 				btn.onclick = (evt)=>self.toggle();
 				div.appendChild(btn);
 			}

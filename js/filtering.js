@@ -29,7 +29,6 @@
 		display.appendChild(tbl);
 		const hdr = document.createElement("thead");
 		hdr.classList.add('top-fixed');
-		hdr.id = "filters";
 		tbl.appendChild(hdr);
 		const bdy = document.createElement("tbody");
 		bdy.id = "list";
