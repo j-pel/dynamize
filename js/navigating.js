@@ -64,9 +64,11 @@
 		var elements = document.getElementsByClassName('navigatable');
 		for (var i = 0; i < elements.length; i++) {
 			elements[0].addEventListener('mousedown', onMouseDown, false);
-			start = elements[0].children[0].children[0];
-			start.focus();
-			start.classList.add("selcell");
+			if(elements[0].children.length>0){
+				start = elements[0].children[0].children[0];
+				start.focus();
+				start.classList.add("selcell");
+			}
 		}
 	}
 
