@@ -52,6 +52,7 @@
 			status: 'active',
 		};
 		Object.assign(self, options); // replace with custom options
+		div.controller = self;
 	
 		self.toggle = ()=>{
 			const button = self.parent.element;
