@@ -193,17 +193,31 @@
       </div>
     </div>
 
-    <script type="text/javascript" src="https://j-pel.github.io/dynamize/js/moving.js"></script>
-    <script type="text/javascript" src="https://j-pel.github.io/dynamize/js/sizing.js"></script>
-    <script type="text/javascript" src="https://j-pel.github.io/dynamize/js/rotating.js"></script>
-    <script type="text/javascript" src="https://j-pel.github.io/dynamize/js/scrolling.js"></script>
+    <script type="text/javascript" src="js/setup.js"></script>
     <script>
-    	moving.init(function(info){console.log(info)});
-    	rotating.init(function(info){console.log(info)});
-    	sizing.init(function(info){console.log(info)});
-      stamp2.style.transform = 'rotate(30deg)';
-      nn_m_0.style.transform = 'rotate(-5deg)';
-      nn_m_0.style.zIndex = '1';
+(async function() {
+	setup.cdn = {
+		production: "https://j-pel.github.io/dynamize/js/",
+		debugging: "js/"
+	};
+	const isReady = await setup.loadLibs([
+		'moving',
+		'sizing',
+		'rotating',
+		'scrolling',
+	]);
+	if(!isReady){
+		console.log("Error loading required libraries");
+	}
+
+	moving.init(function(info){console.log(info)});
+	rotating.init(function(info){console.log(info)});
+	sizing.init(function(info){console.log(info)});
+	stamp2.style.transform = 'rotate(30deg)';
+	nn_m_0.style.transform = 'rotate(-5deg)';
+	nn_m_0.style.zIndex = '1';
+
+})();
     </script>
   </body>
 </html>

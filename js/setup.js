@@ -10,22 +10,20 @@
 
 	'use strict';
 
-	if (["localhost", "127.0.0.1", "", "::1"].includes(window.location.hostname) ) {
-		var _api = "http://localhost:8088/liri/";
-		var _cdn = "/res/js/";
-	} else {
-		var api = "https://api.ideati.co/liri/";
-		var _cdn = "https://j-pel.github.io/dynamize/js/";
-	}
+	let _api, _cdn;
+
+	// Detect environment
+
+	const _environment = (["localhost", "127.0.0.1", "", "::1"].includes(window.location.hostname))?"debugging":"production";
 
 	Object.defineProperty(exports, 'api', {
 		get: () => _api,
-		set: (x) => _api = (x.charAt(x.length - 1) === "/")?x:x+"/",
+		set: (x) => _api = (x[_environment].charAt(x[_environment].length - 1) === "/")?x[_environment]:x[_environment]+"/",
 	});
 
 	Object.defineProperty(exports, 'cdn', {
 		get: () => _cdn,
-		set: (x) => _cdn = (x.charAt(x.length - 1) === "/")?x:x+"/",
+		set: (x) => _cdn = (x[_environment].charAt(x[_environment].length - 1) === "/")?x[_environment]:x[_environment]+"/",
 	});
 
 	const scripts = document.getElementsByTagName('script');
