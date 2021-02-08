@@ -46,7 +46,7 @@
 		if(!cdn)
 			a.href = _cdn+script.replace(/^\/+/, '');
 		else
-			a.href = cdn+script.replace(/^\/+/, '');
+			a.href = (cdn.charAt[cdn.length-1]=="/")?cdn+script.replace(/^\/+/, ''):cdn+"/"+script.replace(/^\/+/, '');
 		for (var s = 0; s < scripts.length; s++) {
 			if (a.href == scripts[s].src) resolve(true);
 		}
