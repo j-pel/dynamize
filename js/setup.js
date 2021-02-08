@@ -69,6 +69,6 @@
 		}).catch((err) => reject(false));
 	});
 
-	const loadLibs = exports.loadLibs = (dependencies) => Promise.all(dependencies.map((lib)=>require('/'+lib)));
+	const loadLibs = exports.loadLibs = (dependencies, cdn) => Promise.all(dependencies.map((lib)=>require(lib, cdn)));
 
 })(typeof exports === 'undefined'? this['setup']={}: exports);
