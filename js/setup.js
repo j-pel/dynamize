@@ -40,10 +40,13 @@
 			return {error: result.data};
 	};
 
-	const require = exports.require = (script) => new Promise((resolve,reject) => {
+	const require = exports.require = (script, cdn) => new Promise((resolve,reject) => {
 		const scripts = document.scripts;
 		const a = document.createElement('a');
-		a.href = _cdn+script.replace(/^\/+/, '');
+		if(!cdn)
+			a.href = _cdn+script.replace(/^\/+/, '');
+		else
+			a.href = cdn+script.replace(/^\/+/, '');
 		for (var s = 0; s < scripts.length; s++) {
 			if (a.href == scripts[s].src) resolve(true);
 		}
