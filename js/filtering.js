@@ -159,6 +159,7 @@
 		for (var i = 0; i < elements.length; i++) {
 			const table = elements[i];
 			const thead = (!table.tHead)?table.originalThead:table.tHead;
+			if(!thead) continue;
 			for (var h = 0; h < thead.rows[0].cells.length; h++) {
 				const input = document.createElement("input");
 				const th = thead.rows[0].cells[h];
