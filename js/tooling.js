@@ -63,8 +63,12 @@
 				if (isDirty) self.build(self.parent.widget);
 				button.classList.add("active");
 				self.element.style.display = "block";
-				self.element.style.top = (button.offsetTop + button.offsetHeight + button.parentElement.offsetTop + button.parentElement.offsetParent.offsetTop) + "px";
-				self.element.style.left = (button.offsetLeft + button.parentElement.offsetLeft + button.parentElement.offsetParent.offsetLeft) + "px";
+				let top = (button.offsetTop + button.offsetHeight + button.parentElement.offsetTop + button.parentElement.offsetParent.offsetTop);
+				let left = (button.offsetLeft + button.parentElement.offsetLeft + button.parentElement.offsetParent.offsetLeft);
+				top += ((window.innerHeight - self.parent.height - top)<0) ? window.innerHeight - self.parent.height - top:0;
+				left += ((document.body.clientWidth - self.parent.width - left)<0) ? document.body.clientWidth - self.parent.width - left:0;
+				self.element.style.top = top + "px";
+				self.element.style.left = left + "px";
 				//const inp = self.dialog.getElementsByTagName("input");
 				//if(inp.length>0) inp[0].focus();
 			}
