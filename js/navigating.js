@@ -30,6 +30,7 @@
 	
 	function onKeyDown(e) {
 		e = e || window.event;
+		if (!e.target.classList.contains('navigatable')) return 0;
 		if (e.keyCode == '38') { // up arrow
 			var idx = start.cellIndex;
 			var nextrow = start.parentElement.previousElementSibling
