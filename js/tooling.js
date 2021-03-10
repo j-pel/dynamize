@@ -27,7 +27,7 @@
 		span.appendChild(document.createTextNode("\u00A0"));
 		span.dialog = dialog({parent: self});
 		span.dialog.element.classList.add("dialog");
-		span.dialog.element.id = self.name + "_dialog";
+		span.dialog.element.id = self.name + "_dlg_"+self.id;
 	
 		span.onclick = self.onclick;
 	
