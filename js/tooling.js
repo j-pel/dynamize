@@ -6,25 +6,21 @@
  * 
  */
 
-(function(exports) {
+((exports) => {
 
 	'use strict';
 
-	const attach = exports.attach = function(element, tools) {
-		tools.map((item)=>{
-			element.appendChild(tool(item).element);
-		});
+	const attach = exports.attach = (element, tools) => {
+		tools.map((item)=>element.appendChild(tool(item).element));
 	}
 
-	const tool = function(options) {
+	const tool = exports.tool = (options) => {
 		const span = document.createElement('span');
 		span.classList.add('tool');
 		const self = { // Set default values for options
 			status: 'active',
 			element: span,
-			onclick: (evt)=>{
-				evt.target.dialog.toggle();
-			}
+			onclick: (evt)=>evt.target.dialog.toggle(),
 		};	
 		Object.assign(self, options); // replace with custom options
 	
@@ -36,11 +32,10 @@
 	
 		span.onclick = self.onclick;
 	
-	
 		return self;
 	}
 	
-	const dialog = function(options) {
+	const dialog = exports.dialog = (options) => {
 		let isDirty = true;
 		const div = document.createElement('div');
 		div.classList.add('dialog');
@@ -54,7 +49,7 @@
 		Object.assign(self, options); // replace with custom options
 		div.controller = self;
 	
-		self.toggle = ()=>{
+		self.toggle = () => {
 			const button = self.parent.element;
 			if (self.element.style.display == "block"){
 				self.element.style.display = "none";
