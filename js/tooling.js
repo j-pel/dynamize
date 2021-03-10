@@ -10,9 +10,7 @@
 
 	'use strict';
 
-	const attach = exports.attach = (element, tools) => {
-		tools.map((item)=>element.appendChild(tool(item).element));
-	}
+	const attach = exports.attach = (element, tools) => tools.map((item)=>element.appendChild(tool(item).element));
 
 	const tool = exports.tool = (options) => {
 		const span = document.createElement('span');
