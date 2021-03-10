@@ -22,6 +22,7 @@
 		};	
 		Object.assign(self, options); // replace with custom options
 	
+		span.title = self.name;
 		span.style.background = `no-repeat center/24px url('${self.icon}')`;
 		span.appendChild(document.createTextNode("\u00A0"));
 		span.dialog = dialog({parent: self});
