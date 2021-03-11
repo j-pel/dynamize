@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div id="form2" style="height: 300px; margin: 0px;">
+		<div style="position: absolute; top: 45px; left: 45px;">Dialog: <span id="dialogId2"></span></div>
+		<div style="position: absolute; top: 105px; left: 45px;">Item: &nbsp;<input id="item2" style="background: transparent; border: none; border-bottom: 1px solid black; text-align: left;" type="text" autocomplete="off" /></div>
+		<div style="position: absolute; top: 145px; left: 45px;">Second: &nbsp;<input id="second2" style="background: transparent; border: none; border-bottom: 1px solid black; text-align: left;" type="text" autocomplete="off" /></div>
+		<div style="position: absolute; top: 190px; left: 45px;">Third: &nbsp;<input id="third2" style="background: transparent; border: none; border-bottom: 1px solid black; text-align: left;" type="text" autocomplete="off" /></div>
+		<div style="position: absolute; top: 235px; left: 365px;"><input type="button" id="issue2" value="Issue" default="true" /></div>
+	</div>
+	<div style="background: #005eb8; color: white; position: absolute; top: 288px; height: 80px; width: 424px; padding: 8px;">Status bar or message bar</div>
+<script>
+/**
+ * @project http://j-pel.github.io/dynamize
+ * @author Jorge M. Peláez
+ * @module menu2
+ */
+
+(async () => {
+	const self = {
+		script: document.currentScript,
+		dlg: document.getElementById("form2").parentElement,
+		jwt: "token_example",
+	}
+	const onSubmit = async (evt) => {
+		const id = parseInt(document.getElementById("dialogId2").innerText);
+		const result = await setup.apiCall('quotation/'+id, {
+			method: 'PATCH', // *GET, POST, PUT, DELETE, etc.
+			//mode: 'cors', // no-cors, *cors, same-origin
+			//credentials: 'same-origin', // include, *same-origin, omit
+			cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+			//redirect: 'follow', // manual, *follow, error
+			referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+			headers: {
+				'Content-Type': 'application/json charset=utf-8',
+				'Accept': 'application/json charset=utf-8',
+				'Authorization': 'Bearer '+self.jwt,
+			},
+			body: JSON.stringify({
+				item: document.getElementById("item2").value,
+				second: document.getElementById("second2").value,
+				third: document.getElementById("third2").value,
+			})
+		});
+		if(result.CreatedAt) self.dlg.controller.toggle();
+	}
+	document.getElementById("issue2").addEventListener('click', onSubmit, false);
+
+	self.dlg.onopen=(evt)=>{
+		document.getElementById("dialogId2").innerText = evt.trigger.options.id;
+		return true;
+	}
+
+	self.dlg.onclose=(evt)=>{
+		return true;
+	}
+
+})();
+
+</script>
+</body>
+</html>

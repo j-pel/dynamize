@@ -10,90 +10,98 @@
 
 	'use strict';
 
-	const attach = exports.attach = (element, tools) => tools.map((item)=>element.appendChild(tool(item).element));
+	const dialogs = {};
 
-	const tool = exports.tool = (options) => {
+	const attach = exports.attach = (element, tools) => Promise.all(tools.map(async (item) => element.appendChild(await tool(item))));
+
+	const tool = exports.tool = async (options) => {
 		const span = document.createElement('span');
 		span.classList.add('tool');
 		const self = { // Set default values for options
 			status: 'active',
 			element: span,
-			onclick: (evt)=>evt.target.dialog.toggle(),
+			onclick: (evt)=>evt.target.dialog.toggle({target:evt.target.dialog, trigger: evt.target}),
 		};	
 		Object.assign(self, options); // replace with custom options
-	
 		span.title = self.name;
 		span.style.background = `no-repeat center/24px url('${self.icon}')`;
 		span.appendChild(document.createTextNode("\u00A0"));
-		span.dialog = dialog({parent: self});
-		span.dialog.element.classList.add("dialog");
-		span.dialog.element.id = self.name + "_dlg_"+self.id;
-	
 		span.onclick = self.onclick;
-	
-		return self;
+		span.options = self;
+		if(self.widget){
+			span.dialog = await dialog({button: span});
+		}
+		return span;
 	}
 	
-	const dialog = exports.dialog = (options) => {
-		let isDirty = true;
-		const div = document.createElement('div');
-		div.classList.add('dialog');
-		div.style.display = "none";
-		document.body.appendChild(div);
-	
+	const dialog = exports.dialog = async (options) => {
+
 		const self = { // Set default values for options
-			element: div,
 			status: 'active',
 		};
 		Object.assign(self, options); // replace with custom options
-		div.controller = self;
-	
-		self.toggle = () => {
-			const button = self.parent.element;
-			if (self.element.style.display == "block"){
-				self.element.style.display = "none";
-				button.classList.remove("active");
-			} else {
-				if (isDirty) self.build(self.parent.widget);
-				button.classList.add("active");
-				self.element.style.display = "block";
-				let top = (button.offsetTop + button.offsetHeight + button.parentElement.offsetTop + button.parentElement.offsetParent.offsetTop);
-				let left = (button.offsetLeft + button.parentElement.offsetLeft + button.parentElement.offsetParent.offsetLeft);
-				top += ((window.innerHeight - self.parent.height - top)<0) ? window.innerHeight - self.parent.height - top:0;
-				left += ((document.body.clientWidth - self.parent.width - left)<0) ? document.body.clientWidth - self.parent.width - left:0;
-				self.element.style.top = top + "px";
-				self.element.style.left = left + "px";
-				//const inp = self.dialog.getElementsByTagName("input");
-				//if(inp.length>0) inp[0].focus();
-			}
-		};
-		
-		self.build = async(src) => {
+		const button = self.button.options;
+		const src = button.widget;
+		if(!dialogs[src]) {
+			const div = document.createElement('div');
+			dialogs[src] = div;
+			div.id = "dialog_"+Object.keys(dialogs).length;
+			div.classList.add('dialog');
+			div.style.display = "none";
+			div.style.position = "absolute";
+			if(button.width) div.style.width = button.width + "px";
+			if(button.height) div.style.height = button.height + "px";
+			document.body.appendChild(div);
+			div.onopen = (evt) => true; // Default event handler. Returning false, prevents opening
+			div.onclose = (evt) => true; // Default event handler. Returning false, prevents closing
+			div.toggle = (evt) => {
+				const dialog = evt.target;
+				const button = evt.trigger;
+				dialog.options.button = button;
+				if (dialog.style.display == "block"){
+					if(dialog.onclose({target: dialog, trigger: button})){
+						dialog.style.display = "none";
+						button.classList.remove("active");
+					}
+				} else {
+					if (dialog.onopen({target:dialog, trigger: button})){
+						button.classList.add("active");
+						dialog.style.display = "block";
+						let obj = button;
+						let top = obj.offsetHeight;
+						let left = 0;
+						while (obj!=document.body){
+							top+=obj.offsetTop;
+							left+=obj.offsetLeft;
+							obj = obj.offsetParent;
+						}
+						top += ((window.innerHeight - button.height - top)<0) ? window.innerHeight - button.height - top:0;
+						left += ((document.body.clientWidth - button.width - left)<0) ? document.body.clientWidth - button.width - left:0;
+						dialog.style.top = top + "px";
+						dialog.style.left = left + "px";
+					};
+				}
+			};
 			const response = await fetch(src);
 			if(response.ok) {
 				const text = await response.text();
-				self.element.style.position = "absolute";
-				if(self.parent.width) self.element.style.width = self.parent.width + "px";
-				if(self.parent.height) self.element.style.height = self.parent.height + "px";
-				self.element.innerHTML = text;
-				const elem = self.element.lastElementChild;
+				div.innerHTML = text;
+				const elem = div.lastElementChild;
 				if (elem.nodeName=="SCRIPT") {
 					const new_script = document.createElement("script");
-					new_script.appendChild(document.createTextNode(elem.textContent));
+					new_script.appendChild(document.createTextNode(div.removeChild(elem).textContent));
 					document.body.appendChild(new_script);
 				}
-				const btn = document.createElement('div');
-				btn.classList.add("close-button");
-				btn.onclick = (evt)=>self.toggle();
-				div.appendChild(btn);
 			}
+			self.element = div;
+			div.options = self;
+			const btn = document.createElement('div');
+			btn.classList.add("close-button");
+			btn.onclick = (evt)=>div.toggle({target: div, trigger:div.options.button});
+			div.appendChild(btn);
 		}
-	
-		self.onclick = (evt)=>{
-	
-		}
-	
-		return self;
+			
+		return dialogs[src];
 	}
 	
 

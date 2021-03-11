@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+		<style>
+		table {
+      border: none;
+    }
+		td {
+      border: none;
+      text-align: left;
+      padding-left: 10px;
+    }
+    table.top-fixed {
+      background-color: #ccc;
+    }
+    div.stamp {
+			position: absolute;
+			padding: 0px;
+			margin: 0px;
+			font-size: 10pt;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    #stamp1 {
+      background: url('images/free_stamp.png');
+      background-repeat: no-repeat;
+      width: 120px;
+      height: 64px;
+      z-index: 99;
+    }
+    #stamp2 {
+      background: url('images/sealing_wax.png');
+      background-size: cover;
+      width: 100px;
+      height: 100px;
+      color: #cfa;
+      z-index: 99;
+    }
+		.rotor {
+			display: none;
+			position: absolute;
+			width: 16px;
+			height: 16px;
+			top: 50%;
+			left:  50%;
+			transform: translate(-50%, -50%);
+			opacity: 0.8;
+			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH3wUaES0yLeH++QAAAlhJREFUOMtdk81KW1EQx39zcu9NIJEgKC4MLlLQXbPNwo0V3BhcFl20fQLfowsfQRDxBVy4yBMYEPyiXSiYWqtYqFclSEzMPedMF3qv0YHZzOd//jMjqkqq70VEEBHOz8+1VCoxPj4u6hVFMcYAYNJg7z3ee1SfncYYRASAi4sLdnZ2ALDeorw2C9JOaRLAycmJttttHh4eKBaLdDodbm9vaf9q64dqVYYLyDD8brfL9va2xnGcjRVFEVEUoV4J8yFfv32RnMkhL+AzBNZatra21FpLoVCgXq8zMzPD8fExBwcHiAhxfMv132udmpySNyMANJtNtdYyNjbGysqKDBGpj4+PTE9Ps9hYlJzJkbiEMBe+kpgkCVdXVzw9PdFoNADo9/ukvuXlZZaWluT+/l43tzb1z++LjAQD0Ol0vvf7fSqVCiMjI+K9J4oinHPMzs5KpVIRgJ8/fhL/i7m5id9uQVWrzjkGg8Fz1ZdtqCrWWlSVMAwpFAoEQYD3njcIyuXy5zAMqdVqAAwGA5rNpsZxrEEQEATPVJ2eniIiTExMvEUQRRGrq6siIhweHuru7i4iwsLCgqRbOjo60ru7O4IgoFqtyvsREBHW19e11+uRz+cpl8sYY4jjWFutFu2zM4wxzM/PZxeaHVIq+/v72mq1KBaLdLtdVJUkSYiiCGstc5/mqH2siUcxyGsB51x2+xsbG9rr9RgdHc1InZycpF6vUyqVxHqHc458GJEx7ZzL2L68vNS1tTUd/lJVxXuPtZbEO6yzrx88HJB+497eng7bhtXps6Z5/wG+5nt7pPk6KgAAAABJRU5ErkJggg==);
+		}
+		.rotable:hover div.rotor {
+			display: block;
+		}
+		.sizer {
+			display: none;
+			position: absolute;
+			width: 16px;
+			height: 16px;
+			bottom: -4px;
+			right: -4px;
+			opacity: 0.8;
+			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH3wUaESwc6CzCdwAAAapJREFUOMuNkjuL6mAQht+JS+KlsAnYWG0XsYh2KQQRjo0i2GplYSHir7DQwsJWLASx9i8IluKJ9iIiNlHxiIVCAmZOtXHjbXdgmG9mmIdh3g/MjFdu27Yr9vt9vu8LeGNE5Monkwni8Th/r70F3INisRgikQhUVeWvOjHfgLZtQxBuzHa7za1WC9lsFpZlIRgMQpZl7Pd7jMdj6LpODwAiAhE5ME3TOJ1Ow+PxgIjAzJAkCY1GA7VaDR/3qzIziAiCIKDT6fByucTlcoFpmjidTgiFQpjNZsjlcqjX6/Rw+ev16orfvdlssqIoXC6XHTWcpmEYvFgsmJkxGo34mazFYpGTyaSr5zyOx+MnAK5Wq5xKpZ4ChsPhQ905uWmay0qlAgBIJBJP5czn83RfcwCiKP7x+XyQZdkl5U/20ev1WBRFWJYFSZIgCAJWqxUGgwGv12tkMhmoqkovP9lms2FN01AqlRytD4cD5vM5zuczptMpvdtACIfDpOv63263i0AgAL/fD8Mw4PV6fxwGcFNht9tNFUXhaDT6UoVn7kq22+2/QqHw62Fmxn8pB4mgcwgvogAAAABJRU5ErkJggg==);
+		}
+		.sizable:hover div.sizer {
+			display: block;
+		}	
+    
+    #dynamize {
+      background-color: #fff;
+    }
+    #dynamize thead {
+      background-color: #ccc;
+    }
+
+/* Tooling look and feel */
+		.tool {
+			display: inline-block;
+			margin: 4px;
+			padding: 4px;
+			height: 28px;
+			width: 28px;
+			cursor: pointer;
+			border-radius: 4px;
+			border: 1px solid transparent;
+		}
+		.tool.active {
+			background-color: #00fefa;
+			border: 1px solid #003e3a;
+		}
+		.tool:hover {
+			background-color: #00deda;
+			border: 1px solid #003e3a;
+		}
+		.dialog {
+			position: absolute;
+			display: none;
+			padding: 4px;
+			background-color: white;
+			box-shadow: 4px 4px 6px #0169b4ca;
+			background-color: #f0f0f0;
+			font-size: 11pt;
+		}
+		.tile {
+			position: relative;
+			background-repeat: no-repeat;
+			background-size: contain;
+			display: inline-block;
+			margin: 0px 0px;
+			padding: 0px;
+			cursor: pointer;
+			/*border: 4px solid #e1e1e1;*/
+		}
+		.close-button {
+			background: no-repeat center/contain url('https://demo.ideati.co/res/gui/exit.svg');
+			display: inline-block;
+			position: absolute;
+			cursor: pointer;
+			top: 8px;
+			right: 8px;
+			width: 24px;
+			height: 24px;
+			opacity: 0.7;
+		}
+		</style>
+
+    <title>Dynamize.js by j-pel</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Dynamize.js</h1>
+        <h2>Small plain vanilla javascript goodies for enhancing user interaction</h2>
+        <a href="https://github.com/j-pel/dynamize" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+<h2>Tooling</h2>
+<p>The purpose of tooling is to provide user interaction from dynamic buttons and dialogs that are injected when needed.</p>
+<p>Example of a toolbar with different dialogs:</p>
+<div id="toolbar"></div>
+<p>Example of a list sharing the same dialog:</p>
+<ul id="list"></ul>
+        </section>
+
+        <aside id="sidebar">
+          <div style="width: 200px; height: 80px; display: block;">
+            <div id="stamp1" class="stamp movable rotable">&nbsp;<br></div>
+          </div>
+          <a href="https://github.com/j-pel/dynamize/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/j-pel/dynamize/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/j-pel/dynamize">dynamize.js</a> is maintained by <a href="https://github.com/j-pel">j-pel</a>.</p>
+
+          <p>Site layout based on the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+
+          <div id="stamp2" class="stamp movable rotable">Move<br />me</div>
+
+        </aside>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="js/setup.js"></script>
+    <script>
+(async function() {
+	setup.cdn = {
+		production: "https://j-pel.github.io/dynamize/js/",
+		debugging: "js/"
+	};
+	const isReady = await setup.loadLibs([
+		'tooling',
+	]);
+	if(!isReady){
+		console.log("Error loading required libraries");
+	}
+
+	let toolbar = await tooling.attach(document.getElementById('toolbar'), [
+		{id: 1, name:'Cotizaciones', icon: 'https://demo.ideati.co/res/gui/casa.png', widget: '/widgets/menu1.html', width: 438, height: 378},
+		{id: 2, name:'Pedidos', icon: 'https://demo.ideati.co/res/gui/lock.png', widget: '/widgets/menu2.html', width: 438, height: 378},
+	]);
+
+	const ul = document.getElementById('list');
+	for(var i = 0; i<5; i++){
+		const li = document.createElement('li');
+		ul.appendChild(li);
+		li.appendChild(document.createTextNode("Item "+i));
+		const btn = await tooling.tool({id: i, name:'Emitir', icon: 'https://demo.ideati.co/res/gui/casa.png', widget: '/widgets/menu1.html', width: 438, height: 378,});
+		li.appendChild(btn);
+	}
+
+})();
+    </script>
+  </body>
+</html>
