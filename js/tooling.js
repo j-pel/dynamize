@@ -75,8 +75,8 @@
 							left+=obj.offsetLeft;
 							obj = obj.offsetParent;
 						}
-						top += ((window.innerHeight - button.height - top)<0) ? window.innerHeight - button.height - top:0;
-						left += ((document.body.clientWidth - button.width - left)<0) ? document.body.clientWidth - button.width - left:0;
+						top += ((window.innerHeight - button.options.height - top)<0) ? window.innerHeight - button.options.height - top:0;
+						left += ((document.body.clientWidth - button.options.width - left)<0) ? document.body.clientWidth - button.options.width - left:0;
 						dialog.style.top = top + "px";
 						dialog.style.left = left + "px";
 					};
