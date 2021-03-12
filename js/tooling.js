@@ -54,17 +54,19 @@
 			document.body.appendChild(div);
 			div.onopen = async (evt) => true; // Default event handler. Returning false, prevents opening
 			div.onclose = async (evt) => true; // Default event handler. Returning false, prevents closing
-			div.toggle = (evt) => {
+			div.toggle = async (evt) => {
 				const dialog = evt.target;
 				const button = evt.trigger;
 				dialog.options.button = button;
 				if (dialog.style.display == "block"){
-					if(await dialog.onclose({target: dialog, trigger: button})){
+					const allow = await dialog.onclose({target: dialog, trigger: button});
+					if(allow) {
 						dialog.style.display = "none";
 						button.classList.remove("active");
 					}
 				} else {
-					if (await dialog.onopen({target:dialog, trigger: button})){
+					const allow = await dialog.onopen({target: dialog, trigger: button});
+					if (allow){
 						button.classList.add("active");
 						dialog.style.display = "block";
 						let obj = button;
