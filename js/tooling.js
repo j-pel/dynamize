@@ -59,12 +59,12 @@
 				const button = evt.trigger;
 				dialog.options.button = button;
 				if (dialog.style.display == "block"){
-					if(dialog.onclose({target: dialog, trigger: button})){
+					if(await dialog.onclose({target: dialog, trigger: button})){
 						dialog.style.display = "none";
 						button.classList.remove("active");
 					}
 				} else {
-					if (dialog.onopen({target:dialog, trigger: button})){
+					if (await dialog.onopen({target:dialog, trigger: button})){
 						button.classList.add("active");
 						dialog.style.display = "block";
 						let obj = button;
