@@ -19,12 +19,13 @@
 		span.classList.add('tool');
 		const self = { // Set default values for options
 			status: 'active',
+			size: 24,
 			element: span,
 			onclick: (evt)=>evt.target.dialog.toggle({target:evt.target.dialog, trigger: evt.target}),
 		};	
 		Object.assign(self, options); // replace with custom options
 		span.title = self.name;
-		span.style.background = `no-repeat center/24px url('${self.icon}')`;
+		span.style.background = `no-repeat center/${self.size}px url('${self.icon}')`;
 		span.appendChild(document.createTextNode("\u00A0"));
 		span.onclick = self.onclick;
 		span.options = self;
