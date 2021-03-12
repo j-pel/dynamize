@@ -52,8 +52,8 @@
 			if(button.width) div.style.width = button.width + "px";
 			if(button.height) div.style.height = button.height + "px";
 			document.body.appendChild(div);
-			div.onopen = (evt) => true; // Default event handler. Returning false, prevents opening
-			div.onclose = (evt) => true; // Default event handler. Returning false, prevents closing
+			div.onopen = async (evt) => true; // Default event handler. Returning false, prevents opening
+			div.onclose = async (evt) => true; // Default event handler. Returning false, prevents closing
 			div.toggle = (evt) => {
 				const dialog = evt.target;
 				const button = evt.trigger;
