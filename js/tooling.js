@@ -60,15 +60,15 @@
 				const button = evt.trigger;
 				dialog.options.button = button;
 				if (dialog.style.display == "block"){
+					button.classList.remove("active");
 					const allow = await dialog.onclose({target: dialog, trigger: button});
 					if(allow) {
 						dialog.style.display = "none";
-						button.classList.remove("active");
 					}
 				} else {
+					button.classList.add("active");
 					const allow = await dialog.onopen({target: dialog, trigger: button});
 					if (allow){
-						button.classList.add("active");
 						dialog.style.display = "block";
 						let obj = button;
 						let top = obj.offsetHeight;
