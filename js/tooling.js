@@ -10,10 +10,13 @@
 
 	'use strict';
 
-	const dialogs = {};
+	// widgets keeps track of loaded widgets to avoid reloading them
+	const widgets = {};
 
+	// attach creates a list with one or more tool buttons for a toolbar
 	const attach = exports.attach = (element, tools) => Promise.all(tools.map(async (item) => element.appendChild(await tool(item))));
 
+	// tool creates a single tool button that may open a dynamic dialog (widget)
 	const tool = exports.tool = async (options) => {
 		const span = document.createElement('span');
 		span.classList.add('tool');
@@ -35,6 +38,8 @@
 		return span;
 	}
 	
+	// dialog creates a dynamic dialog that is loaded and shown when needed. 
+	// A trigger button is mandatory. The button may be a tool button or any other clickable control
 	const dialog = exports.dialog = async (options) => {
 
 		const self = { // Set default values for options
@@ -43,15 +48,19 @@
 		Object.assign(self, options); // replace with custom options
 		const button = self.button.options;
 		const src = button.widget;
-		if(!dialogs[src]) {
+		if(!widgets[src]) {
 			const div = document.createElement('div');
-			dialogs[src] = div;
-			div.id = "dialog_"+Object.keys(dialogs).length;
+			widgets[src] = div;
+			div.id = "dialog_"+Object.keys(widgets).length;
 			div.classList.add('dialog');
 			div.style.display = "none";
 			div.style.position = "absolute";
-			if(button.width) div.style.width = button.width + "px";
-			if(button.height) div.style.height = button.height + "px";
+			if(button.width) 
+				if(typeof(button.width)=="Number") div.style.width = button.width + "px";
+				else div.style.width = button.width;
+			if(button.height)
+				if(typeof(button.height)=="Number") div.style.height = button.height + "px";
+				else div.style.height = button.height;
 			document.body.appendChild(div);
 			div.onopen = async (evt) => true; // Default event handler. Returning false, prevents opening
 			div.onclose = async (evt) => true; // Default event handler. Returning false, prevents closing
@@ -78,8 +87,9 @@
 							left+=obj.offsetLeft;
 							obj = obj.offsetParent;
 						}
-						top += ((window.innerHeight - button.options.height - top)<0) ? window.innerHeight - button.options.height - top:0;
-						left += ((document.body.clientWidth - button.options.width - left)<0) ? document.body.clientWidth - button.options.width - left:0;
+						top += ((window.innerHeight - button.options.height - top)<0) ? window.innerHeight - button.options.height - top+window.scrollY:0;
+						left += ((document.body.clientWidth - button.options.width - left)<0) ? document.body.clientWidth - button.options.width - left+window.scrollX:0;
+						if (button.options.type=="minimizer") top -= button.offsetHeight;
 						dialog.style.top = top + "px";
 						dialog.style.left = left + "px";
 					};
@@ -104,7 +114,7 @@
 			div.appendChild(btn);
 		}
 			
-		return dialogs[src];
+		return widgets[src];
 	}
 	
 

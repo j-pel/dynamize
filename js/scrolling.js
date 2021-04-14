@@ -10,36 +10,6 @@
 
 	'use strict';
 
-	// Function: waitForElement
-	// Author: Paul Kinlan
-	// Source: https://paul.kinlan.me/waiting-for-an-element-to-be-created/
-	function waitForElement(selector) {
-		return new Promise(function(resolve, reject) {
-			var element = document.querySelector(selector);
-	
-			if(element) {
-				resolve(element);
-				return;
-			}
-	
-			var observer = new MutationObserver(function(mutations) {
-				mutations.forEach(function(mutation) {
-					var nodes = Array.from(mutation.addedNodes);
-					for(var node of nodes) {
-						if(node.matches && node.matches(selector)) {
-							observer.disconnect();
-							resolve(node);
-							return;
-						}
-					};
-				});
-			});
-	
-			observer.observe(document.documentElement, { childList: true, subtree: true });
-		});
-	}
-
-
 	/*!
 	 * refresh()
 	 * Resizes the fixed headers for all columns in accordance to
@@ -51,22 +21,19 @@
 		const elements = document.getElementsByClassName('top-fixed');
 		for (var e = 0; e < elements.length; e++) {
 			const head = elements[e].rows[0].cells;
-			var body = elements[e].parentNode.originalTable.tBodies[0]
-			const scroller = body.offsetParent.parentNode;
-			scroller.style.top = (2 + elements[e].parentNode.offsetHeight) + "px";
-			scroller.style.height = (scroller.parentNode.clientHeight - 2 - elements[e].parentNode.offsetHeight) + "px";
-			if (body.rows.length==0) return(0);
-			for (var r=0;r<body.rows.length;r++){
-				if (body.rows[r].clientHeight>0) break;
-			}
-			if (r>=body.rows.length) return(0);
-			body = body.rows[r].cells;
-			var cols = (body.length<head.length)?head.length:body.length;
-			for (var i=0;i<cols;i++) {
-				if (!body[i]||!head[i]) break;
-				if(head[i].firstElementChild)
-					head[i].firstElementChild.style.width = parseInt(body[i].clientWidth-13) + "px";
-				head[i].style.width = body[i].clientWidth + "px";
+			const body = elements[e].parentNode.originalTable.tBodies[0].firstElementChild.children;
+			const cols = (body.length<head.length)?head.length:body.length;
+			for (var c=0; c<cols; c++) {
+				if (!body[c]||!head[c]) break;
+				//const wid = (body[c].clientWidth<head[c].clientWidth)?head[c].clientWidth:body[c].clientWidth;
+				const wid = body[c].clientWidth-2;
+				if(head[c].firstElementChild) // text input element (ie. filtering textbox)
+					head[c].firstElementChild.style.width = parseInt(wid-13) + "px";
+				head[c].style.maxWidth = wid + "px";
+				head[c].style.minWidth = wid + "px";
+    		head[c].style.textOverflow = "ellipsis";
+    		head[c].style.overflow = "hidden";
+    		head[c].style.textAlign = body[c].style.textAlign;
 			}
 		}
 	}
@@ -76,61 +43,57 @@
 	 */
 
 	const apply = exports.apply = function() {
-		var elements = document.getElementsByClassName('scrollable');
-		for (var i = 0; i < elements.length; i++) {
-			var table = elements[i];
-			var thead = elements[i].tHead;
-			var page = table.parentNode;
-			var header = document.createElement("div");
-			var headert = document.createElement("table");
-			var scroller = document.createElement("div");
-			//waitForElement(thead).then((thead)=>{
+		const elements = document.getElementsByClassName('scrollable');
+		for (var e = 0; e < elements.length; e++) {
+			const table = elements[e];
+			const thead = elements[e].tHead;
+			if(thead) {
+				const page = table.parentNode
+				const header = document.createElement("table");
+				const hscroller = document.createElement("div");
+				const vscroller = document.createElement("div");
+				page.appendChild(hscroller);
+				header.originalTable = table;
 				table.originalThead = thead;
-				headert.originalTable = table;
-				if(thead) {
-					thead.classList.add('top-fixed');
-					table.removeChild(thead);
-					page.insertBefore(header,table);
-					header.appendChild(headert);
-					headert.appendChild(thead);
-				}
-				page.insertBefore(scroller,table);
+				thead.classList.add('top-fixed');
+				table.removeChild(thead);
+				header.appendChild(thead);
+				hscroller.appendChild(header);
+				hscroller.appendChild(vscroller);
 				page.removeChild(table);
-				scroller.style.display = "block";
-				["width","maxWidth","minWidth","left","right"].forEach(function(prop){
-					headert.style[prop] = table.style[prop];
-					header.style[prop] = table.style[prop];
-				});
-				["position","width","height","maxWidth","maxHeight","minWidth","minHeight",
-				"top","left","bottom","right"].forEach(function(prop){
-					scroller.style[prop] = table.style[prop];
-				});
-				["movable","rotable","sizable"].forEach(function(cls){
+				vscroller.appendChild(table);
+				hscroller.style.width = "fit-content";
+				vscroller.style.width = "fit-content";
+				vscroller.style.height = (page.offsetHeight - vscroller.offsetTop)+"px";
+				vscroller.style.overflow = "scroll";
+				page.style.overflow = "scroll";
+				["movable","rotable","sizable"].map((cls)=>{
 					if(table.classList.contains(cls)) {
-						scroller.classList.add(cls);
+						page.classList.add(cls);
 						table.classList.remove(cls);
 					}
 				});
-				header.style.backgroundColor = "ButtonHighlight";
-				header.style.position = "fixed";
-				table.style.width = "100%";
-				table.tabIndex = 0;
-				scroller.style.overflow = "scroll";
-				scroller.style.position = "relative";
-				scroller.style.top = (2 + header.offsetHeight) + "px";
-				scroller.style.height = (page.clientHeight - 2 - header.offsetHeight) + "px";
-				scroller.appendChild(table);
-				headert.style.width = parseInt(table.clientWidth) + "px";
-			//});
+				/*
+				hscroller.style.display = "block";
+				["width","maxWidth","minWidth","left","right"].map((prop)=>{
+					headert.style[prop] = table.style[prop];
+				});
+				["position","width","height","maxWidth","maxHeight","minWidth","minHeight",
+				"top","left","bottom","right"].map((prop)=>{
+					vscroller.style[prop] = table.style[prop];
+				});
+				*/
+			}
 		}
 		refresh();
 	}
 
 	const elements = document.getElementsByClassName('fix-top');
-	for (var i = elements.length-1; elements.length > 0;i = elements.length-1) {
-		const table = elements[i].parentNode;
-		const head = elements[i].cloneNode(true);
-		table.removeChild(thead);
+	for (var e = elements.length-1; elements.length > 0;e = elements.length-1) {
+		const thead = elements[e];
+		const table = elements[e].parentNode;
+		const head = elements[e].cloneNode(true);
+		//table.removeChild(thead);
 		const theadt = document.createElement("table");
 		theadt.appendChild(thead);
 		head.classList.remove('fix-top');
@@ -140,7 +103,8 @@
 		fixed.style.position = "sticky";
 		fixed.style.top = "0px";
 		fixed.style.width = "100%";
-		table.removeChild(elements[i]);
+		//table.removeChild(thead);
+		//table.removeChild(elements[i]);
 	}
 	window.addEventListener('resize', onResize, false);
 

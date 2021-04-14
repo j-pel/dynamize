@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<body style="background-color: #cfc;">
+	<style>
+	table {
+		border-collapse: collapse;
+	}
+	th {
+		background-color: #ccc;
+	}
+	th, td {
+		border: 1px solid #aaa;
+	}
+	</style>
+	<div id="table1" style="background-color: #ccf; width: 220px; height: 300px; margin: 0px;">
+    <table class="scrollable" style="max-width: 420px; min-width: 300px; max-height: 200px;">
+      <thead>
+        <tr>
+          <th>Release</th><th>Codename</th><th>Year</th><th>Packages</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1.1</td><td>Buzz</td><td>1996</td><td>474</td>
+        </tr>
+        <tr>
+          <td>1.2</td><td>Rex</td><td>1996</td><td>848</td>
+        </tr>
+        <tr>
+          <td>1.3</td><td>Bo</td><td>1997</td><td>974</td>
+        </tr>
+        <tr>
+          <td>2.0</td><td>Hamm</td><td>1998</td><td>1500</td>
+        </tr>
+        <tr>
+          <td>2.1</td><td>Slink</td><td>1999</td><td>2250</td>
+        </tr>
+        <tr>
+          <td>2.2</td><td>Potato</td><td>2000</td><td>3900</td>
+        </tr>
+        <tr>
+          <td>3.0</td><td>Woody</td><td>2002</td><td>8500</td>
+        </tr>
+        <tr>
+          <td>3.1</td><td>Sarge</td><td>2005</td><td>15400</td>
+        </tr>
+        <tr>
+          <td>4.0</td><td>Etch</td><td>2007</td><td>18000</td>
+        </tr>
+        <tr>
+          <td>5.0</td><td>Lenny</td><td>2009</td><td>23000</td>
+        </tr>
+        <tr>
+          <td>6.0</td><td>Squeeze</td><td>2011</td><td>29000</td>
+        </tr>
+        <tr>
+          <td>7</td><td>Wheezy</td><td>2013</td><td>36000</td>
+        </tr>
+        <tr>
+          <td>8</td><td>Jeesie</td><td>2015</td><td>43000</td>
+        </tr>
+        <tr>
+          <td>9</td><td>Stretch</td><td>2017</td><td>51000</td>
+        </tr>
+        <tr>
+          <td>10</td><td>Buster</td><td>2019</td><td>57703</td>
+        </tr>
+        <tr>
+          <td>11</td><td>Bullseye</td><td colspan=2>Soon</td>
+        </tr>
+        <tr>
+          <td>12</td><td>Bookworm</td><td>Future</td>
+        </tr>
+        <tr>
+          <td>13</td><td>Trixie</td><td>Future</td>
+        </tr>
+      </tbody>
+    </table>
+	</div>
+	<script type="text/javascript" src="../js/scrolling.js"></script>
+<script>
+/**
+ * @project http://j-pel.github.io/dynamize
+ * @author Jorge M. Peláez
+ * @module menu1
+ */
+(async () => {
+	const self = {
+		script: document.currentScript,
+		dlg: document.getElementById("table1").parentElement,
+		jwt: "token_example",
+	}
+	self.dlg.onopen=(evt)=>{
+		return true;
+	}
+	self.dlg.onclose=(evt)=>{
+		return true;
+	}
+	scrolling.apply();
+})();
+
+</script>
+<div style="height: 100vh"></div>
+</body>
+</html>

@@ -85,6 +85,9 @@
     #dynamize thead {
       background-color: #ccc;
     }
+		#list {
+			list-style: square inside;
+		}
 
 /* Tooling look and feel */
 		.tool {
@@ -152,11 +155,23 @@
       <div class="inner clearfix">
         <section id="main-content">
 <h2>Tooling</h2>
-<p>The purpose of tooling is to provide user interaction from dynamic buttons and dialogs that are injected when needed.</p>
-<p>Example of a toolbar with different dialogs:</p>
-<div id="toolbar"></div>
-<p>Example of a list sharing the same dialog:</p>
-<ul id="list"></ul>
+<p>Easy and powerful dependency injection. The purpose of tooling is to provide user interaction from dynamic buttons and dialogs that are injected when needed.</p>
+<p>There are many use cases and the advantage is in managing the dialog complexity apart from the rest of the application. Another advantage is that the dialogs can be built dynamically from any data source. Examples of different use cases:</p>
+
+<ul></ul>
+	<li>Toolbar with different dialogs on each button
+		<div id="toolbar"></div>
+	</li>
+	<li>Example of a list of buttons sharing the same dialog
+		<ul id="list"></ul>
+	</li>
+	<li>Different types of buttons: Toolbar vs Minimizer button for a dialog
+		<div id="mini"></div>
+	</li>
+	<li>Dialogs with other Dynamize tools, for example scrolling, filtering tables
+		<div id="scrollable"></div>
+	</li>
+</ul>
         </section>
 
         <aside id="sidebar">
@@ -190,6 +205,7 @@
 		debugging: "js/"
 	};
 	const isReady = await setup.loadLibs([
+		'scrolling',
 		'tooling',
 	]);
 	if(!isReady){
@@ -197,8 +213,8 @@
 	}
 
 	let toolbar = await tooling.attach(document.getElementById('toolbar'), [
-		{id: 1, name:'Cotizaciones', icon: 'https://demo.ideati.co/res/gui/casa.png', widget: '/widgets/menu1.html', width: 438, height: 378},
-		{id: 2, name:'Pedidos', icon: 'https://demo.ideati.co/res/gui/lock.png', widget: '/widgets/menu2.html', width: 438, height: 378},
+		{id: 1, name:'Cotizaciones', icon: 'https://demo.ideati.co/res/gui/casa.png', widget: 'widgets/menu1.html', width: 438, height: 378},
+		{id: 2, name:'Pedidos', icon: 'https://demo.ideati.co/res/gui/lock.png', widget: 'widgets/menu2.html', width: 438, height: 378},
 	]);
 
 	const ul = document.getElementById('list');
@@ -206,9 +222,16 @@
 		const li = document.createElement('li');
 		ul.appendChild(li);
 		li.appendChild(document.createTextNode("Item "+i));
-		const btn = await tooling.tool({id: i, name:'Emitir', icon: 'https://demo.ideati.co/res/gui/casa.png', widget: '/widgets/menu1.html', width: 438, height: 378,});
+		const btn = await tooling.tool({id: i, name:'Emitir', icon: 'https://demo.ideati.co/res/gui/casa.png', widget: 'widgets/menu1.html', width: 438, height: 378,});
 		li.appendChild(btn);
 	}
+
+	const minbutton = await tooling.tool({id: 1, name:'Dialog', icon: 'https://demo.ideati.co/res/gui/casa.png', widget: 'widgets/menu1.html', width: 438, height: 378, type: "minimizer",});
+	document.getElementById('mini').appendChild(minbutton);
+	const scrollingTable = await tooling.tool({id: 1, name:'Dialog', icon: 'https://demo.ideati.co/res/gui/checked.png', widget: 'widgets/scrolling1.html', width: 438, height: 378, type: "minimizer",});
+	document.getElementById('scrollable').appendChild(scrollingTable);
+	debugger
+	scrolling.apply();
 
 })();
     </script>
