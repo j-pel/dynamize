@@ -55,17 +55,17 @@
 			div.classList.add('dialog');
 			div.style.display = "none";
 			div.style.position = "absolute";
+			debugger
 			if(button.width) { 
-				if(typeof(button.width)=="Number") div.style.width = button.width + "px";
+				if(typeof(button.width)=="number") div.style.width = `${button.width}px`;
 				else div.style.width = button.width;
 			}
 			if(button.height) {
-				if(typeof(button.height)=="Number") div.style.height = button.height + "px";
+				if(typeof(button.height)=="number") div.style.height = `${button.height}px`;
 				else div.style.height = button.height;
 			}
-			debugger
 			if(button.zIndex) {
-				if(typeof(button.zIndex)=="Number") div.style.zIndex = `${button.zIndex}`;
+				if(typeof(button.zIndex)=="number") div.style.zIndex = `${button.zIndex}`;
 				else div.style.zIndex = button.zIndex;
 			}
 			document.body.appendChild(div);

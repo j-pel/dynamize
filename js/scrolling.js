@@ -20,20 +20,25 @@
 	const refresh = exports.refresh = function() {
 		const elements = document.getElementsByClassName('top-fixed');
 		for (var e = 0; e < elements.length; e++) {
-			const head = elements[e].rows[0].cells;
-			const body = elements[e].parentNode.originalTable.tBodies[0].firstElementChild.children;
-			const cols = (body.length<head.length)?head.length:body.length;
-			for (var c=0; c<cols; c++) {
-				if (!body[c]||!head[c]) break;
-				//const wid = (body[c].clientWidth<head[c].clientWidth)?head[c].clientWidth:body[c].clientWidth;
-				const wid = body[c].clientWidth-2;
-				if(head[c].firstElementChild) // text input element (ie. filtering textbox)
-					head[c].firstElementChild.style.width = parseInt(wid-13) + "px";
-				head[c].style.maxWidth = wid + "px";
-				head[c].style.minWidth = wid + "px";
-    		head[c].style.textOverflow = "ellipsis";
-    		head[c].style.overflow = "hidden";
-    		head[c].style.textAlign = body[c].style.textAlign;
+			try {
+				const head = elements[e].rows[0].cells;
+				const body = elements[e].parentNode.originalTable.tBodies[0].firstElementChild.children;
+				const cols = (body.length<head.length)?head.length:body.length;
+				for (var c=0; c<cols; c++) {
+					if (!body[c]||!head[c]) break;
+					//const wid = (body[c].clientWidth<head[c].clientWidth)?head[c].clientWidth:body[c].clientWidth;
+					const wid = body[c].clientWidth-2;
+					if(head[c].firstElementChild) // text input element (ie. filtering textbox)
+						head[c].firstElementChild.style.width = parseInt(wid-13) + "px";
+					head[c].style.maxWidth = wid + "px";
+					head[c].style.minWidth = wid + "px";
+					head[c].style.textOverflow = "ellipsis";
+					head[c].style.overflow = "hidden";
+					head[c].style.textAlign = body[c].style.textAlign;
+				}
+			}catch(err){
+				//debugger
+				//console.log("Scrolling refresh error: ", e, err);
 			}
 		}
 	}
@@ -85,7 +90,8 @@
 				*/
 			}
 		}
-		refresh();
+		// Table is probably empty right now
+		//refresh();
 	}
 
 	const elements = document.getElementsByClassName('fix-top');
