@@ -55,12 +55,19 @@
 			div.classList.add('dialog');
 			div.style.display = "none";
 			div.style.position = "absolute";
-			if(button.width) 
+			if(button.width) { 
 				if(typeof(button.width)=="Number") div.style.width = button.width + "px";
 				else div.style.width = button.width;
-			if(button.height)
+			}
+			if(button.height) {
 				if(typeof(button.height)=="Number") div.style.height = button.height + "px";
 				else div.style.height = button.height;
+			}
+			debugger
+			if(button.zIndex) {
+				if(typeof(button.zIndex)=="Number") div.style.zIndex = `${button.zIndex}`;
+				else div.style.zIndex = button.zIndex;
+			}
 			document.body.appendChild(div);
 			div.onopen = async (evt) => true; // Default event handler. Returning false, prevents opening
 			div.onclose = async (evt) => true; // Default event handler. Returning false, prevents closing

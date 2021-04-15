@@ -11,6 +11,10 @@
 	th, td {
 		border: 1px solid #aaa;
 	}
+	.selcell {
+		border: 1px solid #88f;
+		background-color: #aac;
+	}
 	</style>
 	<div id="table1" style="background-color: #ccf; width: 220px; height: 300px; margin: 0px;">
     <table class="scrollable" style="max-width: 420px; min-width: 300px; max-height: 200px;">
@@ -19,7 +23,7 @@
           <th>Release</th><th>Codename</th><th>Year</th><th>Packages</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody tabindex=1 class="navigatable">
         <tr>
           <td>1.1</td><td>Buzz</td><td>1996</td><td>474</td>
         </tr>
@@ -78,6 +82,7 @@
     </table>
 	</div>
 	<script type="text/javascript" src="../js/scrolling.js"></script>
+	<script type="text/javascript" src="../js/navigating.js"></script>
 <script>
 /**
  * @project http://j-pel.github.io/dynamize
@@ -97,6 +102,7 @@
 		return true;
 	}
 	scrolling.apply();
+	navigating.apply();
 })();
 
 </script>
