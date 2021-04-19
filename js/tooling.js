@@ -55,7 +55,6 @@
 			div.classList.add('dialog');
 			div.style.display = "none";
 			div.style.position = "absolute";
-			debugger
 			if(button.width) { 
 				if(typeof(button.width)=="number") div.style.width = `${button.width}px`;
 				else div.style.width = button.width;
