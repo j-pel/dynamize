@@ -55,7 +55,7 @@
 			div.classList.add('dialog');
 			div.style.display = "none";
 			div.style.position = "absolute";
-			if(button.width) { 
+ 			if(button.width) { 
 				if(typeof(button.width)=="number") div.style.width = `${button.width}px`;
 				else div.style.width = button.width;
 			}
@@ -101,7 +101,15 @@
 					};
 				}
 			};
-			const response = await fetch(src);
+			const response = await fetch(src, {
+				method: 'GET',
+				cache: 'no-cache',
+				headers: {
+					'pragma': 'no-cache',
+					'cache-control': 'no-cache',
+					'Accept': 'text/html charset=utf-8',
+				}
+			});
 			if(response.ok) {
 				const text = await response.text();
 				div.innerHTML = text;
