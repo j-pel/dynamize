@@ -69,7 +69,7 @@
 				vscroller.appendChild(table);
 				hscroller.style.width = "fit-content";
 				vscroller.style.width = "fit-content";
-				vscroller.style.height = (page.offsetHeight - vscroller.offsetTop)+"px";
+				vscroller.style.height = (page.offsetHeight - header.offsetHeight)+"px";
 				vscroller.style.overflow = "scroll";
 				page.style.overflow = "scroll";
 				["movable","rotable","sizable"].map((cls)=>{
