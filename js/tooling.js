@@ -58,10 +58,14 @@
  			if(button.width) { 
 				if(typeof(button.width)=="number") div.style.width = `${button.width}px`;
 				else div.style.width = button.width;
+			} else {
+				div.style.width = `${button.parentElement.offsetWidth}px`
 			}
 			if(button.height) {
 				if(typeof(button.height)=="number") div.style.height = `${button.height}px`;
 				else div.style.height = button.height;
+			} else {
+				div.style.width = `${button.parentElement.offsetHeight}px`
 			}
 			if(button.zIndex) {
 				if(typeof(button.zIndex)=="number") div.style.zIndex = `${button.zIndex}`;
