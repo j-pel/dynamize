@@ -23,7 +23,7 @@
 			try {
 				const vscroller = elements[e].parentNode;
 				const header = vscroller.previousSibling;
-				const page = vscroller.parentNode.parentNode;
+				const page = vscroller.parentNode.parentNode.parentNode.parentNode;
 				vscroller.style.height = (page.offsetHeight - header.offsetHeight)+"px";
 			} catch(err){
 
