@@ -18,7 +18,18 @@
 	 * @api public
 	 */
 	const refresh = exports.refresh = function() {
-		const elements = document.getElementsByClassName('top-fixed');
+		var elements = document.getElementsByClassName('scrollable');
+		for (var e = 0; e < elements.length; e++) {
+			try {
+				const vscroller = elements[e].parentNode;
+				const header = vscroller.previousSibling;
+				const page = vscroller.parentNode;
+				vscroller.style.height = (page.offsetHeight - header.offsetHeight)+"px";
+			} catch(err){
+
+			}
+		}
+	 	elements = document.getElementsByClassName('top-fixed');
 		for (var e = 0; e < elements.length; e++) {
 			try {
 				const head = elements[e].rows[0].cells;
