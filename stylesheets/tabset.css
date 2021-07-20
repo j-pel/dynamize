@@ -1,0 +1,92 @@
+/*
+ CSS for tabs interaction
+*/
+
+.tabset {
+  margin-top: 4px;
+  /*padding-left: 4px;
+  max-width: 65em;*/
+}
+
+.tab-panel {
+  padding: 6px;
+  border-top: 1px solid #ccc;
+}
+
+.tabset > input[type="radio"] {
+  position: absolute;
+  left: -200vw;
+}
+
+.tabset .tab-panel {
+  display: none;
+  /*background-color: #fafafa;*/
+}
+
+.tabset > input:first-child:checked ~ .tab-panels > .tab-panel:first-child,
+.tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2),
+.tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel:nth-child(3),
+.tabset > input:nth-child(7):checked ~ .tab-panels > .tab-panel:nth-child(4),
+.tabset > input:nth-child(9):checked ~ .tab-panels > .tab-panel:nth-child(5),
+.tabset > input:nth-child(11):checked ~ .tab-panels > .tab-panel:nth-child(6),
+.tabset > input:nth-child(13):checked ~ .tab-panels > .tab-panel:nth-child(7),
+.tabset > input:nth-child(15):checked ~ .tab-panels > .tab-panel:nth-child(8),
+.tabset > input:nth-child(17):checked ~ .tab-panels > .tab-panel:nth-child(9),
+.tabset > input:nth-child(19):checked ~ .tab-panels > .tab-panel:nth-child(10),
+.tabset > input:nth-child(21):checked ~ .tab-panels > .tab-panel:nth-child(11),
+.tabset > input:nth-child(23):checked ~ .tab-panels > .tab-panel:nth-child(12) {
+  display: block;
+}
+
+/*
+ Styling
+*/
+
+.tabset > label {
+  position: relative;
+  display: inline-block;
+  padding: 4px 16px 20px;
+  border: 1px solid transparent;
+  /*background-color: #eee;*/
+  border-bottom: 0;
+  cursor: pointer;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 8px 8px 0px 0px;
+  font-weight: 600;
+}
+
+.tabset > label::after {
+  content: "";
+  position: absolute;
+  left: 15px;
+  bottom: 10px;
+  width: 22px;
+  height: 4px;
+  background: #8d8d8d;
+}
+
+.tabset > label:hover,
+.tabset > input:focus + label {
+  color: #06c;
+  /*background-color: #fefef3;*/
+}
+
+.tabset > label:hover::after,
+.tabset > input:focus + label::after,
+.tabset > input:checked + label::after {
+  background: #06c;
+}
+.changed {
+  background-image: url(/pservicios/res/gui/alerta.png);
+  background-position: right 2px top 14px;
+  background-repeat: no-repeat;
+  background-size: 24px;
+}
+
+.tabset > input:checked + label {
+  border-color: #ccc;
+  border-bottom: 1px solid transparent;
+  margin-bottom: -1px;
+  /* background-color: #fafafa;*/
+}
