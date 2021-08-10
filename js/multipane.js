@@ -10,94 +10,103 @@
 
   'use strict';
 
-	var refresh = exports.refresh = function() {
+  const self = {
+    vertical_div: 200,
+    scrollX: 0,
+    scrollY: 0,
+  }
+
+  const syncScroll = exports.scroll = (x, y) => {
+    const elems = self.parent.childNodes;
+    for (let e = 0; e<elems.length; e++) {
+      if (elems[e].classList.contains("pane")){
+        elems[e].lastChild.scrollTop = y;
+      }
+    }
+  }
+
+  const pane = exports.pane = (obj, options) => {
+    self.parent = obj;
+    obj.style.display = "flex";
+    const scrollh = document.createElement("div");
+    const body = document.createElement("div");
+    const scrollv = document.createElement("div");
+    const p = document.createElement("div");
+    p.classList.add("pane");
+    p.style.backgroundColor = options.color;
+    const onResize = (e) => {
+      const header = scrollh.firstChild;
+      let wid = header.offsetWidth;
+      if (p.offsetWidth>wid) wid = p.offsetWidth;
+      body.style.width = wid + "px";
+      scrollv.style.width = body.style.width;
+      scrollv.style.height = (p.offsetHeight - scrollh.offsetHeight) + "px";
+      body.style.height = scrollv.style.height;
+    }
+    if (options.width) p.style.width = options.width;
+    obj.appendChild(p);
+    p.onresize = onResize;
+		p.appendChild(scrollh);
+		p.appendChild(body);
+    p.style.overflowX = "auto";
+    p.style.overflowY = "clip";
+    body.style.overflowX = "clip";
+    body.style.overflowY = "auto";
+		body.appendChild(scrollv);
+    p.header = (contents) => {
+      contents.style.width = "max-content";
+      scrollh.appendChild(contents)
+      onResize();
+    };
+    p.append = (contents) => {
+      scrollv.appendChild(contents);
+      onResize();
+    }
+    body.addEventListener('scroll', (e) => {
+      syncScroll(e.target.scrollLeft, e.target.scrollTop);
+    });
+    return p;
+  } 
+
+  const divider = exports.divider = (obj, options) => {
+    let pageX, thisCol, nextCol, curWidth, nextWidth;
+    let d = document.createElement("div");
+    d.classList.add("divider");
+    obj.appendChild(d);
+    d.addEventListener('mousedown', (e) => {
+     thisCol = e.target.previousElementSibling;
+     nextCol = e.target.nextElementSibling;
+     pageX = e.pageX;
+     curWidth = thisCol.offsetWidth
+     if (nextCol)
+      nextWidth = nextCol.offsetWidth
+    });
+   
+    document.addEventListener('mousemove', (e) => {
+     if (thisCol) {
+      var dX = e.pageX - pageX;
+      if (nextCol) nextCol.style.width = (nextWidth - dX)+'px';
+      thisCol.style.width = (curWidth + dX)+'px';
+      thisCol.onresize();
+      e.preventDefault();
+    }
+    });
+   
+   document.addEventListener('mouseup', (e) => { 
+      thisCol = undefined;
+      nextCol = undefined;
+      pageX = undefined;
+      nextWidth = undefined;
+      curWidth = undefined;
+    });
+
+    return d;
+  } 
+
+	var refresh = exports.refresh = () => {
 		onResize();
 		document.getElementById('pane_r').tabIndex = -1;
 		//document.getElementById('pane_r').focus();
-	}
-
-  /*
-   * Private utils to modify the DOM in order to create the panes
-   */
-
-  var elements = document.getElementsByClassName('multipane');
-  for (var i = 0; i < elements.length; i++) {
-		var pane = document.createElement("div");
-		pane.id = "head_l";
-		elements[i].appendChild(pane);
-		var pane = document.createElement("div");
-		pane.id = "pane_l";
-		elements[i].appendChild(pane);
-		pane.addEventListener('mousewheel', onScroll_l, false);
-		var pane = document.createElement("div");
-		pane.id = "head_r";
-		elements[i].appendChild(pane);
-		var pane = document.createElement("div");
-		pane.id = "pane_r";
-		elements[i].appendChild(pane);
-		pane.addEventListener('scroll', onScroll_r, false);
-		window.addEventListener('resize', onResize, false);
-  }
-
-	var assign = exports.assign = function(obj) {
-    return new Promise(function(resolve,reject) {
-			obj.classList.add("multipane");
-			obj.style.overflow = "hidden";
-			var pane = document.createElement("div");
-			pane.id = "head_l";
-			obj.appendChild(pane);
-			var pane = document.createElement("div");
-			pane.id = "pane_l";
-			obj.appendChild(pane);
-			pane.addEventListener('mousewheel', onScroll_l, false);
-			var pane = document.createElement("div");
-			pane.id = "head_r";
-			obj.appendChild(pane);
-			var pane = document.createElement("div");
-			pane.id = "pane_r";
-			obj.appendChild(pane);
-			pane.addEventListener('scroll', onScroll_r, false);
-			window.addEventListener('resize', onResize, false);
-			resolve(obj);
-		});
-	}
-
-	function onResize() {
-		var head_l = document.getElementById('head_l');
-		var head_r = document.getElementById('head_r');
-		var pane_l = document.getElementById('pane_l');
-		var pane_r = document.getElementById('pane_r');
-		var parent = head_l.parentNode;
-		pane_l.style.height = "0px";
-		pane_r.style.height = "0px";
-		var cnTop = head_l.offsetTop + head_l.offsetHeight;
-		pane_l.style.top = (cnTop + 3)+"px";
-		pane_l.style.width = (head_l.offsetWidth - 1) + "px";
-		pane_l.style.left = head_l.offsetLeft + "px"
-		head_r.style.height = (head_l.offsetHeight - 1) + "px";
-		head_r.style.left = (head_l.offsetLeft+head_l.offsetWidth - 1) + "px";
-		pane_r.style.left = (head_l.offsetLeft+head_l.offsetWidth - 0) + "px";
-		pane_r.style.width = (parent.offsetWidth - head_l.offsetWidth - 2) + "px";
-		pane_r.style.height = (parent.offsetHeight - cnTop - 1) + "px";
-		pane_r.style.top = (cnTop - 0)+"px";
-		var hasScroll = parseInt(pane_r.scrollHeight) > parseInt(pane_r.offsetHeight) ? 16:0;
-		hasScroll = 16;
-		head_r.style.width = (pane_r.offsetWidth - hasScroll) + "px";
-		var hasScroll = parseInt(pane_r.scrollWidth) > parseInt(pane_r.offsetWidth) ? 16:0;
-		hasScroll = 16;
-		pane_l.style.height = (parent.offsetHeight - cnTop - hasScroll) + "px";
-	}
-
-	function onScroll_r(evt) {
-		document.getElementById('pane_l').scrollTop = this.scrollTop;
-		document.getElementById('head_r').scrollLeft = this.scrollLeft;
-	}
-
-	function onScroll_l(evt) {
-		if (evt.wheelDeltaY)
-			document.getElementById('pane_r').scrollTop -= evt.wheelDeltaY;
-		else
-			document.getElementById('pane_r').scrollTop -= evt.wheelDelta;
 	}
 
 })(typeof exports === 'undefined'? this['multipane']={}: exports);

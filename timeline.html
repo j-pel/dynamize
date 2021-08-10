@@ -1,0 +1,107 @@
+<html>
+	<head>
+    <meta charset='utf-8'>
+		<title>Simple example for Dynamize.js</title>
+    <style>
+body {
+  font-family: sans-serif;
+  font-size: 9pt;
+  margin: 10px;
+}
+.timeline {
+	font-family: "Verdana","helvetica";
+	font-size: 8pt;
+	text-align: center;
+  border-collapse: collapse;
+}
+.timeline table {
+  border-collapse: collapse;
+}
+.timeline td {
+	padding: 0px;
+}
+.timeline.month {
+	border-left: 1px solid #333;
+	border-top: 1px solid #333;
+	border-bottom: 1px solid #333;
+	contain: content;
+	padding: 0px;
+}	
+.timeline.month {
+	border-right: 1px solid #333;
+}
+.timeline.week {
+	border-left: 1px solid #333;
+	border-top: 1px solid #333;
+}	
+.timeline.week:first-child {
+	border-left: none;
+}	
+.timeline.week table {
+	border-top: 1px solid #333;
+}
+.timeline.day {
+	min-width: 28px;
+}	
+.timeline.saturday {
+	background-color: #eaf5e2;
+}
+.timeline.sunday {
+	background-color: #f5d6dd;
+}
+.timeline.holiday {
+	background-color: #f7f0a5;
+  cursor: pointer;
+}
+.timeline.month:nth-child(even) {
+	background-color: #f0f0f0;
+}
+    </style>
+  </head>
+  <body>
+    <div id="viewport"></div>
+    <script type="text/javascript" src="js/calendar.js"></script>
+    <script>
+  let y = 2021;
+  let d = 1;
+  let tl = calendar({
+    weekdayInitials: ["D","L","M","X","J","V","S"],
+    monthNames: ["Enero","Febrero","Marzo","Abril","Mayo","Junio",
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+    festivities: {
+      "Año nuevo":"1|0101",
+      "Epifanía":"1|0106 +1 MO",
+      "Miércoles de ceniza":"0|ES -46",
+      "San José":"1|0319 +1 MO",
+      "Domingo de Ramos":"1|ES -7",
+      "Jueves Santo":"1|ES -3",
+      "Viernes Santo":"1|ES -2",
+      "Pascua de Resurrección":"1|ES",
+      "Día internacional del trabajo":"1|0501",
+      "Día de la madre":"0|0501 +2 SU",
+      "Ascención del Señor":"1|ES +39 +1 MO",
+      "Pentecostés":"0|ES +49",
+      "Santísima Trinidad":"0|ES +56",
+      "Corpus Christi":"1|ES +60 +1 MO",
+      "Día del padre":"0|0601 +2 SU",
+      "Sagrado Corazón":"1|ES +68 +1 MO",
+      "San Pedro y San Pablo":"1|0629 +1 MO",
+      "Día de la Independencia":"1|0720",
+      "Batalla de Boyacá":"1|0807",
+      "Asunción de la Virgen":"1|0815 +1 MO",
+      "Día de la Raza":"1|1012 +1 MO",
+      "Día de Todos los Santos":"1|1101 +1 MO",
+      "Independencia de Cartagena":"1|1111 +1 MO",
+      "Inmaculada Concepción":"1|1208",
+      "Navidad":"1|1225"
+    }
+  });
+  tl.timeline(document.getElementById("viewport"), tl.range("2021-11-04", "2022-03-18"));
+/*
+  for(let i = 1; i<13; i++){
+    console.log(y,i,d,"week",tl.ISOWeek(y,i,d));
+  }
+*/
+    </script>
+  </body>
+</html>
